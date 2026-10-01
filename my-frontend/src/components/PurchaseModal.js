@@ -11,9 +11,9 @@ import { useAuth } from '../AuthContext';
 import { useBillingStatus } from '../hooks/useBillingStatus';
 import ChronoRoamApi from '../api';
 
-// The App Store product for 1,000 credits. Must match CREDITS_BY_PRODUCT in
+// The App Store product for 100 credits. Must match CREDITS_BY_PRODUCT in
 // my-backend/utils/appleReceiptVerification.js.
-const APPLE_PRODUCT_ID = 'com.solnguyen.chronoroam.1000';
+const APPLE_PRODUCT_ID = 'com.solnguyen.chronoroam.100';
 
 // Loads Stripe once for the whole app. The publishable key is meant to be public; the secret key
 // is only on the server.
@@ -21,7 +21,7 @@ const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
 // The product's name, the same here, on the Stripe checkout (my-backend/routes/billingRoutes.js)
 // and in App Store Connect.
-const CREDITS_PRODUCT_NAME = '1,000 Credits';
+const CREDITS_PRODUCT_NAME = '100 Credits';
 
 // Reloads the current page after a purchase, so every part of the app shows the new credit
 // count. (Each component loads the credit count on its own, so refreshing just this one isn't

@@ -38,7 +38,7 @@ function TermsPage() {
                 <p>AI extraction (email/paste import, packing-list import) and Trip Tips use third-party AI providers and, for Trip Tips, live web search results. These are provided as a convenience — always double-check anything AI-extracted or AI-suggested (dates, flight details, visa/entry information, etc.) against your actual confirmation or an official source before relying on it. Extraction isn't guaranteed to succeed on every attempt (a confirmation may be misformatted, or not recognized as a booking at all) — a credit is used for the attempt itself, not only for a successful one.</p>
 
                 <h2>Purchases</h2>
-                <p>Each purchase of 1,000 Credits is a one-time payment that adds credits to your account, as described in the app at the time of purchase. You can purchase again at any time, and purchased credits never expire. All sales are final — purchases are not refundable, except where required by law or by the platform (Apple/Stripe) you purchased through.</p>
+                <p>Each purchase of 100 Credits is a one-time payment that adds credits to your account, as described in the app at the time of purchase. You can purchase again at any time, and purchased credits never expire. All sales are final — purchases are not refundable, except where required by law or by the platform (Apple/Stripe) you purchased through.</p>
                 <p>Deleting your account also removes your credits. If you create a new account with the same email, any credits you had left are restored once, after we email that address a link to verify it's you. No new free credits are added. See the Privacy Policy for what's kept.</p>
 
                 <h2>Acceptable use</h2>

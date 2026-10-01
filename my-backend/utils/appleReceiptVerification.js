@@ -13,8 +13,11 @@ const BUNDLE_ID = 'com.solnguyen.chronoroam';
 const APPLE_APP_ID = 6801000067;
 
 // The credits product (every Apple purchase uses it) and how many credits each product adds.
-const CREDITS_PRODUCT_ID = 'com.solnguyen.chronoroam.1000'; // "1000 imports" in App Store Connect
-const CREDITS_BY_PRODUCT = { [CREDITS_PRODUCT_ID]: PURCHASE_CREDIT_GRANT };
+// The App Store product the app sells: 100 credits (PURCHASE_CREDIT_GRANT).
+const CREDITS_PRODUCT_ID = 'com.solnguyen.chronoroam.100';
+// Credits added per product. The old 1,000-credit product stays so iPhone apps built before the
+// change, which still sell it as "1,000 Credits", give what they promised.
+const CREDITS_BY_PRODUCT = { [CREDITS_PRODUCT_ID]: PURCHASE_CREDIT_GRANT, 'com.solnguyen.chronoroam.1000': 1000 };
 
 // Apple's public root certificate (not a secret), used to check a purchase was signed by Apple.
 const rootCert = fs.readFileSync(path.join(__dirname, '../certs/AppleRootCA-G3.cer'));

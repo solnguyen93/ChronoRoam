@@ -138,7 +138,7 @@ class ChronoRoamApi {
         return ChronoRoamApi.request('billing/apple/verify', { jwsRepresentation }, 'post');
     }
 
-    // Starts a Stripe payment for 1,000 credits, shown inside the purchase popup (billingRoutes.js).
+    // Starts a Stripe payment for 100 credits, shown inside the purchase popup (billingRoutes.js).
     static async createStripeCheckout() {
         return ChronoRoamApi.request('billing/stripe/checkout', {}, 'post');
     }

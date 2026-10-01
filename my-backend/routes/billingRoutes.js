@@ -71,7 +71,7 @@ router.post('/stripe/checkout', async (req, res) => {
                 price_data: {
                     currency: 'usd',
                     product_data: {
-                        // Same name as the purchase screen and the App Store product: "1,000 Credits".
+                        // Same name as the purchase screen and the App Store product: "100 Credits".
                         name: `ChronoRoam — ${PURCHASE_CREDIT_GRANT.toLocaleString('en-US')} Credits`,
                     },
                     unit_amount: PURCHASE_PRICE_CENTS,

@@ -1,6 +1,7 @@
 const crypto = require('crypto');
 const pool = require('../db');
-const { PURCHASE_CREDIT_GRANT } = require('../utils/creditGrants');
+// Credits in one purchase before the pack went from 1,000 to 100.
+const LEGACY_PURCHASE_CREDITS = 1000;
 
 // Remembers the emails and device IDs of deleted accounts (table spent_trials), so signing up
 // again doesn't give new free credits, and so the leftover credits can be restored once.
@@ -44,8 +45,8 @@ class SpentTrial {
     }
 
     // Returns the leftover credits saved for this email and sets them to 0, so they're only given
-    // out once. Rows from before leftovers were saved (credits_left is null) give PURCHASE_CREDIT_GRANT if that
-    // account had bought credits, otherwise 0.
+    // out once. Rows from before leftovers were saved (credits_left is null) give 1,000 (the pack size
+    // back then) if that account had bought credits, otherwise 0.
     static async takeCreditsLeft(email, client = pool) {
         const result = await client.query(
             // The FROM subquery reads the row as it was before this UPDATE, so RETURNING gives the
@@ -58,7 +59,7 @@ class SpentTrial {
         );
         const row = result.rows[0];
         if (!row) return 0;
-        return row.creditsLeft ?? (row.hadPurchase ? PURCHASE_CREDIT_GRANT : 0);
+        return row.creditsLeft ?? (row.hadPurchase ? LEGACY_PURCHASE_CREDITS : 0);
     }
 
     // Whether this email or device ID belonged to a deleted account.
