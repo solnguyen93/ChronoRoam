@@ -4,8 +4,8 @@ import { createPortal } from 'react-dom';
 const TOOLTIP_WIDTH = 220;
 const VIEWPORT_MARGIN = 12;
 
-// Two people: the "shared" icon.
-function PeopleIcon() {
+// Two people: the "shared" icon (also used for "Linked" in LinkPacklistModal.js).
+export function PeopleIcon() {
     return (
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <circle cx="9" cy="8" r="3.6" />

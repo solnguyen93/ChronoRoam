@@ -47,17 +47,20 @@ class TripPacklist {
     }
 
     // The packing lists this user sees on a trip, oldest link first, so they always show in the same
-    // order. getManyByIds returns them in any order, so they're put back in link order here.
+    // order. getManyByIds returns them in any order, so they're put back in link order here. Each
+    // also gets forEveryone: whether this user linked it for everyone or only for themselves.
     static async getForTrip(tripId, userId) {
         const result = await pool.query(
-            `SELECT packlist_id AS "packlistId" FROM trip_packlists
+            `SELECT packlist_id AS "packlistId", for_everyone AS "forEveryone" FROM trip_packlists
              WHERE trip_id = $1 AND user_id = $2 ORDER BY linked_at ASC`,
             [tripId, userId],
         );
         const ids = result.rows.map((r) => r.packlistId);
         const packlists = await Packlist.getManyByIds(ids);
         const byId = Object.fromEntries(packlists.map((p) => [p.id, p]));
-        return ids.map((id) => byId[id]).filter(Boolean);
+        return result.rows
+            .filter((r) => byId[r.packlistId])
+            .map((r) => ({ ...byId[r.packlistId], forEveryone: r.forEveryone }));
     }
 
     // The trips where this user has a packing list linked, oldest link first (used for the warning

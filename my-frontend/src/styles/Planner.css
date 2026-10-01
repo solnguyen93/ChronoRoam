@@ -1164,7 +1164,10 @@ body.reorder-drag-active .day-section-head{pointer-events:none;}
 .packlist-pick-linked-badge{
   font-size:max(14px, calc(9.5px * var(--text-scale)));color:var(--moss);background:rgba(74,150,96,0.1);
   border-radius:9px;padding:max(calc(2px * 0.7), calc(2px / var(--text-scale))) max(calc(8px * 0.7), calc(8px / var(--text-scale)));flex-shrink:0;
+  display:inline-flex;align-items:center;gap:4px;
 }
+/* The people icon after "Linked" when the list is linked for everyone on the trip. */
+.packlist-pick-linked-badge svg{width:15px;height:15px;}
 /* The two date pickers in a trip row sit on one line. */
 .packlist-pick-row .date-picker-wrap{display:inline;}
 /* Trip row: the name (cut off with "…" if long) above the dates. min-width:0 lets it shrink. */

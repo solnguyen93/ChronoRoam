@@ -165,6 +165,7 @@ function LinkedPacklistPanel({
                 onLink={onLink}
                 onDuplicateAndLink={onDuplicateAndLink}
                 alreadyLinkedIds={packlists.map((p) => p.packlist.id)}
+                everyoneLinkedIds={packlists.filter((p) => p.packlist.forEveryone).map((p) => p.packlist.id)}
             />
         </>
     );

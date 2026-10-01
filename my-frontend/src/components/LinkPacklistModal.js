@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { PeopleIcon } from './SharedBadge';
 import ChronoRoamApi from '../api';
 import useBackdropDismiss from '../hooks/useBackdropDismiss';
 import ConfirmModal from './ConfirmModal';
@@ -9,7 +10,7 @@ import TabSwitcher from './TabSwitcher';
 // later) or Only me. Either way each person can unlink it for themselves later. Edits change the
 // list itself, so they show everywhere it's used. A list already linked to this trip is marked
 // "Linked", and picking it offers to link a copy instead.
-function LinkPacklistModal({ open, onClose, onLink, onDuplicateAndLink, alreadyLinkedIds = [] }) {
+function LinkPacklistModal({ open, onClose, onLink, onDuplicateAndLink, alreadyLinkedIds = [], everyoneLinkedIds = [] }) {
     const [packlists, setPacklists] = useState(null);
     const [newTitle, setNewTitle] = useState('');
     const [busy, setBusy] = useState(false);
@@ -91,7 +92,12 @@ function LinkPacklistModal({ open, onClose, onLink, onDuplicateAndLink, alreadyL
                         {packlists.map((p) => (
                             <button key={p.publicId} className="packlist-pick-row" disabled={busy} onClick={() => pick(p)}>
                                 <span>{p.title}</span>
-                                {alreadyLinkedIds.includes(p.id) && <span className="packlist-pick-linked-badge">Linked</span>}
+                                {/* Linked for everyone on the trip shows the people icon; linked for only you doesn't. */}
+                                {alreadyLinkedIds.includes(p.id) && (
+                                    <span className="packlist-pick-linked-badge" title={everyoneLinkedIds.includes(p.id) ? 'Linked for everyone on the trip' : 'Linked for only you'}>
+                                        Linked{everyoneLinkedIds.includes(p.id) && <PeopleIcon />}
+                                    </span>
+                                )}
                             </button>
                         ))}
                     </div>
