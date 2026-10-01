@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate, useParams, Link } from 'react-router-dom';
 import ChronoRoamApi, { AI_FLIGHT_EXTRACTION_ENABLED } from '../api';
+import useLiveUpdates from '../hooks/useLiveUpdates';
 import PacklistTree from './PacklistTree';
 import OptionsMenu from './OptionsMenu';
 import PlusIcon from './PlusIcon';
@@ -85,6 +86,9 @@ function PacklistDetailPage() {
     useEffect(() => {
         load();
     }, [packlistId, load]);
+
+    // If the list is shared, reloads as soon as someone else changes it (hooks/useLiveUpdates.js).
+    useLiveUpdates(packlist?.memberCount > 1 ? [`packlist:${packlistId}`] : [], load);
 
     // Once joined, drop ?join=1 from the address so it isn't left in history or a copied URL.
     useEffect(() => {

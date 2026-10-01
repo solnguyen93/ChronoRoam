@@ -21,6 +21,8 @@ const webhookRoutes = require('./routes/webhookRoutes');
 const billingRoutes = require('./routes/billingRoutes');
 const contactRoutes = require('./routes/contactRoutes');
 const inviteRoutes = require('./routes/inviteRoutes');
+const liveRoutes = require('./routes/liveRoutes');
+const { notifyOnChange } = require('./utils/liveUpdates');
 const { stripeWebhook } = require('./routes/stripeWebhook');
 const { authenticateJWT } = require('./middleware/auth');
 require('dotenv').config();
@@ -42,6 +44,8 @@ app.use(express.json());
 // Read the login token, if any, into res.locals.user. Routes that need a login check it
 // themselves with requireUser (see middleware/auth.js).
 app.use(authenticateJWT);
+// After a trip or packing list changes, tell others who have it open (utils/liveUpdates.js).
+app.use(notifyOnChange);
 
 // Routes
 app.use('/auth', authRoutes);                            // Sign up, sign in, guests, account settings, password reset
@@ -53,6 +57,7 @@ app.use('/packlists', packlistRoutes);                   // Packing lists
 app.use('/packlists/:publicId/items', packlistItemRoutes); // Packing list items
 app.use('/packlists/:publicId/bags', packlistBagRoutes);  // Packing list bags
 app.use('/invites', inviteRoutes);                        // Invites to a trip or packing list by username
+app.use('/live', liveRoutes);                             // Live updates: hear when others change an open trip or list
 app.use('/flights', flightRoutes);                        // Flight number lookup
 app.use('/ai', aiRoutes);                                 // AI imports and Trip Tips
 app.use('/weather', weatherRoutes);                       // Typical weather for a date and place

@@ -3,6 +3,7 @@ import ChronoRoamApi from '../api';
 import { isReorderDragActive } from '../utils/reorderGuard';
 import { mergeNewTasksByTime, enforceTimedOrder } from '../utils/taskTimeSort';
 import { noteRecentEmoji } from '../utils/recentEmoji';
+import useLiveUpdates from './useLiveUpdates';
 
 // Loads a trip (details, to-dos, day items, linked packing lists) and gives functions to change
 // it. Each change updates the page from the server's reply instead of reloading everything.
@@ -73,6 +74,15 @@ function useTripData(tripId, join = false) {
             document.removeEventListener('visibilitychange', onFocus);
         };
     }, [tripId, load]);
+
+    // On a shared trip, reloads as soon as someone else changes it or a shared packing list
+    // linked to it (hooks/useLiveUpdates.js).
+    const liveKeys = [];
+    if (trip?.memberCount > 1) liveKeys.push(`trip:${tripId}`);
+    for (const { packlist } of packlists) {
+        if (packlist.memberCount > 1) liveKeys.push(`packlist:${packlist.publicId}`);
+    }
+    useLiveUpdates(liveKeys, load);
 
     const updateTrip = useCallback(async (data) => {
         const updated = await ChronoRoamApi.updateTrip(tripId, data);

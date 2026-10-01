@@ -12,6 +12,10 @@ export const AI_FLIGHT_EXTRACTION_ENABLED = process.env.REACT_APP_ENABLE_AI_FLIG
 // REACT_APP_ENABLE_EMAIL_IMPORT=true. The server also needs EMAIL_INTAKE_SHARED_SECRET.
 export const EMAIL_IMPORT_ENABLED = process.env.REACT_APP_ENABLE_EMAIL_IMPORT === 'true';
 
+// A random id for this open copy of the app, sent with every request. The server uses it so
+// live updates (hooks/useLiveUpdates.js) don't tell this copy about its own changes.
+export const CLIENT_ID = Math.random().toString(36).slice(2) + Date.now().toString(36);
+
 // Every call to our server. Each method is one server route.
 class ChronoRoamApi {
     // Sends a request with the saved login token and returns the response body. GET sends data
@@ -20,7 +24,7 @@ class ChronoRoamApi {
         const url = `${BASE_URL}/${endpoint}`;
         const params = method === 'get' ? data : {};
         const token = localStorage.getItem('token');
-        const headers = { Authorization: token ? `Bearer ${token}` : undefined };
+        const headers = { Authorization: token ? `Bearer ${token}` : undefined, 'X-Client-Id': CLIENT_ID };
         const attempt = () => axios({ url, method, data, params, headers });
 
         try {
