@@ -12,7 +12,6 @@ import Wordmark from './Wordmark';
 import BackButton from './BackButton';
 import SharedBadge from './SharedBadge';
 import AccountModal from './AccountModal';
-import { openTour } from '../utils/tour';
 
 // The city part of a destination ("Seattle, Washington, United States" -> "Seattle").
 function cityOnly(destination) {
@@ -78,7 +77,6 @@ function Header({ trip, updateTrip }) {
                             { label: 'Edit details', onClick: () => setModal('edit') },
                             { label: 'Duplicate', onClick: handleDuplicate },
                             { label: 'Delete', onClick: () => setModal('delete'), danger: true },
-                            { label: 'How to use', onClick: openTour },
                             // Guests don't get Account or Log out (they couldn't sign back in).
                             ...(isGuest ? [] : [
                                 { label: 'Account', onClick: () => setModal('account') },
