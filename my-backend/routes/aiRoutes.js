@@ -6,6 +6,7 @@ const { extractConfirmation } = require('../utils/aiConfirmationExtraction');
 const { assertImportQuota, recordImportUsage } = require('../utils/importQuota');
 const { extractPacklistItems } = require('../utils/aiPacklistExtraction');
 const { getTripTips } = require('../utils/aiTripTips');
+const { visaTipIsOffTopic, trimVisaTip } = require('../utils/tripTipsShared');
 const { resolveDestinationKey } = require('../utils/aiDestinationResolver');
 const { getOutletType, compareOutlets, compareOutletsParts, sameCountry } = require('../utils/staticOutlets');
 const { getWeatherComparison } = require('../utils/weatherComparison');
@@ -173,6 +174,13 @@ async function resolveTripTitle(effectiveTitle, passportCountry, startDate, endD
     if (!fresh.hasDestination) {
         fresh = await getTripTips(effectiveTitle, startDate, endDate, passportCountry, placeCount);
     }
+    // The visa tip has transit or payment sentences mixed in: ask once more, and if it happens
+    // again, drop those sentences so they're never shown as visa info.
+    if (fresh.hasDestination && visaTipIsOffTopic(fresh.tipText)) {
+        const retry = await getTripTips(effectiveTitle, startDate, endDate, passportCountry, placeCount);
+        if (retry.hasDestination) fresh = retry;
+        if (visaTipIsOffTopic(fresh.tipText)) fresh = { ...fresh, tipText: trimVisaTip(fresh.tipText) };
+    }
     return CachedTripTips.upsert(effectiveTitle, { ...fresh, destinationKey }, passportCountry);
 }
 
@@ -247,10 +255,12 @@ router.post('/trip-tips', async (req, res) => {
             multiOutlets = await buildMultiOutlets(effectivePlaces, homeOutletCountry);
         }
 
+        // Also cleans visa tips saved before the check in resolveTripTitle existed.
+        const visaText = trimVisaTip(row.tipText);
         res.json({
             hasDestination: row.hasDestination,
-            visa: (row.hasDestination && row.tipText) ? {
-                tipText: row.tipText, sourceLabel: row.sourceLabel, sourceUrl: row.sourceUrl,
+            visa: (row.hasDestination && visaText) ? {
+                tipText: visaText, sourceLabel: row.sourceLabel, sourceUrl: row.sourceUrl,
                 // The name shown in the panel header: the city, or for several places all of them
                 // ("Busan & Hong Kong").
                 resolvedCity: singleCityConfirmed ? row.resolvedCity : effectivePlaces.map(cityOnly).filter(Boolean).join(' & '),
