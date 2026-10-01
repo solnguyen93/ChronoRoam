@@ -15,6 +15,8 @@ ChronoRoam is a trip planner built around a day-by-day itinerary — each day ca
 - Forward or paste a flight/lodging/etc. confirmation email — one AI call classifies and extracts it, then you review, edit, and pick a trip before anything is saved
 - Trip Tips panel: visa/entry status for US passport holders (grounded in a live web search), outlet/plug comparison, weather vs. home, and destination-specific practical advice
 - Packing lists — reusable templates, linkable to trips, many-to-many
+- Sharing: share a trip or packing list by link, QR code, or username invite (the invitee gets an Accept/Decline card on Home and an email); a shared icon marks anything more than one person can edit
+- On a shared trip, each member has their own packing list links: link a list for everyone or only yourself, and unlinking, duplicating or swapping a list only changes your view; people who join later get the lists linked for everyone
 - Packing list bags nest inside each other, each with a name and one of 104 colors; battery and power bank items get an automatic ⚠️ carry-on reminder
 - Emoji shortcuts on to-do and packing list items (🍗 ☕ 🛍️ or ☀️ ❄️ ⏰, plus the last emoji you typed) — tapping one just adds that emoji to the start of the item's text, so it can be backspaced out like anything typed
 - Small/Big text size setting for trip and packing list items
