@@ -2,6 +2,8 @@
 
 ChronoRoam is a trip planner built around a day-by-day itinerary — each day can hold flights, lodging, restaurants, transportation, directions, car rentals, tours, activities, or anything else your trip needs. It comes with a shared to-do list and packing list too. ChronoRoam doesn't force one planning style: use it as a fully structured itinerary when you want that, or a loose framework you fill in as you go when you don't. Forward or paste a confirmation email and AI extracts the details automatically, and destination tips — visa/entry requirements, outlet types, weather, and local know-how — are generated for wherever you're headed.
 
+▶ [Watch a 2-minute tour](https://www.youtube.com/shorts/4AG3pgatlbU): create a trip, import a flight from an email, pack bag by bag, and plan your to-dos.
+
 ## Features
 
 - Day-by-day itinerary spanning the trip's date range, with live weather per day — three views: row (days stacked), column (days side by side) and calendar; each device remembers the last one used
