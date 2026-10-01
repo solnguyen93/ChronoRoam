@@ -65,7 +65,7 @@ Reordering is a custom pointer-event implementation rather than a drag library:
 
 **Frontend:** React, react-router, Capacitor (iOS), Open-Meteo (weather)
 **Backend:** Node.js, Express, PostgreSQL (raw SQL via `pg`)
-**AI:** Anthropic Claude (Haiku) and OpenAI (`gpt-4.1-nano`, cheap-model-first with a reliability fallback to Haiku) for import extraction and trip tips
+**AI:** Anthropic Claude (Haiku) and OpenAI (`gpt-4.1-nano`, cheap-model-first with a reliability fallback to Haiku) for email import extraction; Haiku for trip tips and for packing-list and to-do imports (gpt-4.1-nano stopped after the first section on longer lists)
 
 ## Getting Started
 
@@ -152,7 +152,7 @@ Open `http://localhost:3000` — sign up, or continue as a guest, and create a t
 
 Trips, packing lists, per-day weather and Trip Tips are free and unlimited. AI imports use credits: each user gets a lifetime allowance of free credits, and a $5 purchase adds more. There are no plans or subscriptions, and buying credits doesn't make a different kind of account — it only adds to the balance. (`users.purchase_platform` records that an account has bought credits, for labeling the Stripe checkout; nothing else depends on it.)
 
-- **AI imports** (forwarded-email and pasted-email extraction, plus AI packing-list import) are the only metered feature, since each one is a paid AI call. There are two kinds of account, guest and user. Guests get 3 credits; signing up clears the guest's usage, so every user starts with 50 free credits for the life of the account, and the allowance never renews (see `my-backend/utils/importQuota.js`). A $5 purchase adds 100 credits to a running balance, with no cap on repeat purchases; free credits are spent first, and running out just means buying more (see `PURCHASE_CREDIT_GRANT`/`PURCHASE_PRICE_CENTS` in `my-backend/utils/creditGrants.js`).
+- **AI imports** (forwarded-email and pasted-email extraction, plus AI packing-list and to-do import) are the only metered feature, since each one is a paid AI call. There are two kinds of account, guest and user. Guests get 3 credits; signing up clears the guest's usage, so every user starts with 50 free credits for the life of the account, and the allowance never renews (see `my-backend/utils/importQuota.js`). A $5 purchase adds 100 credits to a running balance, with no cap on repeat purchases; free credits are spent first, and running out just means buying more (see `PURCHASE_CREDIT_GRANT`/`PURCHASE_PRICE_CENTS` in `my-backend/utils/creditGrants.js`).
 - **Trips/packing lists** are unlimited for users; guests are limited to 1 each until they sign up. An old per-user cap of 3 is still in `my-backend/utils/resourceQuota.js`, switched off with `USER_CAPS_ENABLED`.
 - **Feature locks** (Weather and Trip Tips' extra sections) and a purchaser crown icon are switched off in `my-frontend/src/utils/creditLocks.js`, kept so they can be turned back on later.
 - **Abuse resistance**: deleting an account and re-registering (or a guest clearing local storage) would otherwise grant the free credits again. `spent_trials` records a one-way keyed hash (HMAC-SHA256) of the email and device ID (native iOS only, via `@capacitor/device`) at delete time, never the values themselves, along with how many credits the account had left. Signing up again with that email always goes through a verification link, then gives back exactly those leftover credits once and no new free ones; a guest on a recorded device gets no guest credits. See `my-backend/models/SpentTrial.js` and `User._restoreCredits`.
