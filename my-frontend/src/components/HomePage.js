@@ -73,18 +73,18 @@ function HomePage() {
                             </div>
                             <div className="header-top-right">
                                 <span className="home-link"><Wordmark /></span>
-                                {/* The ⋮ menu. Guests only get "How to use": they can't sign back in after
-                                    logging out, and the sign-up link is shown below instead. */}
-                                <OptionsMenu
-                                    title="Account options"
-                                    items={[
-                                        { label: 'How to use', onClick: openTour },
-                                        ...(isGuest ? [] : [
+                                {/* The ⋮ menu (How to use, Account, Log out) is hidden for guests: they can't
+                                    sign back in after logging out, and the sign-up link is shown below instead. */}
+                                {!isGuest && (
+                                    <OptionsMenu
+                                        title="Account options"
+                                        items={[
+                                            { label: 'How to use', onClick: openTour },
                                             { label: 'Account', onClick: () => setShowAccount(true) },
                                             { label: 'Log out', onClick: doLogout },
-                                        ]),
-                                    ]}
-                                />
+                                        ]}
+                                    />
+                                )}
                             </div>
                         </div>
 
