@@ -12,7 +12,7 @@ import useScrollArrows from '../hooks/useScrollArrows';
 import CollapseChevron from './CollapseChevron';
 import InviteCards from './InviteCards';
 import ChronoRoamApi from '../api';
-import { openTour } from '../utils/tour';
+import TourModal from './TourModal';
 
 // Home (/home): the Trips and Packlists tabs. (Opening the app at "/" goes back to the last trip
 // instead, see App.js's RootRedirect.)
@@ -22,6 +22,7 @@ function HomePage() {
     const { isGuest, logout } = useAuth();
     const [tab, setTab] = useState(location.state?.tab || 'trips');
     const [showAccount, setShowAccount] = useState(false);
+    const [showTour, setShowTour] = useState(false);
     // The "You're verified" popup after a restore link (VerifyRestorePage.js passes showWelcome and
     // reason 'restored' when it opens Home).
     const [showWelcome, setShowWelcome] = useState(Boolean(location.state?.showWelcome));
@@ -79,7 +80,7 @@ function HomePage() {
                                     <OptionsMenu
                                         title="Account options"
                                         items={[
-                                            { label: 'How to use', onClick: openTour },
+                                            { label: 'How to use', onClick: () => setShowTour(true) },
                                             { label: 'Account', onClick: () => setShowAccount(true) },
                                             { label: 'Log out', onClick: doLogout },
                                         ]}
@@ -109,6 +110,7 @@ function HomePage() {
             </div>
 
             <AccountModal open={showAccount} onClose={() => setShowAccount(false)} />
+            <TourModal open={showTour} onClose={() => setShowTour(false)} />
 
 
             <WelcomeModal open={showWelcome} onClose={() => setShowWelcome(false)} reason={welcomeReason} />
