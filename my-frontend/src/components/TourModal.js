@@ -12,7 +12,7 @@ function TourModal({ open, onClose }) {
     if (!open) return null;
 
     return (
-        <div className="modal-overlay open" {...backdrop}>
+        <div className="modal-overlay open tour-overlay" {...backdrop}>
             <div className="tour-modal">
                 <button type="button" className="modal-close-btn tour-close" onClick={onClose} aria-label="Close">×</button>
                 <div className="tour-video">
