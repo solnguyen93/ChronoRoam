@@ -1,0 +1,1971 @@
+{
+ "title": "Tokyo, Japan 2026",
+ "startDate": "2026-08-28",
+ "endDate": "2026-09-07",
+ "dayTitles": {
+  "2026-08-28": "Fly",
+  "2026-08-29": "Arrival",
+  "2026-08-30": "Rest / Shopping",
+  "2026-08-31": "Disneyland",
+  "2026-09-01": "DisneySea",
+  "2026-09-02": "Kichijoji",
+  "2026-09-03": "Switch Hotel",
+  "2026-09-04": "Day trip: Nikko",
+  "2026-09-05": "Buy stuff for Grandma",
+  "2026-09-07": "Pack / Fly Home",
+  "2026-09-21": "Test day name char limit withlongwordsssssssssssss"
+ },
+ "destinations": [
+  "Tokyo"
+ ],
+ "todoTitle": null,
+ "owners": [
+  "testuser1",
+  "testuser2"
+ ],
+ "tasks": [
+  {
+   "day": "2026-08-28",
+   "text": "DL 167: Depart SEA · 11:55 am · 10h 25m",
+   "done": false,
+   "fixed": false,
+   "flight": true,
+   "cat": "flight-depart",
+   "fields": {
+    "notes": "",
+    "airline": "DL 167",
+    "depTime": "11:55 am",
+    "duration": "10h 25m",
+    "depAirport": "SEA"
+   },
+   "tags": {},
+   "link": null,
+   "linkId": "tokyo-f1-1790803279327",
+   "position": 0
+  },
+  {
+   "day": "2026-08-29",
+   "text": "Arrive HND · 02:20 pm",
+   "done": false,
+   "fixed": false,
+   "flight": false,
+   "cat": "flight-arrive",
+   "fields": {
+    "notes": "",
+    "airline": "DL 167",
+    "arrTime": "02:20 pm",
+    "duration": "10h 25m",
+    "arrAirport": "HND"
+   },
+   "tags": {},
+   "link": null,
+   "linkId": "tokyo-f1-1790803279327",
+   "position": 0
+  },
+  {
+   "day": "2026-08-29",
+   "text": "Check In: Oriental Hotel Tokyo Bay · 3:00 PM",
+   "done": false,
+   "fixed": false,
+   "flight": false,
+   "cat": "lodging-checkin",
+   "fields": {
+    "name": "Oriental Hotel Tokyo Bay",
+    "notes": "",
+    "checkInTime": "3:00 PM",
+    "checkOutTime": "12:00 PM",
+    "actualCheckInTime": "",
+    "actualCheckOutTime": ""
+   },
+   "tags": {},
+   "link": null,
+   "linkId": "tokyo-h1-1790803279329",
+   "position": 1
+  },
+  {
+   "day": "2026-08-29",
+   "text": "Arrive Shin Urayasu Station · 17:05",
+   "done": false,
+   "fixed": false,
+   "flight": false,
+   "cat": "transportation-arrive",
+   "fields": {
+    "to": "Shin Urayasu Station",
+    "name": "Airport Limousine Bus",
+    "notes": "",
+    "arrTime": "17:05",
+    "duration": ""
+   },
+   "tags": {},
+   "link": null,
+   "linkId": null,
+   "position": 3
+  },
+  {
+   "day": "2026-08-29",
+   "text": "🍽️takoyaki Gindaco",
+   "done": false,
+   "fixed": false,
+   "flight": false,
+   "cat": null,
+   "fields": {},
+   "tags": {},
+   "link": null,
+   "linkId": null,
+   "position": 4
+  },
+  {
+   "day": "2026-08-30",
+   "text": "Starbucks",
+   "done": false,
+   "fixed": false,
+   "flight": false,
+   "cat": null,
+   "fields": {},
+   "tags": {},
+   "link": null,
+   "linkId": null,
+   "position": 0
+  },
+  {
+   "day": "2026-08-30",
+   "text": "park",
+   "done": false,
+   "fixed": false,
+   "flight": false,
+   "cat": null,
+   "fields": {},
+   "tags": {},
+   "link": null,
+   "linkId": null,
+   "position": 1
+  },
+  {
+   "day": "2026-08-30",
+   "text": "uniqlo",
+   "done": false,
+   "fixed": false,
+   "flight": false,
+   "cat": null,
+   "fields": {},
+   "tags": {},
+   "link": null,
+   "linkId": null,
+   "position": 2
+  },
+  {
+   "day": "2026-08-30",
+   "text": "Gu",
+   "done": false,
+   "fixed": false,
+   "flight": false,
+   "cat": null,
+   "fields": {},
+   "tags": {},
+   "link": null,
+   "linkId": null,
+   "position": 3
+  },
+  {
+   "day": "2026-08-31",
+   "text": "Tokyo Disneyland 1-Day Passport",
+   "done": false,
+   "fixed": false,
+   "flight": false,
+   "cat": "activity",
+   "fields": {
+    "name": "Tokyo Disneyland 1-Day Passport",
+    "time": "",
+    "notes": "",
+    "duration": "",
+    "location": "1-1 Maihama, Urayasu, Chiba 279-0031, Japan"
+   },
+   "tags": {},
+   "link": null,
+   "linkId": null,
+   "position": 0
+  },
+  {
+   "day": "2026-09-01",
+   "text": "Tokyo DisneySea 1-Day Passport",
+   "done": false,
+   "fixed": false,
+   "flight": false,
+   "cat": "activity",
+   "fields": {
+    "name": "Tokyo DisneySea 1-Day Passport",
+    "time": "",
+    "notes": "",
+    "duration": "",
+    "location": "Tokyo DisneySea, Urayasu, Chiba, Japan"
+   },
+   "tags": {},
+   "link": null,
+   "linkId": null,
+   "position": 0
+  },
+  {
+   "day": "2026-09-02",
+   "text": "Gōtoku-ji temple (cat)",
+   "done": false,
+   "fixed": false,
+   "flight": false,
+   "cat": null,
+   "fields": {},
+   "tags": {},
+   "link": null,
+   "linkId": null,
+   "position": 0
+  },
+  {
+   "day": "2026-09-02",
+   "text": "🍗 Ichiran ramen",
+   "done": false,
+   "fixed": false,
+   "flight": false,
+   "cat": null,
+   "fields": {},
+   "tags": {},
+   "link": null,
+   "linkId": null,
+   "position": 1
+  },
+  {
+   "day": "2026-09-02",
+   "text": "🛍️ Daiso",
+   "done": false,
+   "fixed": false,
+   "flight": false,
+   "cat": null,
+   "fields": {},
+   "tags": {},
+   "link": null,
+   "linkId": null,
+   "position": 2
+  },
+  {
+   "day": "2026-09-02",
+   "text": "☕ Matcha Passport @2pm with K",
+   "done": false,
+   "fixed": false,
+   "flight": false,
+   "cat": null,
+   "fields": {},
+   "tags": {},
+   "link": null,
+   "linkId": null,
+   "position": 3
+  },
+  {
+   "day": "2026-09-02",
+   "text": "🍗 Shiro-Hige’s Cream Puff Factory",
+   "done": false,
+   "fixed": false,
+   "flight": false,
+   "cat": null,
+   "fields": {},
+   "tags": {},
+   "link": null,
+   "linkId": null,
+   "position": 4
+  },
+  {
+   "day": "2026-09-02",
+   "text": "🛍️ unu glänta shimokitazawa (Ring)",
+   "done": false,
+   "fixed": false,
+   "flight": false,
+   "cat": null,
+   "fields": {},
+   "tags": {},
+   "link": null,
+   "linkId": null,
+   "position": 5
+  },
+  {
+   "day": "2026-09-03",
+   "text": "Check Out: Oriental Hotel Tokyo Bay · 12:00 PM",
+   "done": false,
+   "fixed": false,
+   "flight": false,
+   "cat": "lodging-checkout",
+   "fields": {
+    "name": "Oriental Hotel Tokyo Bay",
+    "notes": "",
+    "checkInTime": "3:00 PM",
+    "checkOutTime": "12:00 PM",
+    "actualCheckInTime": "",
+    "actualCheckOutTime": ""
+   },
+   "tags": {},
+   "link": null,
+   "linkId": "tokyo-h1-1790803279329",
+   "position": 0
+  },
+  {
+   "day": "2026-09-03",
+   "text": "Ginza shopping",
+   "done": false,
+   "fixed": false,
+   "flight": false,
+   "cat": null,
+   "fields": {},
+   "tags": {},
+   "link": null,
+   "linkId": null,
+   "position": 1
+  },
+  {
+   "day": "2026-09-03",
+   "text": "Onitsuka tiger",
+   "done": false,
+   "fixed": false,
+   "flight": false,
+   "cat": null,
+   "fields": {},
+   "tags": {},
+   "link": null,
+   "linkId": null,
+   "position": 2
+  },
+  {
+   "day": "2026-09-03",
+   "text": "Refa dryer",
+   "done": false,
+   "fixed": false,
+   "flight": false,
+   "cat": null,
+   "fields": {},
+   "tags": {},
+   "link": null,
+   "linkId": null,
+   "position": 3
+  },
+  {
+   "day": "2026-09-03",
+   "text": "Check In: The Strings by InterContinental Tokyo by IHG · 6:00 PM",
+   "done": false,
+   "fixed": false,
+   "flight": false,
+   "cat": "lodging-checkin",
+   "fields": {
+    "name": "The Strings by InterContinental Tokyo by IHG",
+    "notes": "",
+    "checkInTime": "3:00 PM",
+    "actualCheckInTime": "6:00 PM"
+   },
+   "tags": {},
+   "link": null,
+   "linkId": "tokyo-h2-1790803279335",
+   "position": 4
+  },
+  {
+   "day": "2026-09-05",
+   "text": "Asakusa",
+   "done": false,
+   "fixed": false,
+   "flight": false,
+   "cat": null,
+   "fields": {},
+   "tags": {},
+   "link": null,
+   "linkId": null,
+   "position": 0
+  },
+  {
+   "day": "2026-09-05",
+   "text": "Kitchen World",
+   "done": false,
+   "fixed": false,
+   "flight": false,
+   "cat": null,
+   "fields": {},
+   "tags": {},
+   "link": null,
+   "linkId": null,
+   "position": 1
+  },
+  {
+   "day": "2026-09-06",
+   "text": "Meiji Jingu",
+   "done": false,
+   "fixed": false,
+   "flight": false,
+   "cat": null,
+   "fields": {},
+   "tags": {},
+   "link": null,
+   "linkId": null,
+   "position": 0
+  },
+  {
+   "day": "2026-09-06",
+   "text": "Parco",
+   "done": false,
+   "fixed": false,
+   "flight": false,
+   "cat": null,
+   "fields": {},
+   "tags": {},
+   "link": null,
+   "linkId": null,
+   "position": 1
+  },
+  {
+   "day": "2026-09-06",
+   "text": "Loft",
+   "done": false,
+   "fixed": false,
+   "flight": false,
+   "cat": null,
+   "fields": {},
+   "tags": {},
+   "link": null,
+   "linkId": null,
+   "position": 2
+  },
+  {
+   "day": "2026-09-06",
+   "text": "Shibuya",
+   "done": false,
+   "fixed": false,
+   "flight": false,
+   "cat": null,
+   "fields": {},
+   "tags": {},
+   "link": null,
+   "linkId": null,
+   "position": 3
+  },
+  {
+   "day": "2026-09-06",
+   "text": "B3 かき氷 (Shaved ice)",
+   "done": false,
+   "fixed": false,
+   "flight": false,
+   "cat": "restaurant",
+   "fields": {
+    "name": "B3 かき氷 (Shaved ice)",
+    "time": "",
+    "notes": "",
+    "duration": "",
+    "location": ""
+   },
+   "tags": {},
+   "link": null,
+   "linkId": null,
+   "position": 4
+  },
+  {
+   "day": "2026-09-06",
+   "text": "Oyster and Japanese Wagyu \"Shinagawa Shoten\"",
+   "done": false,
+   "fixed": false,
+   "flight": false,
+   "cat": "restaurant",
+   "fields": {
+    "name": "Oyster and Japanese Wagyu \"Shinagawa Shoten\"",
+    "time": "",
+    "notes": "",
+    "duration": "",
+    "location": ""
+   },
+   "tags": {},
+   "link": null,
+   "linkId": null,
+   "position": 5
+  },
+  {
+   "day": "2026-09-07",
+   "text": "Check Out: The Strings by InterContinental Tokyo by IHG · 11:00 AM",
+   "done": false,
+   "fixed": false,
+   "flight": false,
+   "cat": "lodging-checkout",
+   "fields": {
+    "name": "The Strings by InterContinental Tokyo by IHG",
+    "notes": "",
+    "checkOutTime": "11:00 AM",
+    "actualCheckOutTime": ""
+   },
+   "tags": {},
+   "link": null,
+   "linkId": "tokyo-h2-1790803279335",
+   "position": 0
+  },
+  {
+   "day": "2026-09-07",
+   "text": "DL 166: Depart HND · 04:20 pm · 9h 15m",
+   "done": false,
+   "fixed": false,
+   "flight": true,
+   "cat": "flight-depart",
+   "fields": {
+    "notes": "",
+    "airline": "DL 166",
+    "depTime": "04:20 pm",
+    "duration": "9h 15m",
+    "depAirport": "HND"
+   },
+   "tags": {},
+   "link": null,
+   "linkId": "tokyo-f2-1790803279337",
+   "position": 1
+  },
+  {
+   "day": "2026-09-07",
+   "text": "Arrive SEA · 09:35 am",
+   "done": false,
+   "fixed": false,
+   "flight": false,
+   "cat": "flight-arrive",
+   "fields": {
+    "notes": "",
+    "airline": "DL 166",
+    "arrTime": "09:35 am",
+    "duration": "9h 15m",
+    "arrAirport": "SEA"
+   },
+   "tags": {},
+   "link": null,
+   "linkId": "tokyo-f2-1790803279337",
+   "position": 2
+  }
+ ],
+ "todos": [
+  {
+   "text": "Transfer cash to Alex",
+   "done": false,
+   "tags": {}
+  },
+  {
+   "text": "Meiji shrine / nature",
+   "done": false,
+   "tags": {}
+  },
+  {
+   "text": "Rainy day activity",
+   "done": false,
+   "tags": {}
+  },
+  {
+   "text": "🛍️ Hair ties for Kai",
+   "done": false,
+   "tags": {}
+  },
+  {
+   "text": "🛍️ Eyelash primer",
+   "done": false,
+   "tags": {}
+  },
+  {
+   "text": "🛍️ Latte cups (origami brand)",
+   "done": false,
+   "tags": {}
+  },
+  {
+   "text": "🛍️ Blue elephant glasses",
+   "done": false,
+   "tags": {}
+  },
+  {
+   "text": "Kaiten sushi ginza onodera honten",
+   "done": false,
+   "tags": {}
+  },
+  {
+   "text": "🛍️ Haruta loafers",
+   "done": false,
+   "tags": {}
+  },
+  {
+   "text": "🛍️ Black cutting board",
+   "done": false,
+   "tags": {}
+  },
+  {
+   "text": "🛍️ Miso soup",
+   "done": false,
+   "tags": {}
+  },
+  {
+   "text": "🛍️ Stationary for M (Itoya)",
+   "done": false,
+   "tags": {}
+  },
+  {
+   "text": "🍗 shaved ice (kakigori)",
+   "done": false,
+   "tags": {}
+  },
+  {
+   "text": "🍗 omakase",
+   "done": false,
+   "tags": {}
+  },
+  {
+   "text": "🍗 supermarket sashimi and uni",
+   "done": false,
+   "tags": {}
+  },
+  {
+   "text": "🍗 cremia ice cream",
+   "done": false,
+   "tags": {}
+  },
+  {
+   "text": "🍗 yurakucho kakida (shinjuku-omakase)",
+   "done": false,
+   "tags": {}
+  },
+  {
+   "text": "☕ Matcha cafes",
+   "done": false,
+   "tags": {}
+  }
+ ],
+ "packlists": [
+  {
+   "title": "Main",
+   "bags": [
+    {
+     "id": 20,
+     "parent": null,
+     "name": "COTOPAXI BACKPACK",
+     "color": "#1a1a1a",
+     "position": 0
+    },
+    {
+     "id": 21,
+     "parent": null,
+     "name": "AWAY BAG",
+     "color": "#cccccc",
+     "position": 1
+    },
+    {
+     "id": 22,
+     "parent": null,
+     "name": "FLEX CARRY-ON AWAY",
+     "color": "#787878",
+     "position": 2
+    },
+    {
+     "id": 23,
+     "parent": null,
+     "name": "CHECKED AWAY",
+     "color": "#1a1a1a",
+     "position": 3
+    },
+    {
+     "id": 24,
+     "parent": null,
+     "name": "CHECKED AWAY",
+     "color": "#ff9999",
+     "position": 4
+    },
+    {
+     "id": 25,
+     "parent": null,
+     "name": "TRANSPORTATION ESSENTIALS",
+     "color": "#cccccc",
+     "position": 5
+    },
+    {
+     "id": 26,
+     "parent": null,
+     "name": "CHECKED AWAY",
+     "color": "#787878",
+     "position": 6
+    },
+    {
+     "id": 30,
+     "parent": 21,
+     "name": "TRAVEL ESSENTIALS",
+     "color": "#e8e8e8",
+     "position": 0
+    },
+    {
+     "id": 36,
+     "parent": 21,
+     "name": "SKIN CARE BAG",
+     "color": "#e8e8e8",
+     "position": 1
+    },
+    {
+     "id": 27,
+     "parent": 22,
+     "name": "ONITSUKA BACKPACK",
+     "color": "#cccc00",
+     "position": 0
+    },
+    {
+     "id": 28,
+     "parent": 22,
+     "name": "MEDICINE BAG",
+     "color": "#e8e8e8",
+     "position": 1
+    },
+    {
+     "id": 29,
+     "parent": 22,
+     "name": "TECH",
+     "color": "#e8e8e8",
+     "position": 2
+    },
+    {
+     "id": 35,
+     "parent": 23,
+     "name": "P CLOTHES",
+     "color": "#cc0000",
+     "position": 0
+    },
+    {
+     "id": 31,
+     "parent": 24,
+     "name": "TOILETRIES BAG",
+     "color": "#660000",
+     "position": 0
+    },
+    {
+     "id": 32,
+     "parent": 24,
+     "name": "OTHER",
+     "color": "#cccccc",
+     "position": 1
+    },
+    {
+     "id": 37,
+     "parent": 24,
+     "name": "MAKE UP BAG",
+     "color": "#1a1a1a",
+     "position": 2
+    },
+    {
+     "id": 33,
+     "parent": 26,
+     "name": "N CLOTHES",
+     "color": "#006633",
+     "position": 0
+    },
+    {
+     "id": 34,
+     "parent": 26,
+     "name": "S CLOTHES",
+     "color": "#66b3ff",
+     "position": 1
+    },
+    {
+     "id": 38,
+     "parent": 31,
+     "name": "P",
+     "color": "#cc0000",
+     "position": 0
+    },
+    {
+     "id": 39,
+     "parent": 31,
+     "name": "N",
+     "color": "#006633",
+     "position": 1
+    },
+    {
+     "id": 40,
+     "parent": 31,
+     "name": "S",
+     "color": "#66b3ff",
+     "position": 2
+    }
+   ],
+   "items": [
+    {
+     "bag": 21,
+     "text": "Water Bottle",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 0
+    },
+    {
+     "bag": 21,
+     "text": "Lollipops",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 1
+    },
+    {
+     "bag": 21,
+     "text": "SNACKS",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 2
+    },
+    {
+     "bag": 21,
+     "text": "Activities (books/toys)",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 3
+    },
+    {
+     "bag": 21,
+     "text": "Electrolyte packets",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 4
+    },
+    {
+     "bag": 21,
+     "text": "Tissues",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 5
+    },
+    {
+     "bag": 21,
+     "text": "Hand Sanitizer",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 6
+    },
+    {
+     "bag": 21,
+     "text": "Water Wipes",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 7
+    },
+    {
+     "bag": 21,
+     "text": "Baby Hand Wipes",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 8
+    },
+    {
+     "bag": 21,
+     "text": "Clorox Wipes",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 9
+    },
+    {
+     "bag": 21,
+     "text": "Trash Bag Rolls",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 10
+    },
+    {
+     "bag": 21,
+     "text": "Power Bank",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 11
+    },
+    {
+     "bag": 21,
+     "text": "Headphones",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 12
+    },
+    {
+     "bag": 21,
+     "text": "⏰ iPad",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 13
+    },
+    {
+     "bag": 21,
+     "text": "⏰ AirPods (x2)",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 14
+    },
+    {
+     "bag": 22,
+     "text": "⏰ Mouse",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 0
+    },
+    {
+     "bag": 22,
+     "text": "⏰ Laptop",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 1
+    },
+    {
+     "bag": 22,
+     "text": "extra clothes (one PJ, one normal)",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 2
+    },
+    {
+     "bag": 23,
+     "text": "⏰ Hair Straightener",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 0
+    },
+    {
+     "bag": 23,
+     "text": "Perfume",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 1
+    },
+    {
+     "bag": 23,
+     "text": "Jewelry holder: earrings, rings",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 2
+    },
+    {
+     "bag": 25,
+     "text": "Stroller bag cover",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 0
+    },
+    {
+     "bag": 25,
+     "text": "Stroller + cup holder",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 1
+    },
+    {
+     "bag": 28,
+     "text": "Tylenol Adults",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 0
+    },
+    {
+     "bag": 28,
+     "text": "Cough Drops",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 1
+    },
+    {
+     "bag": 28,
+     "text": "Bandaids",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 2
+    },
+    {
+     "bag": 29,
+     "text": "Phone chargers (x2)",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 0
+    },
+    {
+     "bag": 29,
+     "text": "Laptop charger",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 1
+    },
+    {
+     "bag": 29,
+     "text": "iPad charger",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 2
+    },
+    {
+     "bag": 29,
+     "text": "Camera Sony",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 3
+    },
+    {
+     "bag": 29,
+     "text": "Dji Pocket 3",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 4
+    },
+    {
+     "bag": 29,
+     "text": "SD cards",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 5
+    },
+    {
+     "bag": 29,
+     "text": "Hard drive",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 6
+    },
+    {
+     "bag": 29,
+     "text": "Smart Ring",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 7
+    },
+    {
+     "bag": 29,
+     "text": "Ring Charger",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 8
+    },
+    {
+     "bag": 30,
+     "text": "Passports (x3)",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 0
+    },
+    {
+     "bag": 30,
+     "text": "⏰ ID (when needed)",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 1
+    },
+    {
+     "bag": 30,
+     "text": "Visas (when needed)",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 2
+    },
+    {
+     "bag": 30,
+     "text": "Travel debit card",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 3
+    },
+    {
+     "bag": 30,
+     "text": "Cash For Emergency",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 4
+    },
+    {
+     "bag": 30,
+     "text": "Tickets/Boarding Pass",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 5
+    },
+    {
+     "bag": 32,
+     "text": "☀️ Fan",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 0
+    },
+    {
+     "bag": 32,
+     "text": "Clorox Wipes (Extra)",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 1
+    },
+    {
+     "bag": 32,
+     "text": "Hand Sanitizer (Extra)",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 2
+    },
+    {
+     "bag": 32,
+     "text": "Tissues (Extra)",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 3
+    },
+    {
+     "bag": 32,
+     "text": "Compact 90L check bags",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 4
+    },
+    {
+     "bag": 33,
+     "text": "☀️ Straw Hat",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 0
+    },
+    {
+     "bag": 33,
+     "text": "☀️ Sunglasses",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 1
+    },
+    {
+     "bag": 33,
+     "text": "❄️ Gloves",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 2
+    },
+    {
+     "bag": 33,
+     "text": "❄️ Boots",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 3
+    },
+    {
+     "bag": 33,
+     "text": "❄️⏰ Jackets",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 4
+    },
+    {
+     "bag": 33,
+     "text": "⏰ Shoes",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 5
+    },
+    {
+     "bag": 33,
+     "text": "Llama",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 6
+    },
+    {
+     "bag": 33,
+     "text": "PJs (long sleeves)",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 7
+    },
+    {
+     "bag": 33,
+     "text": "Pants/shorts",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 8
+    },
+    {
+     "bag": 33,
+     "text": "Shirts",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 9
+    },
+    {
+     "bag": 33,
+     "text": "Dresses",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 10
+    },
+    {
+     "bag": 33,
+     "text": "Swimwear",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 11
+    },
+    {
+     "bag": 33,
+     "text": "Swim Shoes",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 12
+    },
+    {
+     "bag": 33,
+     "text": "Undies",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 13
+    },
+    {
+     "bag": 33,
+     "text": "Socks",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 14
+    },
+    {
+     "bag": 33,
+     "text": "Crocs or Sandals",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 15
+    },
+    {
+     "bag": 34,
+     "text": "☀️ Crocs or Sandals",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 0
+    },
+    {
+     "bag": 34,
+     "text": "❄️ Gloves",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 1
+    },
+    {
+     "bag": 34,
+     "text": "❄️ Thermals",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 2
+    },
+    {
+     "bag": 34,
+     "text": "❄️⏰ Jacket",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 3
+    },
+    {
+     "bag": 34,
+     "text": "⏰ Shoes",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 4
+    },
+    {
+     "bag": 34,
+     "text": "Undies",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 5
+    },
+    {
+     "bag": 34,
+     "text": "Pants/shorts",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 6
+    },
+    {
+     "bag": 34,
+     "text": "Shirts",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 7
+    },
+    {
+     "bag": 34,
+     "text": "PJs (shorts)",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 8
+    },
+    {
+     "bag": 34,
+     "text": "Swimwear",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 9
+    },
+    {
+     "bag": 34,
+     "text": "Socks",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 10
+    },
+    {
+     "bag": 35,
+     "text": "❄️ Jackets",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 0
+    },
+    {
+     "bag": 35,
+     "text": "Sunglasses",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 1
+    },
+    {
+     "bag": 35,
+     "text": "Socks",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 2
+    },
+    {
+     "bag": 35,
+     "text": "Undies",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 3
+    },
+    {
+     "bag": 35,
+     "text": "Bras",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 4
+    },
+    {
+     "bag": 35,
+     "text": "Pants/shorts",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 5
+    },
+    {
+     "bag": 35,
+     "text": "Shirts/tanks",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 6
+    },
+    {
+     "bag": 35,
+     "text": "Dresses",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 7
+    },
+    {
+     "bag": 35,
+     "text": "PJs",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 8
+    },
+    {
+     "bag": 35,
+     "text": "Swimwear",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 9
+    },
+    {
+     "bag": 35,
+     "text": "Sneaker",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 10
+    },
+    {
+     "bag": 35,
+     "text": "Crocs or Sandals",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 11
+    },
+    {
+     "bag": 35,
+     "text": "Boots",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 12
+    },
+    {
+     "bag": 35,
+     "text": "Purse",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 13
+    },
+    {
+     "bag": 36,
+     "text": "Beauty water",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 0
+    },
+    {
+     "bag": 36,
+     "text": "Serum",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 1
+    },
+    {
+     "bag": 36,
+     "text": "Sulwhasu",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 2
+    },
+    {
+     "bag": 36,
+     "text": "Moisturizer",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 3
+    },
+    {
+     "bag": 36,
+     "text": "Sunscreen",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 4
+    },
+    {
+     "bag": 36,
+     "text": "Primer",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 5
+    },
+    {
+     "bag": 36,
+     "text": "Toner",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 6
+    },
+    {
+     "bag": 36,
+     "text": "Eye cream",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 7
+    },
+    {
+     "bag": 36,
+     "text": "Makeup remover",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 8
+    },
+    {
+     "bag": 36,
+     "text": "Pimple patch",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 9
+    },
+    {
+     "bag": 37,
+     "text": "Foundations",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 0
+    },
+    {
+     "bag": 37,
+     "text": "Concealers",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 1
+    },
+    {
+     "bag": 37,
+     "text": "Powder",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 2
+    },
+    {
+     "bag": 37,
+     "text": "Bronzer",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 3
+    },
+    {
+     "bag": 37,
+     "text": "Blush",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 4
+    },
+    {
+     "bag": 37,
+     "text": "Highlighter",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 5
+    },
+    {
+     "bag": 37,
+     "text": "Eyebrow",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 6
+    },
+    {
+     "bag": 37,
+     "text": "Eyelash curler",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 7
+    },
+    {
+     "bag": 37,
+     "text": "Eyeshadow",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 8
+    },
+    {
+     "bag": 37,
+     "text": "Mascara",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 9
+    },
+    {
+     "bag": 37,
+     "text": "Lipstick",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 10
+    },
+    {
+     "bag": 37,
+     "text": "Lip gloss",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 11
+    },
+    {
+     "bag": 38,
+     "text": "Toothbrush",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 0
+    },
+    {
+     "bag": 38,
+     "text": "Shampoo",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 1
+    },
+    {
+     "bag": 38,
+     "text": "Dry Shampoo",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 2
+    },
+    {
+     "bag": 38,
+     "text": "Hair milk",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 3
+    },
+    {
+     "bag": 38,
+     "text": "Body Wash",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 4
+    },
+    {
+     "bag": 38,
+     "text": "Deodorant",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 5
+    },
+    {
+     "bag": 38,
+     "text": "Hair Ties",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 6
+    },
+    {
+     "bag": 38,
+     "text": "Hair Brush",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 7
+    },
+    {
+     "bag": 38,
+     "text": "Hair clips",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 8
+    },
+    {
+     "bag": 38,
+     "text": "☀️ Sunscreen (body)",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 9
+    },
+    {
+     "bag": 39,
+     "text": "Toothbrush",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 0
+    },
+    {
+     "bag": 39,
+     "text": "Toothpaste",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 1
+    },
+    {
+     "bag": 39,
+     "text": "Hair brush and comb",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 2
+    },
+    {
+     "bag": 39,
+     "text": "Hair Ties",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 3
+    },
+    {
+     "bag": 39,
+     "text": "Hair Clips",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 4
+    },
+    {
+     "bag": 39,
+     "text": "❄️ Lotion",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 5
+    },
+    {
+     "bag": 39,
+     "text": "☀️ Sunscreen (face)",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 6
+    },
+    {
+     "bag": 40,
+     "text": "Toothbrush",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 0
+    },
+    {
+     "bag": 40,
+     "text": "Toothpaste",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 1
+    },
+    {
+     "bag": 40,
+     "text": "Floss",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 2
+    },
+    {
+     "bag": 40,
+     "text": "Q-Tip",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 3
+    },
+    {
+     "bag": 40,
+     "text": "Shaver",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 4
+    },
+    {
+     "bag": 40,
+     "text": "⏰ Deodorant",
+     "done": false,
+     "isHot": false,
+     "isCold": false,
+     "isLastMin": false,
+     "position": 5
+    }
+   ]
+  }
+ ]
+}

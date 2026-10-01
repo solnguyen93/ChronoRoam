@@ -1,0 +1,9 @@
+# Cloudflare email worker settings. The worker receives every email sent to <username>@<domain>
+# (through Email Routing's catch-all rule, see README.md) and sends it to the server
+# (my-backend/routes/webhookRoutes.js).
+#
+# BACKEND_WEBHOOK_URL and WEBHOOK_SHARED_SECRET aren't in this file: they're set as Wrangler
+# secrets (`wrangler secret put ...`, see README.md), so the secret is never committed.
+name = "chronoroam-email-intake"
+main = "src/index.js"
+compatibility_date = "2026-01-01"

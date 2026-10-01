@@ -1,0 +1,10 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["CR87L25E96.com.solnguyen.chronoroam"],
+        "components": [{ "/": "/" }]
+      }
+    ]
+  }
+}

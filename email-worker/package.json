@@ -1,0 +1,16 @@
+{
+  "name": "chronoroam-email-intake",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cloudflare Email Worker — forwards emails sent to <username>@<domain> to ChronoRoam's backend webhook for AI extraction.",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "postal-mime": "^2.4.5"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}

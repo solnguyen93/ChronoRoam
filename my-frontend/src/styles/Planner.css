@@ -1,0 +1,1334 @@
+:root{
+  --ai: #24425f; --ai-deep: #17293a;
+  --washi: #f4ecdb; --washi-dim: #e8dcc2;
+  --shu: #b5452d; --shu-soft: #c96a4f;
+  --gold: #b8933f; --moss: #6b7a5e;
+  --line: rgba(36,66,95,0.15);
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  /* Text size variables, set on <html> by utils/textScale.js (these are the defaults).
+     --content-scale is the Small/Big setting and only affects item rows (.task-wrap); the others
+     are always 1 now. Many rules below are written as:
+       - font-size: calc(Npx * var(--text-scale))
+       - padding: max(calc(Npx * 0.7), calc(Npx / var(--text-scale)))
+     With --text-scale at 1, both just equal Npx. */
+  --text-scale: 1;
+  --capped-scale: 1;
+  --page-scale: 1;
+  --content-scale: 1;
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color: transparent; outline:none;}
+button, input, textarea{outline:none;}
+/* Buttons and fields without their own font size use 14px (browsers default to about 13px). */
+button, input, select, textarea{font-size:14px;}
+button:focus, input:focus, textarea:focus{outline:none;}
+html,body{margin:0;padding:0;}
+/* Each page (.auth-page, .static-page, .home-page, .detail-page) makes its own room for the
+   notch and home indicator, so each page's background reaches the screen edges. */
+body{
+  background:var(--washi);color:var(--ai-deep);font-family:var(--font-sans);-webkit-font-smoothing:antialiased;
+}
+
+/* ---- Auth pages (login/register/forgot-reset password/account) ---- */
+/* The card sits a fixed distance from the top (not centered), so switching tabs only moves
+   its bottom edge. */
+/* Exactly the screen's height. The card and footer scroll inside .auth-page-scroll-wrap with
+   up/down arrow buttons (logo, tabs and form scroll together). */
+.auth-page{
+  /* vh is the tallest the visible area can be (browser bars hidden), so on phones the page could
+     reach below the screen. dvh is the actual visible height; browsers that don't know dvh use
+     the vh line above. */
+  height:100vh;
+  height:100dvh;
+  /* Space for the notch and home indicator. */
+  padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);
+  padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.auth-page-scroll-wrap{flex:1;min-height:0;display:flex;flex-direction:column;}
+.auth-page-scroll-body{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:16vh max(calc(20px * 0.7), calc(20px / var(--text-scale))) max(calc(20px * 0.7), calc(20px / var(--text-scale)));}
+/* On this page the card grows to fit its content and the whole page scrolls, instead of the
+   card scrolling on its own like a popup. */
+.auth-page .modal-box{max-width:360px;max-height:none;overflow:visible;}
+.auth-page-logo{font-size:22px;color:var(--ai-deep);text-align:center;margin:0 0 18px;}
+/* The ChronoRoam logo: the clock-and-plane image followed by the name. letter-spacing also adds
+   space after the last letter; the negative margin on the text removes it so the logo stays
+   centered. */
+.wordmark{display:inline-flex;align-items:center;gap:.16em;font-family:'Calibri',var(--font-sans);}
+.wordmark-icon{width:1.7em;height:1.7em;flex:none;}
+.wordmark-text{font-weight:700;letter-spacing:.02em;}
+/* Two or more tabs in a rounded pill (e.g. Sign In / Create Account, °F / °C). */
+.auth-tabs{display:flex;background:rgba(36,66,95,0.06);border-radius:14px;padding:max(calc(4px * 0.7), calc(4px / var(--text-scale)));gap:4px;margin-bottom:16px;}
+.auth-tabs button{
+  flex:1;border:none;background:transparent;border-radius:10px;padding:max(calc(9px * 0.7), calc(9px / var(--text-scale))) max(calc(6px * 0.7), calc(6px / var(--text-scale)));cursor:pointer;
+  font-family:var(--font-sans);font-size:max(14px, calc(11.5px * var(--text-scale)));font-weight:600;color:var(--moss);letter-spacing:.02em;
+}
+.auth-tabs button.active{background:var(--gold);color:#fff;box-shadow:0 2px 6px rgba(184,147,63,0.35);}
+/* Lets tabs wrap onto more rows when there are many. */
+.auth-tabs-wrap{flex-wrap:wrap;}
+.auth-tabs-wrap button{flex:1 1 30%;min-width:84px;}
+.auth-page-links{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:14px;}
+.auth-page-links a,.auth-link-btn{
+  color:var(--gold);background:none;border:none;cursor:pointer;padding:0;
+  font-family:var(--font-sans);font-size:max(14px, calc(11.5px * var(--text-scale)));text-decoration:none;
+}
+.auth-page-links a:hover,.auth-link-btn:hover{text-decoration:underline;}
+/* Footer links (Footer.js) on light backgrounds. */
+.site-footer{
+  display:flex;justify-content:center;align-items:center;gap:6px;padding:max(calc(20px * 0.7), calc(20px / var(--text-scale))) 0 max(calc(12px * 0.7), calc(12px / var(--text-scale)));
+  font-family:var(--font-sans);font-size:11px;
+}
+.site-footer a{color:var(--ai-deep);text-decoration:none;}
+.site-footer a:hover{text-decoration:underline;color:var(--gold);}
+.site-footer-sep{color:rgba(23,41,58,0.3);}
+/* On Home the footer is on the dark background, so its links are light. */
+.home-page .site-footer a{color:rgba(244,236,219,0.7);}
+.home-page .site-footer a:hover{color:var(--gold);}
+.home-page .site-footer-sep{color:rgba(244,236,219,0.35);}
+.home-page .site-footer{font-size:11px;padding-top:32px;padding-bottom:60px;}
+
+/* Text pages (Privacy Policy, Terms, Contact): a centered column on the washi background.
+   Exactly the screen's height; the content scrolls inside .static-page-scroll-wrap with up/down
+   arrow buttons. */
+.static-page{
+  /* vh is the tallest the visible area can be (browser bars hidden), so on phones the page could
+     reach below the screen. dvh is the actual visible height; browsers that don't know dvh use
+     the vh line above. */
+  height:100vh;
+  height:100dvh;
+  /* Space for the notch and home indicator. */
+  padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);
+  padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.static-page-scroll-wrap{flex:1;min-height:0;display:flex;flex-direction:column;}
+.static-page-scroll-body{flex:1;min-height:0;overflow-y:auto;padding:60px max(calc(20px * 0.7), calc(20px / var(--text-scale))) max(calc(60px * 0.7), calc(60px / var(--text-scale)));}
+.static-page-inner{max-width:640px;margin:0 auto;position:relative;}
+/* The < button at the top left of the text pages (PageBackButton.js), level with the logo. */
+.back-btn.page-back-btn{position:absolute;top:2px;left:0;padding:0;cursor:pointer;}
+.static-page-logo{display:block;text-align:center;margin-bottom:36px;color:var(--ai-deep);font-size:20px;}
+.static-page h1{font-family:var(--font-sans);font-size:24px;color:var(--ai-deep);margin:0 0 4px;}
+.static-page-updated{font-family:var(--font-sans);font-size:max(14px, calc(11px * var(--text-scale)));color:var(--moss);margin:0 0 24px;}
+.static-page h2{font-family:var(--font-sans);font-size:calc(15px * var(--text-scale));color:var(--ai-deep);margin:28px 0 8px;}
+.static-page p,.static-page li{font-family:var(--font-sans);font-size:max(14px, calc(13px * var(--text-scale)));line-height:1.6;color:var(--ai-deep);}
+.static-page p{margin:0 0 12px;}
+.static-page ul{margin:0 0 12px;padding-left:max(calc(20px * 0.7), calc(20px / var(--text-scale)));}
+.static-page li{margin-bottom:6px;}
+/* Links in the page text (e.g. email addresses) are gold. Only links inside paragraphs and
+   lists, so the logo and footer links keep their own colors. */
+.static-page p a,.static-page li a{color:var(--gold);}
+/* The contact form (ContactPage.js). Styled here because it isn't inside a .modal-box. */
+.contact-form{margin-top:20px;}
+.contact-form input,.contact-form select,.contact-form textarea{
+  width:100%;border:1px solid var(--line);background:#fff;border-radius:12px;
+  padding:max(calc(8px * 0.7), calc(8px / var(--text-scale))) max(calc(10px * 0.7), calc(10px / var(--text-scale)));font-family:var(--font-sans);font-size:calc(16px * var(--text-scale));
+  color:var(--ai-deep);outline:none;margin-bottom:8px;
+}
+.contact-form textarea{resize:vertical;font-size:calc(14px * var(--text-scale));}
+.contact-form input:focus,.contact-form select:focus,.contact-form textarea:focus{border-color:var(--gold);}
+.contact-form-honeypot{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;}
+.auth-guest-btn{width:100%;margin-top:8px;padding:max(calc(9px * 0.7), calc(9px / var(--text-scale)));border:none;border-radius:12px;cursor:pointer;
+  background:rgba(36,66,95,0.08);color:var(--ai);font-family:var(--font-sans);font-size:max(14px, calc(11.5px * var(--text-scale)));}
+.auth-guest-note{font-family:var(--font-sans);font-size:max(14px, calc(10px * var(--text-scale)));color:var(--moss);text-align:center;margin:10px 0 0;}
+.auth-terms-note{font-family:var(--font-sans);font-size:max(14px, calc(10px * var(--text-scale)));color:var(--moss);text-align:center;margin:10px 0 0;}
+.auth-terms-note a{color:var(--gold);}
+/* The "already taken" / "used before" note under the sign-up email and username fields. */
+.auth-email-status{font-family:var(--font-sans);font-size:max(14px, calc(10.5px * var(--text-scale)));color:var(--moss);margin:-6px 0 8px;padding:0 max(calc(2px * 0.7), calc(2px / var(--text-scale)));}
+.auth-email-status-warn{color:var(--shu);}
+/* Guest note in Home's header. */
+.guest-note-header{
+  margin-top:10px;font-family:var(--font-sans);font-size:max(14px, calc(11px * var(--text-scale)));color:rgba(23,41,58,0.7);
+}
+.guest-note-header a{color:var(--ai-deep);font-weight:600;text-decoration:underline;}
+/* ---- Home page ----
+   Light header on top, dark navy body below. The page fills the whole screen, including under
+   the status bar and home indicator: .home-header's padding keeps its content below the status
+   bar, and .home-page-scroll-body's bottom padding keeps the last item above the home
+   indicator. The header stays put; the list below scrolls inside .home-page-scroll-wrap with
+   up/down arrow buttons. */
+.home-page{
+  height:100vh;
+  height:100dvh;
+  padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right);
+  display:flex;flex-direction:column;overflow:hidden;
+  background:linear-gradient(180deg,var(--ai) 0%,var(--ai-deep) 100%);
+}
+.home-page-scroll-wrap{flex:1;min-height:0;display:flex;flex-direction:column;}
+.home-page-scroll-body{flex:1;min-height:0;overflow-y:auto;padding-bottom:env(safe-area-inset-bottom);}
+/* Headers and popups use --capped-scale instead of --text-scale for their sizes. (Both are
+   1 now; see :root.) */
+.home-header,
+header{--text-scale:var(--capped-scale);}
+.home-header{
+  flex-shrink:0;
+  /* 70px plus the notch's height above the header content, so it clears the camera notch.
+   Same as the Trip and packing list page headers (.detail-page-scroll-body > header). */
+  padding:50px 18px 26px;padding-top:calc(70px + env(safe-area-inset-top));background:var(--washi);
+  color:var(--ai-deep);border-bottom:4px solid var(--shu);
+}
+/* Tabs on the left, logo and ⋮ menu on the right, in one row. */
+.home-header .header-title-row{margin-bottom:12px;}
+.home-tabs{display:flex;gap:4px;}
+.home-tabs button{
+  padding:7px 14px;border:1px solid rgba(23,41,58,0.25);border-radius:99px;background:transparent;
+  color:rgba(23,41,58,0.7);cursor:pointer;
+  font-family:var(--font-sans);font-size:14px;font-weight:400;letter-spacing:.03em;
+}
+.home-tabs button.active{background:var(--gold);color:#fff;border-color:var(--gold);}
+/* No bottom padding: the footer below already has its own space above it. */
+.home-body{max-width:520px;margin:0 auto;padding:20px 16px 0;display:flex;flex-direction:column;gap:10px;}
+.home-empty{
+  font-family:var(--font-sans);font-size:max(14px, calc(12.5px * var(--text-scale)));color:rgba(244,236,219,0.6);
+  text-align:center;padding:max(calc(30px * 0.7), calc(30px / var(--text-scale))) max(calc(10px * 0.7), calc(10px / var(--text-scale)));
+}
+.home-trip-list{display:flex;flex-direction:column;gap:10px;}
+.home-trip-card{
+  display:block;width:100%;text-align:left;background:#fff;border:1px solid var(--line);border-radius:18px;
+  padding:14px 16px;cursor:pointer;
+}
+.home-trip-card:hover{border-color:var(--gold);}
+/* Home screen text is fixed size, not changed by the text size setting: trip name 16, New Trip
+   14, tabs 14, dates 14, footer 11, logo 16 (px). */
+.home-trip-title{font-family:var(--font-sans);font-weight:700;font-size:16px;color:var(--ai-deep);margin-bottom:3px;}
+.home-trip-dates{font-family:var(--font-sans);font-size:14px;color:var(--moss);}
+.home-new-trip-btn{
+  margin-bottom:10px;width:100%;padding:13px;border:1px dashed var(--gold);border-radius:18px;
+  background:transparent;color:var(--gold);cursor:pointer;
+  font-family:var(--font-sans);font-size:14px;font-weight:400;letter-spacing:.03em;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.home-new-trip-btn:disabled{opacity:.5;cursor:default;}
+.home-new-trip-btn:not(:disabled):active{background:rgba(184,147,63,0.1);}
+
+/* Page header padding. The extra space for the notch is on .detail-page-scroll-body > header. */
+header{flex-shrink:0;padding:max(calc(16px * 0.7), calc(16px / var(--text-scale))) max(calc(18px * 0.7), calc(18px / var(--text-scale))) max(calc(22px * 0.7), calc(22px / var(--text-scale)));background:var(--washi);color:var(--ai-deep);border-bottom:4px solid var(--shu);position:relative;}
+.header-title-row{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+/* The < button and the page title in one row, vertically centered. */
+.header-title-with-back{display:flex;align-items:center;gap:10px;min-width:0;flex:1;margin-bottom:4px;}
+.header-title-with-back h1{margin-bottom:0;}
+.back-btn{
+  flex-shrink:0;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  background:transparent;border:1px solid rgba(23,41,58,0.2);color:var(--ai-deep);text-decoration:none;
+}
+.back-btn:active{background:rgba(23,41,58,0.16);}
+.header-top-right{flex-shrink:0;z-index:2;display:flex;align-items:center;gap:10px;}
+.trip-menu{position:relative;}
+.trip-menu-btn{
+  width:34px;height:34px;border-radius:50%;
+  background:transparent; border:1px solid rgba(23,41,58,0.2);
+  color:var(--ai-deep); cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+}
+.trip-menu-btn:active{background:rgba(23,41,58,0.16);}
+/* The ⋮ button in a packing list's header pill: 23px, the same as the collapse button next to
+   it, with a 13px icon. */
+.trip-menu-btn-light{
+  width:30px;height:30px;
+  background:#fff;border:1px solid var(--line);color:var(--ai);
+}
+.trip-menu-btn-light svg{width:16px;height:16px;}
+.trip-menu-btn-light:active{background:rgba(36,66,95,0.08);}
+.trip-menu-dropdown{
+  /* As wide as its longest item, at least 150px, and never wider than the screen. */
+  position:absolute;top:calc(100% + 8px);right:0;z-index:50;min-width:150px;width:max-content;max-width:min(85vw,320px);
+  background:rgba(244,236,219,0.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,0.5);border-radius:16px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.5),0 12px 32px rgba(23,41,58,0.3);
+  padding:6px;display:flex;flex-direction:column;gap:2px;
+}
+.trip-menu-dropdown button{
+  text-align:left;background:transparent;border:none;border-radius:11px;padding:8px 10px;cursor:pointer;
+  font-family:var(--font-sans);font-size:14px;color:var(--ai-deep);white-space:nowrap;
+}
+.trip-menu-dropdown button:hover{background:rgba(36,66,95,0.08);}
+.trip-menu-dropdown .trip-menu-danger{color:var(--shu);}
+.trip-menu-dropdown .trip-menu-danger:hover{background:rgba(181,69,45,0.1);}
+/* The logo on Home (HomePage.js). */
+.home-link{
+  display:inline-block;font-family:var(--font-sans);font-size:16px;font-weight:600;
+  color:var(--ai-deep);text-decoration:none;
+}
+/* Also 16px on phones; not changed by the text size setting. */
+@media (max-width:480px){
+  .home-link{font-size:16px;}
+}
+/* The logo isn't shown in the Trip and packing list page headers (the < button goes to
+   Home). Home's header (.home-header) keeps it. */
+header .home-link{display:none;}
+/* Page title: one line, cut off with "…" when too long (min-width:0 lets it shrink in the
+   header row). */
+h1{
+  /* 1.25 line height so letters like g and y aren't cut off by overflow:hidden. */
+  font-family:var(--font-sans);font-weight:700;font-size:20px;line-height:1.25;margin:0 0 4px;position:relative;
+  min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.countdown{display:flex;align-items:baseline;gap:8px;position:relative;}
+.countdown .num{font-family:var(--font-sans);font-weight:700;font-size:14px;color:var(--gold);}
+.countdown .label{font-family:var(--font-sans);font-size:14px;color:rgba(23,41,58,0.7);}
+
+.trip-range{
+  font-family:var(--font-sans); font-size:14px;
+  color:rgba(23,41,58,0.75); margin-bottom:10px;
+  display:inline-flex; align-items:center; gap:5px; position:relative;
+}
+.trip-destinations{
+  font-family:var(--font-sans); font-size:14px;
+  color:rgba(23,41,58,0.75); margin-bottom:4px;
+}
+.edit-details-destinations{margin-bottom:8px;}
+.destination-row{display:flex;align-items:center;gap:6px;margin-bottom:6px;}
+/* No bottom margin on destination inputs, so the × lines up with them (this selector is more
+   specific than .modal-box input's margin-bottom:8px). */
+/* The place box's wrapper (PlaceAutocompleteInput) fills the row. */
+.edit-details-destinations .destination-row .place-autocomplete-wrap{flex:1;min-width:0;}
+.edit-details-destinations .destination-row .place-autocomplete-wrap input{width:100%;margin-bottom:0;}
+.add-destination-btn{
+  background:none; border:none; padding:max(calc(2px * 0.7), calc(2px / var(--text-scale))) 0; cursor:pointer;
+  font-family:var(--font-sans); font-size:max(14px, calc(12.5px * var(--text-scale))); color:var(--gold);
+}
+.edit-details-dates{display:flex;align-items:center;gap:6px;margin-bottom:8px;}
+/* 16px, because iOS zooms in on text boxes smaller than that when they're focused (and may
+   stay zoomed in). */
+.edit-details-dates input{
+  font-family:var(--font-sans); font-size:calc(16px * var(--text-scale)); border:1px solid var(--line);
+  background:#fff; color:var(--ai-deep); border-radius:10px; padding:max(calc(6px * 0.7), calc(6px / var(--text-scale))) max(calc(8px * 0.7), calc(8px / var(--text-scale))); flex:1; min-width:0;
+}
+.edit-details-dates span{color:var(--moss); font-family:var(--font-sans); font-size:max(14px, calc(12px * var(--text-scale)));}
+
+/* ---- Trip and packing list pages (Planner.js, PacklistDetailPage.js) ----
+   Light header, dark navy body, like Home. The page fills the whole screen, including under the
+   status bar and home indicator. Everything, header included, scrolls together inside
+   .detail-page-scroll-wrap with up/down arrow buttons. The header's padding keeps it below the
+   status bar at the top, and .detail-page-scroll-body's bottom padding keeps content above the
+   home indicator; scrolled content passes under both. */
+.detail-page{
+  position:relative;
+  height:100vh;
+  height:100dvh;
+  padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right);
+  display:flex;flex-direction:column;overflow:hidden;
+  background:linear-gradient(180deg,var(--ai) 0%,var(--ai-deep) 100%);
+}
+.detail-page-scroll-wrap{flex:1;min-height:0;display:flex;flex-direction:column;}
+.detail-page-scroll-body{flex:1;min-height:0;overflow-y:auto;padding-bottom:calc(40px / var(--text-scale) + env(safe-area-inset-bottom));scroll-padding-top:env(safe-area-inset-top);}
+/* 70px plus the notch's height above the page header, so it clears the camera notch (the
+   same as .home-header). */
+.detail-page-scroll-body > header{padding-top:calc(70px + env(safe-area-inset-top));}
+/* While scrolled to the top, the page background is washi for the header's height
+   (--header-h, set by hooks/useAtTopBackdrop.js), so iOS's bounce at the top shows washi above
+   the header instead of navy. */
+.detail-page.at-top{
+  background:
+    linear-gradient(to bottom, var(--washi) 0, var(--washi) var(--header-h, 0px), transparent var(--header-h, 0px)),
+    linear-gradient(180deg,var(--ai) 0%,var(--ai-deep) 100%);
+}
+.layout{display:flex;flex-direction:column;gap:14px;padding:max(calc(16px * 0.7), calc(16px / var(--text-scale))) max(calc(12px * 0.7), calc(12px / var(--text-scale))) 0;}
+
+.todo-panel{width:100%;background:#fff;border:1px solid var(--line);border-radius:18px;}
+.link-packlist-btn{
+  width:100%;padding:max(calc(11px * 0.7), calc(11px / var(--text-scale)));border:1px dashed rgba(244,236,219,0.3);border-radius:18px;
+  background:transparent;color:rgba(244,236,219,0.65);cursor:pointer;
+  font-family:var(--font-sans);font-size:max(14px, calc(11.5px * var(--text-scale)));font-weight:400;letter-spacing:.03em;
+}
+.link-packlist-btn:active{background:rgba(244,236,219,0.08);}
+
+/* No padding: the to-do list (.task-list) already has its own, the same as a day's list. */
+.todo-tree-panel{padding:0;}
+
+/* ---- Packing list bags ---- */
+.packlist-tree-panel{padding:max(calc(6px * 0.7), calc(6px / var(--text-scale))) max(calc(14px * 0.7), calc(14px / var(--text-scale))) max(calc(14px * 0.7), calc(14px / var(--text-scale)));}
+.packlist-tree{display:flex;flex-direction:column;gap:18px;}
+.packlist-root-items{display:flex;flex-direction:column;}
+.packlist-root-bags{display:flex;flex-direction:column;gap:20px;min-height:24px;padding-bottom:max(calc(20px * 0.7), calc(20px / var(--text-scale)));}
+.packlist-root-bags:empty{min-height:0;padding-bottom:0;}
+/* A bag. z-index:0 gives each bag its own stacking layer, so its border is drawn below its
+   own editor popover. Text can't be selected and the iOS long-press menu is off (so holding to
+   drag works), and touch-action:pan-y lets a swipe up or down on it scroll the page. */
+.packlist-bag{position:relative;z-index:0;border:3px solid;border-radius:18px;background:#fff;margin-top:16px;touch-action:pan-y;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;}
+/* The bag whose editor is open (and the bags it's inside) is drawn above the bags after it,
+   so they don't cover the editor. */
+.packlist-bag-editing{z-index:10;}
+/* The bag being dragged: a shadow and see-through. */
+.packlist-bag.reorder-active{box-shadow:0 6px 16px rgba(23,41,58,0.25);opacity:0.55;}
+.packlist-bag-top{position:static;}
+/* Every bag's name pill is 200px wide whatever the name's length; max-width keeps it clear of
+   the +/chevron pill on a narrow nested bag. */
+.bag-handle-wrap{position:absolute;top:-15px;left:14px;z-index:2;width:200px;max-width:calc(100% - 110px);}
+.bag-handle-wrap .bag-handle{width:100%;display:block;line-height:30px;text-align:left;padding:0 14px;}
+/* The name pill: text can't be selected and the iOS long-press menu is off, so holding it to
+   drag works. */
+.bag-handle{
+  /* At least 30px tall. */
+  background:var(--ai);color:#fff;border:none;border-radius:20px;min-height:30px;padding:0 max(calc(12px * 0.7), calc(12px / var(--text-scale)));
+  display:flex;align-items:center;justify-content:center;box-sizing:border-box;
+  font-family:var(--font-sans);font-size:14px;font-weight:400;
+  letter-spacing:.03em;cursor:pointer;box-shadow:0 2px 5px rgba(23,41,58,0.25);
+  max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  text-align:center;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;
+}
+/* The bag editor: opens below the name pill, or above it with .bag-handle-popover-up
+   (BagHandle picks). Its left position is set so it's centered on the page, and it's never
+   wider than the screen. */
+.bag-handle-popover{
+  position:absolute;top:calc(100% + 6px);bottom:auto;left:0;z-index:50;width:296px;max-width:min(296px,calc(100vw - 24px));
+  background:rgba(250,245,232,0.97);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,0.5);border-radius:14px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.5),0 8px 24px rgba(23,41,58,0.25);padding:max(calc(10px * 0.7), calc(10px / var(--text-scale)));display:flex;flex-direction:column;gap:8px;
+}
+.bag-handle-popover-up{top:auto;bottom:calc(100% + 6px);}
+.bag-handle-popover input{
+  width:100%;border:1px solid var(--line);border-radius:10px;background:#fff;
+  padding:max(calc(6px * 0.7), calc(6px / var(--text-scale))) max(calc(8px * 0.7), calc(8px / var(--text-scale)));font-family:var(--font-sans);font-size:calc(16px * var(--text-scale));color:var(--ai-deep);
+}
+.bag-name-warning{
+  font-family:var(--font-sans);font-size:max(14px, calc(10px * var(--text-scale)));color:var(--shu);margin-top:-4px;
+}
+.bag-handle-choices{display:flex;gap:8px;}
+.bag-handle-choices button{
+  border:none;border-radius:10px;padding:max(calc(8px * 0.7), calc(8px / var(--text-scale)));cursor:pointer;
+  font-family:var(--font-sans);font-size:max(14px, calc(11px * var(--text-scale)));
+}
+/* Delete is small and Confirm is big, so Delete isn't tapped by accident. */
+.bag-handle-delete{flex:0 0 auto;padding:max(calc(8px * 0.7), calc(8px / var(--text-scale))) max(calc(12px * 0.7), calc(12px / var(--text-scale)));background:rgba(181,69,45,0.1);color:var(--shu);}
+.bag-handle-delete-confirming{background:var(--shu);color:#fff;font-weight:600;}
+.bag-handle-confirm{flex:1;background:var(--gold);color:#fff;}
+.bag-color-swatches{
+  display:grid;grid-template-columns:repeat(13,19px);justify-content:space-between;gap:2px;
+  padding:max(calc(2px * 0.7), calc(2px / var(--text-scale)));scrollbar-width:thin;
+}
+.bag-color-swatches::-webkit-scrollbar{width:4px;}
+.bag-color-swatch{
+  width:19px;height:19px;flex-shrink:0;border-radius:50%;cursor:pointer;padding:0;
+  border:2px solid rgba(23,41,58,0.15);
+}
+.bag-color-swatch.active{border-color:var(--ai-deep);}
+.packlist-bag-top-actions{
+  position:absolute;top:-15px;right:10px;z-index:2;
+  display:flex;align-items:center;gap:1px;border-radius:99px;padding:0 max(calc(1px * 0.7), calc(1px / var(--text-scale)));
+  box-shadow:0 2px 5px rgba(23,41,58,0.25);
+}
+.packlist-bag-top-actions button{
+  width:30px;height:30px;border:none;background:transparent;color:inherit;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;padding:0;border-radius:50%;
+}
+.packlist-bag-body{padding:max(calc(26px * 0.7), calc(26px / var(--text-scale))) max(calc(14px * 0.7), calc(14px / var(--text-scale))) max(calc(14px * 0.7), calc(14px / var(--text-scale)));display:flex;flex-direction:column;gap:8px;}
+.packlist-bag-items{display:flex;flex-direction:column;}
+.packlist-bag-children{display:flex;flex-direction:column;gap:12px;margin-top:2px;min-height:24px;padding-bottom:max(calc(8px * 0.7), calc(8px / var(--text-scale)));}
+.packlist-bag-children:empty{min-height:0;padding-bottom:0;margin-top:0;}
+.packlist-add-bag-btn{
+  display:block;width:fit-content;margin-left:auto;padding:max(calc(6px * 0.7), calc(6px / var(--text-scale))) max(calc(12px * 0.7), calc(12px / var(--text-scale)));border:1px dashed var(--line);border-radius:12px;
+  background:transparent;color:var(--moss);font-family:var(--font-sans);font-size:max(14px, calc(10.5px * var(--text-scale)));cursor:pointer;
+}
+.packlist-add-bag-btn:active{background:rgba(36,66,95,0.05);}
+.packlist-add-bag-btn-circle{
+  margin-top:4px;width:30px;height:30px;padding:0;border-radius:50%;border-style:solid;
+  background:#fff;color:var(--ai);
+  display:flex;align-items:center;justify-content:center;font-size:calc(15px * var(--text-scale));
+}
+/* Panel title bars (To-Do, Packing List, Travel Tips): text can't be selected and the iOS
+   long-press menu is off. */
+.panel-head{padding:max(calc(12px * 0.7), calc(12px / var(--text-scale))) max(calc(14px * 0.7), calc(14px / var(--text-scale))) max(calc(10px * 0.7), calc(10px / var(--text-scale)));border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;}
+.todo-collapsed .panel-head{border-bottom:none;}
+.panel-head h2{font-family:var(--font-sans);font-size:16px;font-weight:700;margin:0;color:var(--ai-deep);}
+.packlist-panel-head h2{flex-shrink:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+/* The search: the outer box is what the results list is positioned against and what a click
+   outside closes; the round button that widens into a search box is .search-expandable-pill
+   inside it (its overflow:hidden would otherwise cut off the results). */
+.search-expandable{position:relative;flex-shrink:0;}
+/* Closed: a white circle, the same height as the view switcher next to it. */
+.search-expandable-pill{
+  display:flex;align-items:center;gap:5px;border-radius:99px;background:#fff;color:var(--moss);
+  box-sizing:border-box;
+  height:30px;width:30px;padding:0;justify-content:center;overflow:hidden;
+  transition:width .18s ease, height .18s ease;
+  /* Outline drawn with an inset shadow (a real border with overflow:hidden drew the circle
+     out of shape). */
+  box-shadow:inset 0 0 0 1px var(--line);
+}
+/* Open: a 170px wide search box, outlined with an inset shadow like the closed circle. */
+.search-expandable-pill.open{background:#fff;box-shadow:inset 0 0 0 1px var(--line);width:170px;height:34px;padding:0 10px;justify-content:flex-start;}
+.search-expandable-pill.open:focus-within{box-shadow:inset 0 0 0 1px var(--gold);}
+.search-expandable-pill svg{flex-shrink:0;}
+.search-expandable-btn{
+  width:100%;height:100%;border:none;background:transparent;color:inherit;padding:0;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+}
+.search-expandable-input{
+  flex:1;min-width:0;border:none;background:transparent;padding:0;
+  font-family:var(--font-sans);font-size:calc(16px * var(--text-scale));color:var(--ai-deep);outline:none;
+}
+/* The white pill holding a panel's buttons (packing list and to-do panels): 30px tall
+   including its border (border-box). */
+.packlist-head-actions{
+  display:flex;align-items:center;gap:1px;background:#fff;border:1px solid var(--line);
+  border-radius:99px;padding:0 1px;flex-shrink:0;height:30px;box-sizing:border-box;
+}
+/* Inside the pill, the ⋮ and collapse buttons have no circle of their own. */
+.packlist-head-actions .trip-menu-btn-light{border:none;background:transparent;}
+.packlist-head-actions .collapse-btn{border:none;background:transparent;}
+.todo-list{padding:max(calc(8px * 0.7), calc(8px / var(--text-scale))) max(calc(10px * 0.7), calc(10px / var(--text-scale)));display:flex;flex-direction:column;gap:3px;min-height:40px;}
+
+.day-rail-wrap{flex:1;min-width:0;}
+.rail-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.rail-nav .range-label{font-family:var(--font-sans);font-size:max(14px, calc(11.5px * var(--text-scale)));color:var(--ai);letter-spacing:.03em;}
+
+.day-section-head{display:flex;justify-content:flex-end;align-items:center;gap:8px;}
+/* While an item or bag is being dragged, the toolbar above the days (Today, search, view
+   switcher) ignores touches, so it can't get stuck looking pressed (see reorderGuard.js). */
+body.reorder-drag-active .day-section-head{pointer-events:none;}
+
+/* The Today button: text can't be selected and the iOS long-press menu is off, so a text selection started on a
+   nearby row can't spread onto it. */
+.trip-toolbar-today{
+  height:23px;padding:0 max(calc(10px * 0.7), calc(10px / var(--text-scale)));border-radius:99px;color:var(--ai);
+  font-family:var(--font-sans);font-size:max(14px, calc(10.5px * var(--text-scale)));font-weight:600;letter-spacing:.04em;cursor:pointer;
+  box-sizing:border-box;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;
+}
+/* Today as its own pill, with a white background and border. */
+.trip-toolbar-today-standalone{background:#fff;border:1px solid var(--line);}
+.trip-toolbar-today:active{background:var(--ai);color:var(--washi);}
+/* Search results list, never wider than the screen. */
+.trip-search-results{
+  position:absolute;top:calc(100% + 8px);right:0;z-index:50;width:280px;max-width:min(280px,calc(100vw - 24px));max-height:320px;overflow-y:auto;
+  background:var(--washi);border:1px solid var(--line);border-radius:16px;
+  box-shadow:0 12px 32px rgba(23,41,58,0.2);padding:max(calc(8px * 0.7), calc(8px / var(--text-scale)));display:flex;flex-direction:column;gap:6px;
+}
+/* The row/column/calendar view switcher pill. */
+.view-switcher{display:flex;align-items:center;gap:2px;height:30px;background:#fff;border:1px solid var(--line);border-radius:99px;padding:0 max(calc(1px * 0.7), calc(1px / var(--text-scale)));box-sizing:border-box;}
+.view-switcher-btn{
+  width:28px;height:28px;border:none;background:transparent;color:var(--moss);
+  border-radius:99px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+}
+.view-switcher-btn.active{background:var(--ai);color:var(--washi);}
+
+.day-row-strip-wrap{position:relative;}
+.day-row-strip{
+  display:flex;gap:10px;overflow-x:auto;padding:max(calc(4px * 0.7), calc(4px / var(--text-scale))) max(calc(4px * 0.7), calc(4px / var(--text-scale))) max(calc(10px * 0.7), calc(10px / var(--text-scale)));-webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+.day-row-strip::-webkit-scrollbar{display:none;}
+.day-row-arrow{
+  /* Vertically centered on the card, but at most 140px from its top, so on a tall card the
+     arrows stay near the top. */
+  position:absolute;top:min(50%, 140px);transform:translateY(-50%);z-index:4;
+  width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:#fff;
+  color:var(--ai);font-size:calc(16px * var(--text-scale));line-height:1;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(23,41,58,0.15);
+  opacity:1;transition:opacity .3s ease;
+}
+.day-row-arrow-left{left:-6px;}
+.day-row-arrow-right{right:-6px;}
+
+/* Up/down arrow buttons for scrolling areas (see hooks/useScrollArrows.js): the wrapper is
+   what the arrows are positioned against. */
+.v-scroll-wrap{position:relative;}
+/* Hides the scrollbar where the up/down arrows are used. */
+.v-scroll-wrap .day-row-cell-tasks,
+.v-scroll-wrap .calendar-scroll-body,
+.v-scroll-wrap .packlist-pick-list,
+.v-scroll-wrap .modal-box-outer-scroll-body,
+.v-scroll-wrap .home-page-scroll-body,
+.v-scroll-wrap .detail-page-scroll-body,
+.v-scroll-wrap .auth-page-scroll-body,
+.v-scroll-wrap .static-page-scroll-body,
+.v-scroll-wrap .stripe-embedded-checkout{scrollbar-width:none;}
+.v-scroll-wrap .day-row-cell-tasks::-webkit-scrollbar,
+.v-scroll-wrap .calendar-scroll-body::-webkit-scrollbar,
+.v-scroll-wrap .packlist-pick-list::-webkit-scrollbar,
+.v-scroll-wrap .modal-box-outer-scroll-body::-webkit-scrollbar,
+.v-scroll-wrap .home-page-scroll-body::-webkit-scrollbar,
+.v-scroll-wrap .detail-page-scroll-body::-webkit-scrollbar,
+.v-scroll-wrap .auth-page-scroll-body::-webkit-scrollbar,
+.v-scroll-wrap .static-page-scroll-body::-webkit-scrollbar,
+.v-scroll-wrap .stripe-embedded-checkout::-webkit-scrollbar{display:none;}
+/* Popups whose whole content scrolls together (heading through buttons) with up/down arrow
+   buttons, up to .modal-box's 90% of the screen height. */
+.modal-box-flex-scroll{display:flex;flex-direction:column;overflow:hidden;}
+.modal-box-outer-scroll-wrap{flex:1;min-height:0;display:flex;flex-direction:column;}
+.modal-box-outer-scroll-body{flex:1;min-height:0;display:flex;flex-direction:column;overflow-y:auto;}
+/* Every scroll arrow in the app is this same size (the same as the day strip's arrows). */
+.v-scroll-arrow{
+  position:absolute;left:50%;z-index:4;
+  width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:#fff;
+  color:var(--ai);font-size:calc(16px * var(--text-scale));line-height:1;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(23,41,58,0.15);
+  opacity:1;transition:opacity .3s ease;
+}
+/* Arrows fade out about 1.5s after scrolling stops (and can't be tapped while hidden). */
+.scroll-arrow-idle{opacity:0;pointer-events:none;}
+/* Up arrow 16px from the top of its area. */
+.v-scroll-arrow-up{top:16px;transform:translateX(-50%);}
+.v-scroll-arrow-down{bottom:16px;transform:translateX(-50%);}
+/* On the Home, Trip and packing list pages' main scroll, the up arrow is 60px from the top
+   instead. (">" so arrows of areas inside these pages keep 16px.) */
+.home-page-scroll-wrap > .v-scroll-arrow-up{top:60px;}
+.detail-page-scroll-wrap > .v-scroll-arrow-up{top:calc(60px + env(safe-area-inset-top));}
+.home-page-scroll-wrap > .v-scroll-arrow-down{bottom:calc(60px + env(safe-area-inset-bottom));}
+.detail-page-scroll-wrap > .v-scroll-arrow-down{bottom:calc(60px + env(safe-area-inset-bottom));}
+.day-row-cell{
+  /* Row view day card: 306px wide. Cards in the strip stretch to the tallest one. */
+  flex:0 0 auto;width:306px;background:#fff;border:1px solid var(--line);border-radius:20px;
+  display:flex;flex-direction:column;align-items:flex-start;overflow:hidden;
+  font-family:var(--font-sans);text-align:left;
+}
+.day-row-cell-today{outline:2px solid var(--shu);outline-offset:1px;}
+/* Day card header (date, weekday, weather, day name): text can't be selected and the iOS long-press menu is off. The
+   day name's text box can still be edited. */
+.day-row-cell-top{
+  position:relative;display:flex;flex-direction:column;gap:3px;width:100%;flex-shrink:0;box-sizing:border-box;
+  border-bottom:1px solid var(--line);padding:max(calc(16px * 0.7), calc(16px / var(--text-scale))) max(calc(14px * 0.7), calc(14px / var(--text-scale))) max(calc(12px * 0.7), calc(12px / var(--text-scale)));
+  user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;
+}
+/* Calendar: a day without a name gets a bit more bottom padding, so the line under the header
+   is at the same height as on days with a name. */
+.day-card-square .day-row-cell-top:has(.day-name-hit-empty){padding-bottom:max(calc(15px * 0.7), calc(15px / var(--text-scale)));}
+.day-tasks-scroll-wrap{width:100%;flex:1;min-height:0;display:flex;flex-direction:column;}
+.day-row-cell-tasks{width:100%;box-sizing:border-box;padding:max(calc(6px * 0.7), calc(6px / var(--text-scale))) max(calc(18px * 0.7), calc(18px / var(--text-scale))) max(calc(16px * 0.7), calc(16px / var(--text-scale))) max(calc(14px * 0.7), calc(14px / var(--text-scale)));}
+/* Calendar: a day's list scrolls inside its square. */
+.day-card-square .day-row-cell-tasks{flex:1;min-height:0;overflow-y:auto;}
+/* Day cards: no extra left padding on the list, so the tick circles line up with the date. */
+.day-row-cell-tasks .task-list{padding-left:0;}
+.day-row-cell-tasks .task{padding-left:0;}
+.day-row-cell-heading{display:flex;align-items:flex-start;gap:10px;width:100%;}
+/* Calendar: date on the left, weather on the right. */
+.day-card-square .day-row-cell-heading{justify-content:space-between;}
+.day-row-cell-date-wrap{display:flex;flex-direction:column;gap:6px;flex-shrink:0;}
+.day-row-cell-date{font-family:var(--font-sans);font-weight:700;font-size:16px;color:var(--ai-deep);white-space:nowrap;}
+.day-row-cell-dow{font-family:var(--font-sans);font-size:max(14px, calc(11px * var(--text-scale)));color:var(--moss);letter-spacing:.06em;white-space:nowrap;}
+/* The weather area on the right of a day card's header. */
+.day-row-cell-side{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;}
+.day-row-cell:not(.day-card-square) .day-row-cell-side{min-width:55px;}
+.day-row-cell-weather-row{display:flex;align-items:center;justify-content:flex-end;gap:8px;}
+/* Weather in two lines (temperature, city), right-aligned. */
+.day-row-cell-side .day-row-cell-weather-row{display:flex;flex-direction:column;align-items:flex-end;gap:1px;}
+.day-row-cell-weather-row-square{justify-content:flex-start;margin-top:0;}
+.day-row-cell-weather{font-family:var(--font-sans);font-size:max(14px, calc(12px * var(--text-scale)));color:var(--ai);display:inline-flex;align-items:center;gap:3px;}
+.day-row-cell-weather-historical{font-style:italic;opacity:0.75;}
+.day-row-cell-weather-city{font-family:var(--font-sans);font-size:max(14px, calc(11px * var(--text-scale)));color:var(--moss);}
+.day-card-check{width:16px;height:16px;color:var(--ai-deep);flex-shrink:0;}
+
+/* Calendar squares show less as the window gets narrower: only the day number when small,
+   then the day name, then weather and the list when there's room. The month isn't shown in the
+   squares (it's shown above the 1st). */
+@media (max-width: 899px) {
+  .day-card-square .day-row-cell-weather { display: none; }
+}
+@media (min-width: 600px) {
+  /* Hides the small check mark once the list itself shows. */
+  .day-card-square .day-card-check { display: none; }
+}
+
+.day-card-square{
+  width:100%;min-width:0;aspect-ratio:1;height:auto;max-height:320px;overflow:hidden;align-self:flex-start;
+}
+
+.calendar-view{display:flex;flex-direction:column;}
+.calendar-dow-header{
+  position:sticky;top:env(safe-area-inset-top);z-index:8;background:var(--washi);
+  display:grid;grid-template-columns:repeat(7,1fr);gap:10px;
+  padding:max(calc(8px * 0.7), calc(8px / var(--text-scale))) max(calc(4px * 0.7), calc(4px / var(--text-scale))) max(calc(10px * 0.7), calc(10px / var(--text-scale)));border-bottom:1px solid var(--line);
+}
+.calendar-dow{font-family:var(--font-sans);font-size:max(14px, calc(12.5px * var(--text-scale)));font-weight:400;color:var(--moss);text-align:center;}
+.calendar-scroll-body{max-height:min(75vh,900px);overflow-y:auto;padding:max(calc(4px * 0.7), calc(4px / var(--text-scale))) max(calc(4px * 0.7), calc(4px / var(--text-scale))) max(calc(10px * 0.7), calc(10px / var(--text-scale)));}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;}
+.calendar-cell-wrap{position:relative;min-width:0;}
+.calendar-cell-wrap-month-start{margin-top:28px;}
+.calendar-inline-month-label{
+  position:absolute;top:-24px;left:2px;white-space:nowrap;
+  font-family:var(--font-sans);font-weight:700;font-size:calc(16px * var(--text-scale));color:var(--washi);
+}
+.calendar-grid-pad{
+  width:100%;min-width:0;aspect-ratio:1;padding:max(calc(16px * 0.7), calc(16px / var(--text-scale)));box-sizing:border-box;border-radius:20px;
+  background:rgba(36,66,95,0.04);
+  font-family:var(--font-sans);font-size:calc(14px * var(--text-scale));color:#c8bfa8;
+  display:flex;align-items:center;justify-content:center;
+}
+/* Today's date number in a small filled circle. */
+.day-date-today-circle{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:22px;height:22px;border-radius:50%;background:var(--shu);color:#fff;
+}
+/* Phones (up to 599px wide). Placed after the .calendar-* rules above so these win. */
+@media (max-width: 599px) {
+  /* The calendar doesn't scroll on its own on phones; the page scrolls instead (the arrows
+     then hide on their own). */
+  .calendar-scroll-body { max-height:none; overflow-y:visible; }
+  /* On phones each date is just a number (DayCalendarView.js): gray outside the trip, white in
+     the trip, red for today. */
+  .calendar-grid-pad { background:none; color:rgba(200,200,200,0.5); }
+  .calendar-grid-pad-trip { color:var(--washi); font-weight:700; font-size:calc(16px * var(--text-scale)); }
+  .calendar-grid-pad-today { color:var(--shu); }
+  /* The 1st of a month shows the month name ("Sep") above the number without moving the number,
+     so it lines up with the other dates in the row. */
+  .calendar-grid-pad-month-cell { position:relative; padding-top:calc(16px / var(--text-scale) + 18px * (var(--text-scale) - 1)); }
+  .calendar-grid-pad-month {
+    position:absolute; top:calc(2px - 18px * (var(--text-scale) - 1)); left:50%; transform:translateX(-50%); white-space:nowrap; line-height:1;
+    font-size:calc(14px * var(--text-scale)); font-weight:700;
+  }
+}
+
+.rail-nav button{background:#fff;border:1px solid var(--ai);color:var(--ai);padding:max(calc(5px * 0.7), calc(5px / var(--text-scale))) max(calc(12px * 0.7), calc(12px / var(--text-scale)));border-radius:99px;font-size:max(14px, calc(11px * var(--text-scale)));cursor:pointer;font-family:var(--font-sans);}
+.rail-nav button:active{background:var(--ai);color:var(--washi);}
+
+.day-rail{display:flex;flex-direction:column;gap:10px;}
+.day-col{background:#fff;border:1px solid var(--line);border-radius:18px;display:flex;flex-direction:column;overflow:hidden;scroll-margin-top:70px;}
+.day-col.flight-day{border-color:var(--gold);box-shadow:0 0 0 1px rgba(184,147,63,0.15);}
+.day-col.trip-day{border-color:rgba(181,69,45,0.35);box-shadow:0 0 0 1px rgba(181,69,45,0.1);}
+.day-col.today{outline:2px solid var(--shu);outline-offset:1px;}
+/* Column view day header: text can't be selected and the iOS long-press menu is off. */
+.day-head{padding:max(calc(10px * 0.7), calc(10px / var(--text-scale))) max(calc(14px * 0.7), calc(14px / var(--text-scale))) max(calc(8px * 0.7), calc(8px / var(--text-scale)));border-bottom:1px solid var(--line);user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;}
+.day-collapsed .day-head{border-bottom:none;}
+.day-head-top{display:flex;align-items:center;gap:4px;}
+.day-dow{font-family:var(--font-sans);font-size:14px;letter-spacing:.08em;color:var(--moss);white-space:nowrap;}
+.day-date{font-family:var(--font-sans);font-weight:700;font-size:16px;color:var(--ai-deep);white-space:nowrap;}
+/* Date above weekday, at least 60px wide, so every day name starts at the same place. */
+.day-date-dow-stack{display:flex;flex-direction:column;line-height:1.15;flex-shrink:0;min-width:60px;}
+/* The middle of the header, between the date and the weather: holds the day name, left-aligned,
+   and takes the space that's left. */
+.day-name-center{flex:1;display:flex;justify-content:flex-start;min-width:0;}
+/* Row view: 2px wider on each side. */
+.day-head-top .day-name-center{margin:0 -2px;}
+/* Column view: 10px closer to the date. */
+.day-row-cell-heading .day-name-center{margin-left:-10px;justify-content:flex-start;}
+.day-row-cell-heading .day-name-text{text-align:left;}
+/* With no day name, the "+" sits on the left, near the date. */
+.day-name-center-empty{justify-content:flex-start;padding-left:max(calc(10px * 0.7), calc(10px / var(--text-scale)));}
+/* The day name's text box is left-aligned too when editing an existing name. */
+.day-name-center:has(.day-name-edit-wrap){justify-content:flex-start;padding-left:max(calc(10px * 0.7), calc(10px / var(--text-scale)));}
+/* Weather: temperature above the city. */
+.weather-chip{font-family:var(--font-sans);font-size:max(14px, calc(12px * var(--text-scale)));color:var(--ai);border-radius:12px;padding:max(calc(3px * 0.7), calc(3px / var(--text-scale))) max(calc(8px * 0.7), calc(8px / var(--text-scale)));display:flex;flex-direction:column;align-items:flex-end;gap:1px;white-space:nowrap;flex-shrink:0;}
+.weather-chip-temp{display:flex;align-items:center;gap:3px;}
+.weather-chip-city{color:var(--moss);font-size:max(14px, calc(11px * var(--text-scale)));}
+.weather-chip-historical{font-style:italic;opacity:0.75;}
+.day-name-hit{
+  cursor:pointer;display:inline-block;min-width:0;max-width:100%;
+  min-height:14px;padding:max(calc(20px * 0.7), calc(20px / var(--text-scale))) max(calc(2px * 0.7), calc(2px / var(--text-scale)));margin:-20px -2px;
+}
+.day-name-hit.day-name-hit-empty{min-width:70px;}
+/* Day name: left-aligned, up to two lines. */
+.day-name-text{
+  display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;text-overflow:ellipsis;
+  width:100%;max-width:100%;white-space:normal;overflow-wrap:break-word;line-height:1.3;text-align:left;
+  font-family:var(--font-sans);font-size:14px;font-weight:400;color:#8a6a1f;
+}
+/* The day name's tap area is as wide as its text. */
+.day-name-hit:not(.day-name-hit-empty){display:block;width:-webkit-fit-content;width:fit-content;}
+.day-name-hit:not(.day-name-hit-empty) .day-name-text{
+  padding:max(calc(2px * 0.7), calc(2px / var(--text-scale))) max(calc(3px * 0.7), calc(3px / var(--text-scale)));
+  margin-left:4px;width:calc(100% + 1px);
+}
+.day-name-plus{
+  display:block;font-family:var(--font-sans);font-size:max(14px, calc(13px * var(--text-scale)));font-weight:600;color:#8a6a1f;line-height:1;
+  transform:translateY(-6px);
+}
+/* Column view: the "+" 3px lower. */
+.day-row-cell-heading .day-name-plus{transform:translateY(3px);}
+/* Calendar: the "+" position in its own row. */
+.day-card-square .day-name-plus{transform:translate(5px, 5px);}
+/* The day name text box, moved up 8px. The move is on the wrapper so the length warning
+   (positioned inside it) moves with the box. */
+.day-name-edit-wrap{position:relative;transform:translateY(-8px);}
+/* Calendar: no move (the name has its own row). */
+.day-card-square .day-name-edit-wrap{transform:none;}
+.day-card-square .day-name-input{width:100%;}
+.day-row-cell-heading .day-name-hit.day-name-hit-empty{min-width:162px;}
+/* Calendar: the day name area is the same height with or without a name, so the header line
+   under it is at the same height on every square. */
+.day-card-square .day-name-hit{display:block;width:100%;min-height:16px;padding:max(calc(20px * 0.7), calc(20px / var(--text-scale))) 0;margin:-20px 0;box-sizing:border-box;}
+.day-card-square .day-name-hit.day-name-hit-empty{min-width:0;text-align:left;}
+/* Calendar: day name in one line, with no extra inset. (This selector is at least as
+   specific as the Row/Column rule above so it wins.) */
+.day-card-square .day-name-hit:not(.day-name-hit-empty) .day-name-text{
+  display:block;-webkit-line-clamp:unset;
+  padding:0;margin-left:0;
+  width:100%;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left;
+}
+/* Phones: placed after the rules above so these win. */
+@media (max-width: 599px) {
+  .day-card-square .day-name-hit{display:none;}
+}
+.day-name-input{
+  width:130px;border:1px solid var(--gold);background:rgba(138,106,31,0.12);border-radius:99px;
+  padding:max(calc(1px * 0.7), calc(1px / var(--text-scale))) max(calc(10px * 0.7), calc(10px / var(--text-scale)));font-family:var(--font-sans);font-size:max(14px, calc(12px * var(--text-scale)));color:var(--ai-deep);outline:none;
+}
+/* Column view: the day name text box is 100px wide. */
+.day-row-cell-heading .day-name-input{width:100px;}
+/* The "max characters" note under the day name box; it wraps so it isn't cut off. */
+.day-name-limit-warning{
+  position:absolute;top:100%;left:0;margin-top:3px;z-index:5;max-width:140px;
+  font-family:var(--font-sans);font-size:max(14px, calc(9.5px * var(--text-scale)));color:var(--shu);line-height:1.3;
+  background:rgba(181,69,45,0.1);padding:max(calc(2px * 0.7), calc(2px / var(--text-scale))) max(calc(6px * 0.7), calc(6px / var(--text-scale)));border-radius:9px;
+}
+/* Collapse (chevron) buttons. */
+.collapse-btn{
+  width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--ai);
+  font-family:var(--font-sans);font-size:max(14px, calc(13px * var(--text-scale)));line-height:1;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.collapse-chevron{transition:transform .15s ease;flex-shrink:0;}
+
+.task-list{padding:max(calc(6px * 0.7), calc(6px / var(--text-scale))) max(calc(10px * 0.7), calc(10px / var(--text-scale)));display:flex;flex-direction:column;gap:3px;min-height:100%;box-sizing:border-box;}
+/* A day item's category icon (TaskCatIcon.js), in day lists and search results. */
+.task-cat-icon{
+  display:inline-flex;align-items:center;justify-content:center;
+  margin-right:4px;flex-shrink:0;vertical-align:-2px;
+}
+.task-cat-icon-img{width:17px;height:17px;}
+.task-cat-icon-img img{width:100%;height:100%;object-fit:contain;display:block;}
+.search-result-task .task-cat-icon{margin-right:3px;}
+/* An item row: text can't be selected and the iOS long-press menu is off, so holding to drag doesn't select text
+   (the text box when editing still works). Same font size as the editing text box, so the text
+   doesn't change size when tapped. (Under 16px, so iOS may zoom in when editing.) */
+.task{display:flex;align-items:center;gap:6px;font-size:calc(14px * var(--text-scale));line-height:1.3;padding:max(calc(3px * 0.7), calc(3px / var(--text-scale))) max(calc(5px * 0.7), calc(5px / var(--text-scale)));border-radius:10px;cursor:pointer;border-bottom:1px dotted var(--line);user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;}
+.task:last-child{border-bottom:none;}
+.packlist-root-items .task,
+.packlist-bag-items .task{border-bottom:none;}
+.tick{width:13px;height:13px;border-radius:8px;border:1.3px solid var(--ai);flex-shrink:0;align-self:center;display:flex;align-items:center;justify-content:center;}
+.tick svg{width:8px;height:8px;opacity:0;transform:scale(.5);transition:all .12s ease;}
+.task.done .tick{background:var(--ai);border-color:var(--ai);}
+.task.done .tick svg{opacity:1;transform:scale(1);}
+/* The item's text. The right padding makes a bigger tap area past the end of short text. text can't be selected and the iOS long-press menu is off. */
+.txt{padding-right:max(calc(20px * 0.7), calc(20px / var(--text-scale)));user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;}
+.task.done span.txt{color:var(--moss);text-decoration:line-through;text-decoration-color:rgba(107,122,94,.5);}
+.task-link{margin-left:auto;text-decoration:none;font-size:max(14px, calc(11px * var(--text-scale)));flex-shrink:0;padding:0 max(calc(2px * 0.7), calc(2px / var(--text-scale)));opacity:0.7;}
+/* The text box when editing or adding an item is 1px bigger than the item text (15px Small,
+   17px Big), so the text doesn't shrink when tapped. */
+.inline-edit-input{
+  flex:1;min-width:0;border:none;outline:none;background:rgba(36,66,95,0.05);border-radius:9px;
+  font-family:var(--font-sans);font-size:calc(14px * var(--content-scale, 1) + 1px);color:var(--ai-deep);
+  padding:max(calc(2px * 0.7), calc(2px / var(--text-scale))) max(calc(5px * 0.7), calc(5px / var(--text-scale)));margin:0 2px;user-select:text;-webkit-user-select:text;
+}
+/* The red × delete button (item rows, packing list items, trip destinations). */
+.inline-delete-btn{
+  width:24px;height:24px;margin:-3px 0;border:none;background:none;
+  color:var(--shu);font-size:20px;line-height:1;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;padding:0;
+}
+/* Editing/adding an item: when a narrow card doesn't have room for the text box, the emoji
+   buttons and the ×, the text box gives up its space first, then the buttons shrink a little
+   (24px → 18px circles, tighter gaps) so the × always stays in view. */
+.task > .item-tags:not(.item-tags-badges){flex-shrink:1;min-width:0;gap:clamp(2px, 1.5vw, 6px);}
+.task > .item-tags:not(.item-tags-badges) .item-tag{width:24px;height:auto;aspect-ratio:1;flex-shrink:1;min-width:18px;}
+/* Emoji shortcut buttons (☀️ ❄️ ⏰, food, cafe, shopping, recent) shown while typing an item,
+   each in a small colored circle. text can't be selected and the iOS long-press menu is off. */
+.item-tags{display:flex;align-items:center;gap:6px;flex-shrink:0;padding-top:max(calc(1px * 0.7), calc(1px / var(--text-scale)));user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;}
+.item-tag{
+  width:24px;height:24px;border:none;padding:0;cursor:pointer;flex-shrink:0;
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;
+}
+.item-tag svg{width:14px;height:14px;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;}
+.item-tag-hot{color:var(--shu-soft);background:rgba(201,106,79,0.1);}
+/* Cold: a lighter blue than --ai, so the snowflake stands out. */
+.item-tag-cold{color:#4a90d9;background:rgba(74,144,217,0.12);}
+.item-tag-lastmin{color:var(--gold);background:rgba(184,147,63,0.1);}
+/* To-do / day-item tags (TodoTags.js): food, cafe, shopping. */
+.item-tag-food{color:#c0602f;background:rgba(192,96,47,0.1);}
+.item-tag-cafe{color:#7a5230;background:rgba(122,82,48,0.12);}
+.item-tag-shopping{color:#8a55b0;background:rgba(138,85,176,0.1);}
+.item-tag-recent{color:var(--ai);background:rgba(36,66,95,0.08);}
+.item-tag .tag-emoji,.battery-warning .tag-emoji{font-size:14px;line-height:1;}
+.item-tags-badges .item-tag .tag-emoji{font-size:inherit;line-height:inherit;}
+.item-tag:hover{opacity:0.75;}
+/* Badges before an item's text (old ☀️ ❄️ ⏰ tags, the power bank ⚠️): plain emoji, no circle. */
+.item-tags-badges{margin-right:-2px;gap:3px;}
+/* Same size as the item's text (and so as an emoji typed into it), with no box that could cut
+   it off. */
+.item-tags-badges .item-tag{width:auto;height:auto;padding:0;cursor:default;background:none !important;font-size:calc(14px * var(--text-scale));line-height:1.3;border-radius:0;}
+.item-tags-badges .item-tag svg{width:14px;height:14px;}
+.item-tags-badges .battery-warning{width:14px;height:14px;margin-left:0;}
+.item-tags-badges .battery-warning svg{width:13px;height:13px;}
+
+/* Power bank ⚠️ on packing list items (utils/batteryWarning.js). Hovering (desktop) or tapping
+   (phone) shows the tooltip. */
+.battery-warning{
+  position:relative;display:inline-flex;align-items:center;justify-content:center;
+  width:16px;height:16px;color:var(--shu);cursor:pointer;flex-shrink:0;margin-left:4px;
+}
+.battery-warning svg{width:15px;height:15px;}
+/* Right after a packing list item's text (PacklistItemRow.js). */
+.txt .battery-warning{vertical-align:-2px;margin-left:5px;}
+/* The Share popup's note on what sharing means (ShareModal.js). */
+.share-warning{background:rgba(181,69,45,0.08);border-radius:10px;padding:8px 10px;color:var(--ai-deep);text-align:left;}
+/* Invite by username in the Share popup. */
+.share-invite-row{display:flex;gap:8px;align-items:stretch;margin-bottom:8px;}
+/* Same height as the button: no bottom margin (beats .modal-box input's margin-bottom). */
+.modal-box .share-invite-row input{flex:1;min-width:0;margin:0;}
+.share-invite-row button{flex-shrink:0;border:none;border-radius:12px;padding:0 16px;background:var(--ai);color:#fff;font-weight:600;cursor:pointer;}
+.share-invite-row button:disabled{opacity:.5;}
+/* Invite cards at the top of a Home tab (InviteCards.js), and the dot on a tab that has invites. */
+.invite-cards{display:flex;flex-direction:column;gap:10px;margin-bottom:10px;}
+.invite-card{background:var(--washi);border:2px solid var(--gold);border-radius:18px;padding:14px 16px;font-family:var(--font-sans);font-size:14px;color:var(--ai-deep);}
+.invite-card-text{line-height:1.4;overflow-wrap:anywhere;}
+.invite-card-btns{display:flex;justify-content:flex-end;gap:8px;margin-top:10px;}
+.invite-card-btns button{border:none;border-radius:12px;padding:8px 16px;font-family:var(--font-sans);font-size:14px;font-weight:600;cursor:pointer;}
+.invite-card-btns .cancel{background:rgba(36,66,95,0.08);color:var(--ai-deep);}
+.invite-card-btns .confirm{background:var(--ai);color:#fff;}
+.tab-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--shu);margin-left:5px;vertical-align:2px;}
+/* The shared icon next to a trip or packing list's name (SharedBadge.js). Its tooltip uses
+   .battery-warning-tooltip below. */
+.shared-badge{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--moss);cursor:pointer;margin-left:6px;vertical-align:-2px;}
+.shared-badge svg{width:16px;height:16px;}
+.header-title-with-back .shared-badge svg,.panel-head .shared-badge svg{width:18px;height:18px;}
+.header-title-with-back .shared-badge,.panel-head .shared-badge{margin-left:-4px;}
+/* The ⚠️ tooltip. It's added to document.body (BatteryWarningBadge.js) with a fixed position, so
+   the rows below can't cover it. */
+.battery-warning-tooltip{
+  position:fixed;
+  width:220px;max-width:min(220px,calc(100vw - 24px));background:var(--ai-deep);color:var(--washi);
+  font-family:var(--font-sans);font-size:max(14px, calc(10.5px * var(--text-scale)));line-height:1.45;font-weight:400;text-align:left;
+  padding:max(calc(9px * 0.7), calc(9px / var(--text-scale))) max(calc(11px * 0.7), calc(11px / var(--text-scale)));border-radius:10px;box-shadow:0 8px 22px rgba(23,41,58,0.35);z-index:200;
+}
+/* The element that moves when an item row is swiped or dragged (TaskRow.js,
+   PacklistItemRow.js). text can't be selected and the iOS long-press menu is off (set here as well as on .task,
+   because the iPhone app doesn't always pass it down).
+   touch-action:pan-y lets a swipe up or down that starts on a row scroll the page. Dragging
+   stops the page scrolling from JavaScript (onTouchMoveNative), only after the long press. A
+   fixed touch-action:none would stop the page scrolling from any row, and changing it when the
+   long press starts is too late. */
+.task-wrap{position:relative;overflow:hidden;border-radius:10px;touch-action:pan-y;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;}
+/* The line showing where a dragged item will land (utils/dropLine.js). One line, moved to the
+   edge of the target row. Drawn above the dragged row and any raised bags. */
+.drag-drop-line{
+  position:fixed;height:3px;background:var(--gold);border-radius:2px;
+  box-shadow:0 0 4px rgba(184,147,63,0.6);pointer-events:none;z-index:10000;display:none;
+}
+/* Over the item's own spot (dropping changes nothing): bright yellow instead of gold. */
+.drag-drop-line-original{background:#f5c518;box-shadow:0 0 4px rgba(245,197,24,0.7);}
+/* "← Delete" shown behind a row as it's swiped left: red, like the other delete buttons. */
+.task-delete-bg{
+  position:absolute;inset:0;background:rgba(181,69,45,0.1);color:var(--shu);
+  display:flex;align-items:center;justify-content:flex-end;padding-right:max(calc(14px * 0.7), calc(14px / var(--text-scale)));
+  font-family:var(--font-sans);font-size:max(14px, calc(11px * var(--text-scale)));border-radius:10px;
+}
+.task{position:relative;background:#fff;z-index:1;}
+/* The row being dragged: its contents fade (not the row itself, so "← Delete" behind it
+   doesn't show through). */
+.task.reorder-active > *{opacity:0.4;}
+.task.fixed .tick{border-color:var(--gold);}
+.task.fixed .txt{font-weight:500;}
+
+/* The add box row at the end of a list: "+" when empty, a tick circle and text box when
+   typing. 4px closer to the item above. touch-action:manipulation stops quick repeat taps from
+   being read as a double-tap zoom (which can unfocus the box). */
+.add-task-row{cursor:text;flex:0 0 auto;align-items:flex-start;gap:6px;border-bottom:none;margin-top:-4px;touch-action:manipulation;}
+.add-task-row.active{align-items:center;}
+/* At rest, the tick lines up with the top of the row, like the "+". */
+.add-task-row:not(.active) .tick{align-self:flex-start;}
+/* The add box's text box: plain text, so typing looks like an item row. */
+.add-task-input{
+  flex:1;min-width:0;border:none;background:transparent;
+  font-family:var(--font-sans);font-size:calc(14px * var(--content-scale, 1) + 1px);
+  color:var(--ai-deep);outline:none;caret-color:var(--ai);padding:0;
+}
+/* While typing: the same gray highlight as editing an existing item. */
+.add-task-row.active .add-task-input{
+  background:rgba(36,66,95,0.05);border-radius:9px;padding:max(calc(2px * 0.7), calc(2px / var(--text-scale))) max(calc(5px * 0.7), calc(5px / var(--text-scale)));margin:0 2px;
+}
+.add-task-plus{
+  font-family:var(--font-sans);font-size:max(14px, calc(13px * var(--text-scale)));font-weight:600;color:#8a6a1f;margin-left:1ch;
+}
+/* The second "+" shown below the add box while typing. */
+.add-task-plus-trailing{display:inline-block;cursor:pointer;touch-action:manipulation;}
+
+/* ---- Modal ---- */
+/* No text is smaller than 14px (except the text pages' footer). */
+/* Popups. --text-scale is set to --capped-scale here (both are 1 now; see :root). */
+.modal-overlay{--text-scale:var(--capped-scale);
+ 
+  position:fixed;inset:0;background:rgba(23,41,58,0.55);
+  display:none;align-items:center;justify-content:center;z-index:100;padding:max(calc(20px * 0.7), calc(20px / var(--text-scale)));
+}
+.modal-overlay.open{display:flex;}
+.modal-box{
+  position:relative;
+  background:rgba(244,236,219,0.82);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,0.5);border-radius:20px;
+  max-width:340px;width:100%;padding:max(calc(20px * 0.7), calc(20px / var(--text-scale)));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.5),0 12px 40px rgba(23,41,58,0.3);
+  /* At most 90% of the screen height (dvh is the actual visible height; browsers that don't
+     know it use the vh value), then it scrolls. */
+  max-height:90vh;max-height:90dvh;overflow-y:auto;
+}
+/* The purchase popup while Stripe's payment form shows: 90% of the window width, up to 720px. */
+.modal-box-wide{width:90vw;max-width:720px;}
+.modal-close-x{
+  position:absolute;top:10px;right:10px;width:26px;height:26px;border-radius:50%;
+  border:1px solid rgba(23,41,58,0.2);background:transparent;color:var(--ai-deep);cursor:pointer;padding:0;
+  font-size:calc(16px * var(--text-scale));line-height:1;display:flex;align-items:center;justify-content:center;
+  /* Above the scrolling content (and its arrows), so the × can be tapped. */
+  z-index:5;
+}
+.modal-close-x:active{background:rgba(23,41,58,0.16);}
+.email-import-nav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:2px 0 10px;}
+.email-import-nav-btn{
+  background:none;border:none;color:var(--ai);cursor:pointer;padding:max(calc(4px * 0.7), calc(4px / var(--text-scale))) max(calc(2px * 0.7), calc(2px / var(--text-scale)));
+  font-family:var(--font-sans);font-size:max(14px, calc(12px * var(--text-scale)));font-weight:600;
+}
+.email-import-nav-btn:disabled{color:var(--line);cursor:default;}
+/* Popups anchored near the top instead of centered (add/edit item, booking import), so
+   changing category only moves the bottom edge. */
+.modal-overlay-top{align-items:flex-start;padding-top:8vh;padding-top:8dvh;}
+/* The × close button in a popup's top right corner. */
+.modal-close-btn{
+  /* Above the scrolling content and its arrows, so it can be tapped. */
+  position:absolute;top:14px;right:14px;z-index:5;
+  width:26px;height:26px;border-radius:50%;flex-shrink:0;
+  background:transparent;border:1px solid rgba(23,41,58,0.2);color:var(--ai-deep);
+  font-size:calc(16px * var(--text-scale));line-height:1;cursor:pointer;padding:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.modal-close-btn:active{background:rgba(23,41,58,0.16);}
+.modal-box h3{font-family:var(--font-sans);font-size:17px;margin:0 0 4px;color:var(--ai-deep);}
+/* Account's credit balance with its Buy more button on the same line (AccountModal.js). */
+.account-credits{display:flex;align-items:baseline;justify-content:space-between;gap:8px;}
+.modal-box .modal-sub{font-family:var(--font-sans);font-size:max(14px, calc(10.5px * var(--text-scale)));color:var(--moss);margin:0 0 14px;}
+/* A bullet list styled like .modal-sub (not used right now). */
+.purchase-benefits{margin:0 0 14px;padding-left:max(calc(18px * 0.7), calc(18px / var(--text-scale)));font-family:var(--font-sans);font-size:max(14px, calc(10.5px * var(--text-scale)));color:var(--moss);}
+.purchase-benefits li{margin-bottom:4px;}
+/* Success message (e.g. "Saved."): bold gold. */
+.modal-success{font-family:var(--font-sans);font-size:max(14px, calc(11.5px * var(--text-scale)));font-weight:600;color:var(--gold);margin:0 0 14px;}
+.modal-box input{
+  width:100%;border:1px solid var(--line);background:#fff;border-radius:12px;
+  padding:max(calc(8px * 0.7), calc(8px / var(--text-scale))) max(calc(10px * 0.7), calc(10px / var(--text-scale)));font-family:var(--font-sans);font-size:max(14px, min(calc(12px * var(--page-scale, 1)), 18px));
+  color:var(--ai-deep);outline:none;margin-bottom:8px;
+}
+.modal-box input:focus{border-color:var(--gold);}
+.modal-box input:disabled{background:rgba(36,66,95,0.05);color:var(--moss);cursor:default;}
+/* Password box with the show/hide button over its right end (PasswordInput.js). */
+.password-input-wrap{position:relative;}
+.password-input-wrap input{padding-right:max(calc(38px * 0.7), calc(38px / var(--text-scale)));}
+.password-toggle-btn{
+  position:absolute;top:0;bottom:8px;right:4px;width:30px;
+  display:flex;align-items:center;justify-content:center;
+  background:transparent;border:none;color:var(--moss);cursor:pointer;padding:0;
+}
+.password-toggle-btn:hover{color:var(--ai-deep);}
+.modal-preview{font-family:var(--font-sans);font-size:max(14px, calc(10.5px * var(--text-scale)));color:var(--moss);min-height:14px;margin-bottom:6px;}
+.modal-sub-label{font-family:var(--font-sans);font-size:max(14px, calc(10.5px * var(--text-scale)));color:var(--moss);margin:2px 0 6px;}
+/* "Entry N" above each entry in the booking import. */
+.ai-import-leg-label{font-family:var(--font-sans);font-size:max(14px, calc(12.5px * var(--text-scale)));font-weight:700;color:var(--ai-deep);margin:2px 0 6px;}
+.ai-import-textarea{
+  width:100%;border:1px solid var(--line);background:#fff;border-radius:12px;
+  padding:max(calc(8px * 0.7), calc(8px / var(--text-scale))) max(calc(10px * 0.7), calc(10px / var(--text-scale)));font-family:var(--font-sans);font-size:calc(14px * var(--text-scale));
+  color:var(--ai-deep);resize:vertical;margin-bottom:8px;
+}
+.ai-import-textarea:focus{border-color:var(--gold);}
+.ai-import-leg{border-top:1px solid var(--line);padding-top:max(calc(10px * 0.7), calc(10px / var(--text-scale)));margin-top:4px;}
+/* No line above the first entry. */
+.ai-import-leg-first{border-top:none;padding-top:0;margin-top:0;}
+.ai-import-leg-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px;}
+/* Remove stays on the right even when there's no "Entry N" label. */
+.ai-import-leg-head .ai-import-link-btn{margin-left:auto;}
+/* A time text box with its 24-hour time badge shown inside it on the right (TimeTextField.js). */
+.time-field-row{position:relative;margin-bottom:8px;}
+.time-field-row input[type="time"]{margin-bottom:0;width:100%;}
+.time-24h-badge{
+  position:absolute;top:50%;right:34px;transform:translateY(-50%);
+  pointer-events:none;white-space:nowrap;font-family:var(--font-sans);font-size:max(14px, calc(11px * var(--text-scale)));color:rgba(23,41,58,0.4);
+}
+/* The badge sits closer to the edge in the plain text version. */
+.time-24h-badge-text{right:12px;}
+
+/* Date and time pickers (DatePickerInput, TimePickerInput): the button that opens them looks
+   like a text box. */
+.date-picker-trigger{
+  width:100%;border:1px solid var(--line);background:#fff;border-radius:12px;
+  padding:max(calc(8px * 0.7), calc(8px / var(--text-scale))) max(calc(10px * 0.7), calc(10px / var(--text-scale)));font-family:var(--font-sans);font-size:max(14px, min(calc(12px * var(--page-scale, 1)), 18px));color:var(--ai-deep);
+  outline:none;margin-bottom:8px;text-align:left;cursor:pointer;display:flex;align-items:center;gap:6px;
+}
+.date-picker-trigger:focus{border-color:var(--gold);}
+.date-picker-placeholder{color:var(--moss);}
+.time-24h-badge-inline{font-family:var(--font-sans);font-size:max(14px, calc(11px * var(--text-scale)));color:rgba(23,41,58,0.4);}
+/* The dimmed 24-hour time after a flight or transportation time in a day list (withTimeBadges
+   in taskHelpers.js). */
+.task-time-24h-badge{color:rgba(23,41,58,0.4);}
+
+/* Time and duration pickers with a × to clear them, in one row. The margin is on the row so
+   the × is centered with the picker. */
+.time-picker-wrap{display:flex;align-items:center;gap:6px;margin-bottom:8px;}
+.time-picker-wrap .date-picker-trigger{flex:1;min-width:0;margin-bottom:0;}
+/* The clear ×: red, no circle. */
+.date-picker-clear-x{
+  flex-shrink:0;width:32px;height:32px;border:none;padding:0;
+  background:none;color:var(--shu);font-size:20px;line-height:1;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+}
+/* A place field with a copy button next to it (LocationCopyField.js). */
+.location-copy-row{display:flex;align-items:center;gap:6px;}
+.location-copy-row .place-autocomplete-wrap{flex:1;min-width:0;}
+.location-copy-btn{
+  flex-shrink:0;width:18px;height:18px;border:none;padding:0;
+  background:none;color:var(--moss);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+}
+.location-copy-btn:hover{color:var(--gold);}
+
+.date-picker-wrap,.time-picker-wrap{position:relative;}
+.date-picker-popover,.time-picker-popover{
+  position:absolute;top:calc(100% + 4px);left:0;z-index:30;
+  background:var(--washi);border:1px solid var(--line);border-radius:14px;
+  box-shadow:0 8px 24px rgba(0,0,0,0.18);padding:max(calc(10px * 0.7), calc(10px / var(--text-scale)));
+}
+.date-picker-popover{width:260px;}
+
+.date-picker-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.date-picker-month-label{font-family:var(--font-sans);font-size:max(14px, calc(13px * var(--text-scale)));font-weight:600;color:var(--ai-deep);}
+/* Month < > buttons in the date picker, round like the day strip's arrows. */
+.date-picker-nav{
+  width:26px;height:26px;border-radius:50%;border:1px solid var(--line);background:#fff;
+  color:var(--ai);font-size:calc(14px * var(--text-scale));line-height:1;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+}
+.date-picker-nav:hover{background:var(--ai);color:var(--washi);}
+
+.date-picker-weekdays{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;margin-bottom:2px;}
+.date-picker-weekdays span{font-family:var(--font-sans);font-size:max(14px, calc(10px * var(--text-scale)));color:var(--moss);}
+
+.date-picker-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;}
+.date-picker-day{
+  aspect-ratio:1;border:none;background:none;border-radius:50%;
+  font-family:var(--font-sans);font-size:max(14px, calc(13px * var(--text-scale)));color:var(--ai-deep);cursor:pointer;
+}
+.date-picker-day:hover:not(:disabled){background:rgba(36,66,95,0.08);}
+.date-picker-day.selected{background:var(--ai);color:var(--washi);font-weight:600;}
+.date-picker-day:disabled{color:var(--line);cursor:default;}
+
+/* Time and duration picker: scrolling wheels (hour, minute, and AM/PM for times) that loop
+   around (WheelColumn.js). Typing a digit while a wheel is focused jumps to it. */
+.time-picker-popover{width:180px;}
+.time-picker-columns{display:flex;position:relative;height:150px;}
+.time-picker-col{
+  flex:1;overflow-y:auto;scroll-snap-type:y mandatory;padding:max(calc(60px * 0.7), calc(60px / var(--text-scale))) 0;scrollbar-width:none;outline:none;
+}
+.time-picker-col::-webkit-scrollbar{display:none;}
+.time-picker-col div{
+  display:block;width:100%;height:30px;line-height:30px;text-align:center;
+  font-family:var(--font-sans);font-size:calc(15px * var(--text-scale));color:var(--ai-deep);
+  scroll-snap-align:center;cursor:pointer;
+}
+.time-picker-col div.selected{color:var(--ai);font-weight:700;}
+.time-picker-center-band{
+  position:absolute;top:50%;left:0;right:0;height:30px;transform:translateY(-50%);
+  background:rgba(36,66,95,0.06);border-radius:8px;pointer-events:none;
+}
+/* AM/PM: two labels to tap instead of a wheel. Scrolling the hour past 12 switches it too. */
+.time-picker-period-toggle{flex:1;position:relative;}
+.time-picker-period-toggle div{
+  position:absolute;left:0;right:0;transform:translateY(-50%);height:30px;line-height:30px;
+  text-align:center;font-family:var(--font-sans);font-size:calc(14px * var(--text-scale));color:var(--moss);cursor:pointer;
+}
+.time-picker-period-toggle div.selected{color:var(--ai);font-weight:700;}
+.trip-tips-body{padding:max(calc(12px * 0.7), calc(12px / var(--text-scale))) max(calc(14px * 0.7), calc(14px / var(--text-scale))) max(calc(14px * 0.7), calc(14px / var(--text-scale)));display:flex;flex-direction:column;gap:10px;}
+.trip-tips-label{font-family:var(--font-sans);font-size:14px;color:var(--moss);margin-bottom:2px;}
+.trip-tips-value{font-family:var(--font-sans);font-size:14px;color:var(--ai-deep);line-height:1.4;}
+.ai-import-link-btn{
+  background:transparent;border:none;color:var(--moss);font-family:var(--font-sans);
+  font-size:max(14px, calc(10.5px * var(--text-scale)));text-decoration:underline;cursor:pointer;padding:0;
+}
+.ai-import-link-btn-center{display:block;width:100%;text-align:center;margin:10px 0 16px;}
+.forward-email-hint{display:flex;align-items:center;flex-wrap:wrap;gap:6px;}
+.forward-email-hint a{color:var(--gold);}
+.forward-email-bubble{
+  display:inline-flex;align-items:center;gap:5px;font-family:var(--font-sans);
+  font-size:max(14px, calc(11px * var(--text-scale)));font-weight:600;color:var(--ai-deep);
+}
+.copy-email-btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  background:#fff;border:none;border-radius:50%;width:22px;height:22px;
+  color:var(--moss);cursor:pointer;padding:0;box-shadow:0 1px 2px rgba(0,0,0,0.08);
+}
+.copy-email-btn:hover{color:var(--gold);}
+.packlist-pick-list{
+  max-height:145px;overflow-y:auto;border:1px solid var(--line);border-radius:14px;
+  background:#fff;margin-bottom:14px;
+}
+/* The pick list's down arrow sits higher, inside the list's border. */
+.packlist-pick-scroll-wrap .v-scroll-arrow-down{bottom:26px;}
+/* Calendar squares: the list's arrows closer to the edges. */
+.day-card-square .v-scroll-arrow-up{top:5px;}
+.day-card-square .v-scroll-arrow-down{bottom:5px;}
+.packlist-pick-row{
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  width:100%;text-align:left;background:transparent;border:none;
+  border-bottom:1px solid var(--line);padding:max(calc(10px * 0.7), calc(10px / var(--text-scale))) max(calc(12px * 0.7), calc(12px / var(--text-scale)));cursor:pointer;
+  font-family:var(--font-sans);font-size:max(14px, calc(12.5px * var(--text-scale)));color:var(--ai-deep);
+}
+.packlist-pick-row:last-child{border-bottom:none;}
+.packlist-pick-row:hover{background:rgba(23,41,58,0.04);}
+.packlist-pick-row:disabled{opacity:.5;cursor:default;}
+/* The selected row (trip picker in the booking import). */
+.packlist-pick-row.selected{background:var(--ai);color:var(--washi);}
+.packlist-pick-row.selected:hover{background:var(--ai);}
+/* "+ New Trip" at the end of the trip list: green and bold, and as tall as a trip row. */
+.packlist-pick-row-new{color:var(--moss);font-weight:600;justify-content:center;min-height:52px;}
+.packlist-pick-linked-badge{
+  font-size:max(14px, calc(9.5px * var(--text-scale)));color:var(--moss);background:rgba(74,150,96,0.1);
+  border-radius:9px;padding:max(calc(2px * 0.7), calc(2px / var(--text-scale))) max(calc(8px * 0.7), calc(8px / var(--text-scale)));flex-shrink:0;
+}
+/* The two date pickers in a trip row sit on one line. */
+.packlist-pick-row .date-picker-wrap{display:inline;}
+/* Trip row: the name (cut off with "…" if long) above the dates. min-width:0 lets it shrink. */
+.packlist-pick-row-lines{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1;}
+.packlist-pick-title{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.packlist-pick-dates{white-space:nowrap;}
+/* A trip row's dates: look like plain text but open a date picker. They turn white with the row
+   when it's selected. */
+.packlist-pick-date-trigger{
+  width:auto;background:none;border:none;padding:0;margin:0;
+  font-family:inherit;font-size:inherit;font-weight:inherit;color:inherit;
+  text-decoration:underline;text-decoration-color:rgba(23,41,58,0.35);
+  display:inline;
+}
+.packlist-pick-row.selected .packlist-pick-date-trigger{text-decoration-color:rgba(244,236,219,0.5);}
+.share-qr-link{
+  display:flex;justify-content:center;padding:max(calc(14px * 0.7), calc(14px / var(--text-scale)));margin-bottom:10px;
+  background:#fff;border:1px solid var(--line);border-radius:16px;
+}
+.share-url{
+  display:flex;align-items:center;gap:8px;width:100%;
+  background:#fff;border:1px solid var(--line);border-radius:12px;
+  padding:max(calc(8px * 0.7), calc(8px / var(--text-scale))) max(calc(10px * 0.7), calc(10px / var(--text-scale)));cursor:pointer;font-family:var(--font-sans);font-size:max(14px, calc(11px * var(--text-scale)));
+  color:var(--ai-deep);
+}
+.share-url-text{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left;}
+.share-url-copy{flex-shrink:0;color:var(--gold);font-weight:500;}
+.modal-error{font-family:var(--font-sans);font-size:max(14px, calc(10.5px * var(--text-scale)));color:var(--shu);background:rgba(181,69,45,0.08);border-radius:10px;padding:max(calc(6px * 0.7), calc(6px / var(--text-scale))) max(calc(8px * 0.7), calc(8px / var(--text-scale)));margin-bottom:8px;}
+/* Crossed-out price (not used right now). */
+.price-strike{text-decoration:line-through;opacity:0.55;}
+/* Stripe's payment form: at least 280px tall while loading, and scrolls past 60% of the screen. */
+.stripe-embedded-checkout{min-height:280px;max-height:60vh;overflow-y:auto;margin:8px -8px 0;}
+.modal-btns{display:flex;gap:8px;margin-top:10px;}
+/* Buttons at the bottom of a popup. Links placed there get the same look. */
+.modal-btns button,.modal-btns a{
+  flex:1;font-family:var(--font-sans);font-size:max(14px, calc(11.5px * var(--text-scale)));border:none;border-radius:12px;
+  padding:max(calc(9px * 0.7), calc(9px / var(--text-scale)));cursor:pointer;display:flex;align-items:center;justify-content:center;
+}
+.modal-btns .confirm{background:var(--gold);color:#fff;}
+.modal-btns .confirm:disabled{opacity:.4;cursor:default;}
+.modal-btns .confirm.danger{background:var(--shu);}
+.modal-btns .cancel{background:rgba(181,69,45,0.1);color:var(--shu);}
+
+.search-empty{font-family:var(--font-sans);font-size:max(14px, calc(11px * var(--text-scale)));color:var(--moss);padding:max(calc(8px * 0.7), calc(8px / var(--text-scale))) max(calc(2px * 0.7), calc(2px / var(--text-scale)));}
+.search-result{
+  display:block;width:100%;text-align:left;background:#fff;border:1px solid var(--line);border-radius:14px;
+  padding:max(calc(8px * 0.7), calc(8px / var(--text-scale))) max(calc(10px * 0.7), calc(10px / var(--text-scale)));cursor:pointer;
+}
+.search-result:hover{border-color:var(--gold);}
+.search-result-head{display:flex;align-items:baseline;gap:8px;margin-bottom:2px;}
+.search-result-date{font-family:var(--font-sans);font-weight:700;font-size:max(14px, calc(13px * var(--text-scale)));color:var(--ai-deep);}
+.search-result-dayname{font-family:var(--font-sans);font-size:max(14px, calc(10px * var(--text-scale)));color:#8a6a1f;}
+.search-result-task{font-family:var(--font-sans);font-size:max(14px, calc(11px * var(--text-scale)));color:var(--moss);line-height:1.4;}
+
+/* The category buttons in the add-item popup: 2 columns. */
+.cat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:1fr;gap:6px;margin-bottom:14px;}
+.cat-btn{
+  display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:8px;
+  background:#fff;border:1px solid var(--line);border-radius:14px;
+  padding:10px 12px;cursor:pointer;font-size:18px;min-width:0;width:100%;
+  font-family:var(--font-sans);color:var(--ai-deep);
+}
+/* Category button label: 14px, next to its icon. */
+.cat-btn span{font-size:14px;line-height:1.15;text-align:left;font-family:var(--font-sans);color:var(--moss);letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;}
+.cat-btn-icon{width:22px;height:22px;object-fit:contain;}
+.cat-btn.active{background:var(--ai);border-color:var(--ai);}
+.cat-btn.active span{color:rgba(244,236,219,0.8);}
+.cat-btn.active{color:var(--washi);}
+.cat-fields{display:flex;flex-direction:column;}
+.place-autocomplete-wrap{position:relative;}
+/* Place suggestions list. It's added to document.body and placed by useFloatingPopover (as
+   wide as the text box), so a scrolling popup can't cut it off. */
+.place-autocomplete-list{
+  margin:2px 0 0;padding:max(calc(4px * 0.7), calc(4px / var(--text-scale)));list-style:none;
+  background:var(--washi);border:1px solid var(--line);border-radius:8px;box-shadow:0 6px 16px rgba(0,0,0,0.15);
+  max-height:220px;overflow-y:auto;
+}
+.place-autocomplete-list li{
+  padding:max(calc(8px * 0.7), calc(8px / var(--text-scale))) max(calc(10px * 0.7), calc(10px / var(--text-scale)));font-family:var(--font-sans);font-size:max(14px, calc(13px * var(--text-scale)));color:var(--ai-deep);border-radius:6px;cursor:pointer;
+}
+.place-autocomplete-list li.active,.place-autocomplete-list li:hover{background:var(--ai);color:var(--washi);}
+.field-label{font-family:var(--font-sans);font-size:max(14px, min(calc(12px * var(--page-scale, 1)), 18px));color:var(--moss);margin:10px 0 5px 2px;}
+.field-label:first-child{margin-top:0;}
+/* The * after a required field's label. */
+.required-mark{color:var(--shu);margin-left:2px;}
+.account-danger-zone{margin-top:14px;padding-top:max(calc(14px * 0.7), calc(14px / var(--text-scale)));border-top:1px solid var(--line);}
+.account-delete-link{
+  background:transparent;border:none;color:var(--shu);font-family:var(--font-sans);
+  font-size:max(14px, calc(12px * var(--text-scale)));text-decoration:underline;cursor:pointer;padding:0;
+}
+.app-footer{
+  padding:max(calc(24px * 0.7), calc(24px / var(--text-scale))) max(calc(16px * 0.7), calc(16px / var(--text-scale))) max(calc(50px * 0.7), calc(50px / var(--text-scale)));text-align:center;
+  font-family:var(--font-sans);font-size:max(14px, calc(10.5px * var(--text-scale)));color:rgba(244,236,219,0.55);
+}
+.fab-add{
+  position:fixed; bottom:22px; right:22px; z-index:60;
+  width:42px; height:42px; border-radius:50%; border:none;
+  background:linear-gradient(180deg,var(--ai) 0%,var(--ai-deep) 100%);
+  color:var(--washi); font-size:26px; line-height:1; cursor:pointer;
+  box-shadow:0 6px 18px rgba(23,41,58,0.35);
+  display:flex; align-items:center; justify-content:center;
+}
+.fab-add:active{transform:scale(0.94);}
+/* The number on the + button: forwarded emails waiting. */
+.fab-badge{
+  position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;padding:0 max(calc(4px * 0.7), calc(4px / var(--text-scale)));
+  border-radius:9px;background:var(--shu);color:#fff;border:2px solid var(--washi);
+  font-family:var(--font-sans);font-size:max(14px, calc(10px * var(--text-scale)));font-weight:700;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+}
+/* "N Imports to review" above the category buttons (only shown when there are some). */
+.email-import-review-btn{
+  display:block;width:100%;margin-bottom:12px;padding:max(calc(10px * 0.7), calc(10px / var(--text-scale))) max(calc(14px * 0.7), calc(14px / var(--text-scale)));border-radius:12px;
+  background:var(--gold);color:#fff;border:none;cursor:pointer;text-align:center;
+  font-family:var(--font-sans);font-size:max(14px, calc(12.5px * var(--text-scale)));font-weight:600;
+}
+.email-import-review-btn:active{opacity:.85;}
+
+/* ---- Wider screens (768px and up) ----
+   Text boxes are 16px by default, because iOS zooms in on smaller ones when they're focused.
+   On wider screens (not phones) they go back to smaller sizes (at least 14px). */
+@media (min-width: 768px) {
+  .edit-details-dates input{font-size:max(14px, calc(12px * var(--text-scale)));}
+  .bag-handle-popover input{font-size:max(14px, calc(11px * var(--text-scale)));}
+  .search-expandable-input{font-size:max(14px, calc(11px * var(--text-scale)));}
+  .day-name-input{font-size:max(14px, calc(10.5px * var(--text-scale)));}
+  .task{font-size:max(14px, calc(12px * var(--text-scale)));}
+  .inline-edit-input{font-size:max(14px, calc(12px * var(--text-scale)));}
+  .add-task-input{font-size:max(14px, calc(12px * var(--text-scale)));}
+  .modal-box input{font-size:max(14px, calc(12px * var(--text-scale)));}
+  .date-picker-trigger{font-size:max(14px, calc(12px * var(--text-scale)));}
+}
+
+/* Side icon in flight and hotel field labels (AddItemModal.js's SideIcon). */
+.field-label-icon{display:inline-flex;align-items:center;gap:1px;margin-right:6px;vertical-align:-3px;}
+.field-label-icon .task-cat-icon-img{width:1.3em;height:1.3em;}
+.field-label-arrow{font-size:1em;line-height:1;opacity:0.75;}
+
+/* Account popup: all text 14px whatever the text size setting (so the Small/Big choice doesn't
+   change size as it's picked); "Delete account" is 12px. */
+.account-modal, .account-modal *{font-size:14px !important;}
+.account-modal .account-delete-link{font-size:12px !important;}
+.account-modal h3{font-size:17px !important;}  /* 17px, like other popup titles */
+
+/* The Small/Big text size only changes item rows (day items, to-dos, packing list items, all
+   inside .task-wrap). Everything else stays at normal size (textScale.js). */
+.task-wrap{--text-scale:var(--content-scale, 1);width:100%;}
+/* Rows are as wide as their list, so the text box when editing (flex:1) gets all the space
+   left of the emoji buttons and ×. */
+.task-wrap > .task{width:100%;}
+
+/* The add/edit popup's category title (Flight, Lodging, ...): 17px like every popup title,
+   with more space below. */
+.modal-box h3.add-item-title{font-size:17px;margin:0 0 14px;}
+
+/* Big text size (textScale.js): the add/edit popup's category labels, field labels and field
+   text go from 14px to 16px, like the items. */
+html[data-text-size="big"] .add-item-modal .cat-btn span,
+html[data-text-size="big"] .add-item-modal .field-label,
+html[data-text-size="big"] .add-item-modal input,
+html[data-text-size="big"] .add-item-modal .date-picker-trigger{font-size:16px;}
+
+/* Icons in the search, view switcher, collapse, <, + and chevron buttons: 16px. */
+.search-expandable-pill svg,.view-switcher-btn svg,.collapse-btn svg{width:16px;height:16px;}
+.back-btn svg{width:16px;height:16px;}
+
+.packlist-bag-top-actions svg{width:16px;height:16px;}

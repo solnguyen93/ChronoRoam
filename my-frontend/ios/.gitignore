@@ -1,0 +1,21 @@
+App/build
+App/Pods
+App/output
+App/App/public
+DerivedData
+xcuserdata
+
+# Cordova plugins for Capacitor
+capacitor-cordova-ios-plugins
+
+# Generated Config files
+App/App/capacitor.config.json
+App/App/config.xml
+
+# Regenerated every `npx cap sync ios` from package.json — never hand-edited
+# (file itself says "DO NOT MODIFY ... managed by Capacitor CLI"). Committing
+# it caused recurring git-pull conflicts when it diverged between machines.
+App/CapApp-SPM/Package.swift
+
+# Xcode's own SPM dependency resolution, regenerated on open/build
+App/App.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved

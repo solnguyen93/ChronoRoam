@@ -1,0 +1,33 @@
+# Environment variables — never commit these
+.env
+*.env
+# Exception: my-frontend/.env holds only public build-time feature flags (REACT_APP_* vars get
+# baked into the public JS bundle regardless, so there's nothing to protect by hiding this one) —
+# committing it is what lets Cloudflare Pages' production build actually pick these up, since
+# Cloudflare builds from this repo and has no access to any machine's local .env files.
+!my-frontend/.env
+
+# Dependencies
+node_modules/
+
+# Build output
+/my-frontend/build/
+
+# Logs
+*.log
+.claude/
+
+# iOS (Capacitor) — CocoaPods deps and Xcode's own per-machine/per-user state. `pod install`
+# regenerates Pods/ from Podfile.lock (which IS tracked), so excluding Pods/ itself is safe.
+my-frontend/ios/App/Pods/
+my-frontend/ios/App/build/
+my-frontend/ios/DerivedData/
+*.xcuserstate
+xcuserdata/
+
+# macOS
+.DS_Store
+
+# Local-only: Cloudflare Wrangler cache and VS Code workspace settings
+.wrangler/
+*.code-workspace

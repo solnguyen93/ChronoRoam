@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <!-- viewport-fit=cover lets content extend under the iOS notch/status bar/home indicator,
+         which is what makes env(safe-area-inset-*) in Planner.css resolve to real values
+         instead of 0 — without it the safe-area padding added for the Capacitor iOS app has
+         nothing to react to.
+         user-scalable=no/maximum-scale=1 deliberately disable zoom entirely — this used to allow
+         pinch-zoom (so the Daily Plan could be zoomed out to fit on a real device), but iOS
+         Safari/WKWebView's auto-zoom-on-focus for any input under 16px font-size could get stuck,
+         leaving the whole app zoomed in with no reliable way back out (see .add-task-input's fix
+         in Planner.css for the one input that was actually triggering it). Disabling zoom
+         entirely removes that whole class of bug for good, at the cost of losing the Daily Plan's
+         zoom-out escape hatch if it's ever too wide/dense to fit a phone screen on its own. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#24425f" />
+    <meta name="description" content="ChronoRoam — Tokyo trip planner" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <title>ChronoRoam — Tokyo Trip</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+  </body>
+</html>
