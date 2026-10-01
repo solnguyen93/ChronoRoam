@@ -1285,15 +1285,13 @@ body.reorder-drag-active .day-section-head{pointer-events:none;}
 
 /* ---- Wider screens (768px and up) ----
    Text boxes are 16px by default, because iOS zooms in on smaller ones when they're focused.
-   On wider screens (not phones) they go back to smaller sizes (at least 14px). */
+   On wider screens (not phones) they go back to smaller sizes (at least 14px). Item rows and
+   their edit and add boxes aren't listed: they follow the Small/Big setting on every screen. */
 @media (min-width: 768px) {
   .edit-details-dates input{font-size:max(14px, calc(12px * var(--text-scale)));}
   .bag-handle-popover input{font-size:max(14px, calc(11px * var(--text-scale)));}
   .search-expandable-input{font-size:max(14px, calc(11px * var(--text-scale)));}
   .day-name-input{font-size:max(14px, calc(10.5px * var(--text-scale)));}
-  .task{font-size:max(14px, calc(12px * var(--text-scale)));}
-  .inline-edit-input{font-size:max(14px, calc(12px * var(--text-scale)));}
-  .add-task-input{font-size:max(14px, calc(12px * var(--text-scale)));}
   .modal-box input{font-size:max(14px, calc(12px * var(--text-scale)));}
   .date-picker-trigger{font-size:max(14px, calc(12px * var(--text-scale)));}
 }
