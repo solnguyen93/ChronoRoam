@@ -150,7 +150,14 @@ async function callWithCorruptionFallback(callArgs, sourceText) {
         }
     }
 
-    const parsed = await callStructuredJSON({ ...callArgs, provider: primary });
+    let parsed;
+    try {
+        parsed = await callStructuredJSON({ ...callArgs, provider: primary });
+    } catch (err) {
+        // The cheap AI failed or took too long: ask Claude instead of showing an error.
+        if (primary !== 'openai') throw err;
+        return callStructuredJSON({ ...callArgs, provider: 'anthropic' });
+    }
     const entries = parsed && Array.isArray(parsed.entries) ? parsed.entries : [];
     if (primary !== 'openai') return parsed;
     // Ask Claude when the cheap AI's answer is empty, broken, looks incomplete, or is a tour or

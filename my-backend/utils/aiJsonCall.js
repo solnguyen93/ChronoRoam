@@ -28,6 +28,12 @@ async function callStructuredJSON({ schemaName, schema, prompt, refusalMessage, 
                 text: { format: { type: 'json_schema', name: schemaName, schema, strict: true } },
                 // Room for long answers (a big packing list), so the answer isn't cut off partway.
                 max_output_tokens: 8000,
+            }, {
+                // The cheap AI sometimes keeps writing until it runs out of room (over a minute) and
+                // then fails. Give up after 20 seconds, with no automatic retries, so the caller can
+                // ask Claude instead (aiConfirmationExtraction.js).
+                timeout: 20000,
+                maxRetries: 0,
             });
         } catch (err) {
             throw new BadRequestError(err.message || unavailableMessage);
