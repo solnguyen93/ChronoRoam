@@ -24,6 +24,7 @@ import useScrollArrows from '../hooks/useScrollArrows';
 import useAtTopBackdrop from '../hooks/useAtTopBackdrop';
 import SharedBadge from './SharedBadge';
 import CollapseChevron from './CollapseChevron';
+import { openTour } from '../utils/tour';
 
 // The packing list page (from Home's Packlists tab, or a /packlist/... link). Edits change the
 // shared list everywhere it's used; Duplicate makes a separate copy.
@@ -186,6 +187,7 @@ function PacklistDetailPage() {
                                 { label: 'Rename', onClick: () => { setTitleDraft(packlist.title); setRenaming(true); } },
                                 { label: 'Duplicate', onClick: handleDuplicate },
                                 { label: 'Delete', onClick: openDeleteConfirm, danger: true },
+                                { label: 'How to use', onClick: openTour },
                                 // Guests don't get Account or Log out (they couldn't sign back in).
                                 ...(isGuest ? [] : [
                                     { label: 'Account', onClick: () => setShowAccount(true) },

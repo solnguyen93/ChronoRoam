@@ -12,6 +12,7 @@ import useScrollArrows from '../hooks/useScrollArrows';
 import CollapseChevron from './CollapseChevron';
 import InviteCards from './InviteCards';
 import ChronoRoamApi from '../api';
+import { openTour } from '../utils/tour';
 
 // Home (/home): the Trips and Packlists tabs. (Opening the app at "/" goes back to the last trip
 // instead, see App.js's RootRedirect.)
@@ -72,17 +73,18 @@ function HomePage() {
                             </div>
                             <div className="header-top-right">
                                 <span className="home-link"><Wordmark /></span>
-                                {/* The ⋮ menu (Account, Log out) is hidden for guests: they can't sign back in after
+                                {/* The ⋮ menu. Guests only get "How to use": they can't sign back in after
                                     logging out, and the sign-up link is shown below instead. */}
-                                {!isGuest && (
-                                    <OptionsMenu
-                                        title="Account options"
-                                        items={[
+                                <OptionsMenu
+                                    title="Account options"
+                                    items={[
+                                        { label: 'How to use', onClick: openTour },
+                                        ...(isGuest ? [] : [
                                             { label: 'Account', onClick: () => setShowAccount(true) },
                                             { label: 'Log out', onClick: doLogout },
-                                        ]}
-                                    />
-                                )}
+                                        ]),
+                                    ]}
+                                />
                             </div>
                         </div>
 
