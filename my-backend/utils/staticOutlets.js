@@ -26,6 +26,7 @@ const OUTLET_TYPES = {
     'Czech Republic': 'Type C/E, 230V, 50Hz',
     Czechia: 'Type C/E, 230V, 50Hz',
     Poland: 'Type C/E, 230V, 50Hz',
+    Hungary: 'Type C/F, 230V, 50Hz',
     Turkey: 'Type C/F, 230V, 50Hz',
     'South Korea': 'Type C/F, 220V, 60Hz',
     China: 'Type A/C/I, 220V, 50Hz',
