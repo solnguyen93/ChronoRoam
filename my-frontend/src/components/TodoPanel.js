@@ -3,6 +3,7 @@ import TaskList from './TaskList';
 import CollapseChevron from './CollapseChevron';
 import OptionsMenu from './OptionsMenu';
 import AiTodoImportModal from './AiTodoImportModal';
+import ConfirmModal from './ConfirmModal';
 import useBackdropDismiss from '../hooks/useBackdropDismiss';
 import useCollapsedSection from '../hooks/useCollapsedSection';
 
@@ -18,6 +19,7 @@ function TodoPanel({ tripId, list, canDelete, onRename, onDelete, onCreateList, 
     const [namePrompt, setNamePrompt] = useState(false);
     const [nameDraft, setNameDraft] = useState('');
     const namePromptBackdrop = useBackdropDismiss(() => setNamePrompt(false));
+    const [confirmingDelete, setConfirmingDelete] = useState(false);
     const todos = list.items;
     const visibleTodos = hideChecked ? todos.filter((t) => !t.done) : todos;
 
@@ -36,7 +38,7 @@ function TodoPanel({ tripId, list, canDelete, onRename, onDelete, onCreateList, 
         { label: 'Import to-dos', onClick: () => setAiImportOpen(true) },
         { label: 'Rename', onClick: () => { setNameDraft(displayTitle); setNamePrompt('rename'); } },
         { label: 'New to-do list', onClick: () => { setNameDraft(''); setNamePrompt('create'); } },
-        ...(canDelete ? [{ label: 'Delete this list', onClick: onDelete }] : []),
+        ...(canDelete ? [{ label: 'Delete this list', onClick: () => setConfirmingDelete(true) }] : []),
         // (No "Uncheck all" here: it was easy to tap by mistake.)
         { label: hideChecked ? 'Show checked off' : 'Hide checked off', onClick: () => setHideChecked((h) => !h) },
     ];
@@ -69,6 +71,14 @@ function TodoPanel({ tripId, list, canDelete, onRename, onDelete, onCreateList, 
             )}
 
             <AiTodoImportModal open={aiImportOpen} onClose={() => setAiImportOpen(false)} addTodo={addTodo} />
+
+            <ConfirmModal
+                open={confirmingDelete}
+                onClose={() => setConfirmingDelete(false)}
+                onConfirm={onDelete}
+                heading="Delete this to-do list?"
+                body={todos.length > 0 ? `This will also delete its ${todos.length} item${todos.length === 1 ? '' : 's'}.` : undefined}
+            />
 
             {namePrompt && (
                 <div className="modal-overlay open" {...namePromptBackdrop}>
