@@ -207,6 +207,36 @@ class ChronoRoamApi {
         return ChronoRoamApi.request(`trips/${tripId}/todos/uncheck-all`, {}, 'put');
     }
 
+    // A trip's named to-do lists (several per trip), each with its items nested.
+    static async getTodoLists(tripId) {
+        return ChronoRoamApi.request(`trips/${tripId}/todo-lists`, {}, 'get');
+    }
+
+    static async createTodoList(tripId, title) {
+        return ChronoRoamApi.request(`trips/${tripId}/todo-lists`, { title }, 'post');
+    }
+
+    static async renameTodoList(tripId, listId, title) {
+        return ChronoRoamApi.request(`trips/${tripId}/todo-lists/${listId}`, { title }, 'put');
+    }
+
+    // Server refuses this when it's the trip's last remaining list — see TodoList.remove.
+    static async deleteTodoList(tripId, listId) {
+        return ChronoRoamApi.request(`trips/${tripId}/todo-lists/${listId}`, {}, 'delete');
+    }
+
+    static async addTodoToList(tripId, listId, text, tags = {}) {
+        return ChronoRoamApi.request(`trips/${tripId}/todo-lists/${listId}/todos`, { text, tags }, 'post');
+    }
+
+    static async reorderTodosInList(tripId, listId, orderedIds) {
+        return ChronoRoamApi.request(`trips/${tripId}/todo-lists/${listId}/todos/reorder`, { orderedIds }, 'put');
+    }
+
+    static async uncheckAllTodosInList(tripId, listId) {
+        return ChronoRoamApi.request(`trips/${tripId}/todo-lists/${listId}/todos/uncheck-all`, {}, 'put');
+    }
+
     static async addTask(tripId, task) {
         return ChronoRoamApi.request(`trips/${tripId}/tasks`, task, 'post');
     }

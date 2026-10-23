@@ -13,7 +13,9 @@ import useLiveUpdates from './useLiveUpdates';
 // to the trip.
 function useTripData(tripId, join = false) {
     const [trip, setTrip] = useState(null);
-    const [todos, setTodos] = useState([]);
+    // A trip's named to-do lists, each { id, title, position, items }. Several per trip — see
+    // TodoList.js. Always has at least one; deleting the last is refused server-side.
+    const [todoLists, setTodoLists] = useState([]);
     const [tasks, setTasksState] = useState([]);
     // A copy of `tasks` that's updated immediately, so functions below can read the latest list
     // right after changing it (React state only updates on the next render). Saving in the
@@ -43,7 +45,7 @@ function useTripData(tripId, join = false) {
         try {
             const data = await ChronoRoamApi.getTrip(tripId, joinRef.current && loadedTripIdRef.current !== tripId);
             setTrip(data.trip);
-            setTodos(data.todos);
+            setTodoLists(data.todoLists);
             setTasks(data.tasks);
             setPacklists(data.packlists);
             loadedTripIdRef.current = tripId;
@@ -96,40 +98,53 @@ function useTripData(tripId, join = false) {
         return updated;
     }, [tripId]);
 
-    const setTodoTitle = useCallback(async (title) => {
-        const updated = await ChronoRoamApi.setTodoTitle(tripId, title);
-        setTrip(updated);
+    const createTodoList = useCallback(async (title) => {
+        const created = await ChronoRoamApi.createTodoList(tripId, title);
+        setTodoLists((prev) => [...prev, { ...created, items: [] }]);
+        return created;
+    }, [tripId]);
+
+    const renameTodoList = useCallback(async (listId, title) => {
+        const updated = await ChronoRoamApi.renameTodoList(tripId, listId, title);
+        setTodoLists((prev) => prev.map((l) => (l.id === listId ? { ...l, title: updated.title } : l)));
         return updated;
     }, [tripId]);
 
-    const addTodo = useCallback(async (text) => {
+    // Throws (and leaves state untouched) if this is the trip's last remaining list — the server
+    // refuses that; see TodoList.remove.
+    const deleteTodoList = useCallback(async (listId) => {
+        await ChronoRoamApi.deleteTodoList(tripId, listId);
+        setTodoLists((prev) => prev.filter((l) => l.id !== listId));
+    }, [tripId]);
+
+    const addTodoToList = useCallback(async (listId, text) => {
         noteRecentEmoji(text);
-        const created = await ChronoRoamApi.addTodo(tripId, text);
-        setTodos((prev) => [...prev, created]);
+        const created = await ChronoRoamApi.addTodoToList(tripId, listId, text);
+        setTodoLists((prev) => prev.map((l) => (l.id === listId ? { ...l, items: [...l.items, created] } : l)));
         return created;
     }, [tripId]);
 
     const updateTodo = useCallback(async (todoId, data) => {
         if (data.text) noteRecentEmoji(data.text);
         const updated = await ChronoRoamApi.updateTodo(tripId, todoId, data);
-        setTodos((prev) => prev.map((t) => (t.id === todoId ? updated : t)));
+        setTodoLists((prev) => prev.map((l) => ({ ...l, items: l.items.map((t) => (t.id === todoId ? updated : t)) })));
         return updated;
     }, [tripId]);
 
     const deleteTodo = useCallback(async (todoId) => {
         await ChronoRoamApi.deleteTodo(tripId, todoId);
-        setTodos((prev) => prev.filter((t) => t.id !== todoId));
+        setTodoLists((prev) => prev.map((l) => ({ ...l, items: l.items.filter((t) => t.id !== todoId) })));
     }, [tripId]);
 
-    const reorderTodos = useCallback(async (orderedIds) => {
-        const reordered = await ChronoRoamApi.reorderTodos(tripId, orderedIds);
-        setTodos(reordered);
+    const reorderTodosInList = useCallback(async (listId, orderedIds) => {
+        const reordered = await ChronoRoamApi.reorderTodosInList(tripId, listId, orderedIds);
+        setTodoLists((prev) => prev.map((l) => (l.id === listId ? { ...l, items: reordered } : l)));
         return reordered;
     }, [tripId]);
 
-    const uncheckAllTodos = useCallback(async () => {
-        const updated = await ChronoRoamApi.uncheckAllTodos(tripId);
-        setTodos(updated);
+    const uncheckAllInList = useCallback(async (listId) => {
+        const updated = await ChronoRoamApi.uncheckAllTodosInList(tripId, listId);
+        setTodoLists((prev) => prev.map((l) => (l.id === listId ? { ...l, items: updated } : l)));
         return updated;
     }, [tripId]);
 
@@ -170,10 +185,10 @@ function useTripData(tripId, join = false) {
     // A to-do dragged onto a day: deletes the to-do, adds a day item with the same text and tags
     // on that day (added at the end), then moves it to targetIndex, where it was dropped.
     const convertTodoToTask = useCallback(async (todoId, dayDate, targetIndex) => {
-        const todo = todos.find((t) => t.id === todoId);
+        const todo = todoLists.flatMap((l) => l.items).find((t) => t.id === todoId);
         if (!todo) return;
         await ChronoRoamApi.deleteTodo(tripId, todoId);
-        setTodos((prev) => prev.filter((t) => t.id !== todoId));
+        setTodoLists((prev) => prev.map((l) => ({ ...l, items: l.items.filter((t) => t.id !== todoId) })));
         const created = await ChronoRoamApi.addTask(tripId, { dayDate, text: todo.text, tags: todo.tags || {}, fixed: false, flight: false });
         setTasks((prev) => [...prev, created]);
         if (targetIndex == null) return created;
@@ -182,24 +197,29 @@ function useTripData(tripId, join = false) {
         dayTasks.splice(targetIndex, 0, created);
         await reorderTasks(dayKey, dayTasks.map((t) => t.id));
         return created;
-    }, [tripId, todos, setTasks, getFreshTasks, reorderTasks]);
+    }, [tripId, todoLists, setTasks, getFreshTasks, reorderTasks]);
 
-    // A day item dragged onto the to-do list: deletes it, adds a to-do with the same text and
-    // tags, and moves it to targetIndex. Only items without a category can be dragged there
-    // (TaskRow.js).
-    const convertTaskToTodo = useCallback(async (taskId, targetIndex) => {
+    // A day item dragged onto one to-do list panel: deletes it, adds a to-do with the same text
+    // and tags to that list, and moves it to targetIndex. Only items without a category can be
+    // dragged there (TaskRow.js). listId comes from which panel it was dropped on (see
+    // TodoPanel.js's data-todo-target) — falls back to the trip's first list if that's somehow
+    // missing, so a drop never silently does nothing.
+    const convertTaskToTodo = useCallback(async (taskId, targetIndex, listId) => {
         const task = tasksRef.current.find((t) => t.id === taskId);
         if (!task) return;
+        const targetListId = listId ? parseInt(listId, 10) : todoLists[0]?.id;
+        const targetList = todoLists.find((l) => l.id === targetListId) || todoLists[0];
+        if (!targetList) return;
         await ChronoRoamApi.deleteTask(tripId, taskId);
         setTasks((prev) => prev.filter((t) => t.id !== taskId));
-        const created = await ChronoRoamApi.addTodo(tripId, task.text, task.tags || {});
-        setTodos((prev) => [...prev, created]);
+        const created = await ChronoRoamApi.addTodoToList(tripId, targetList.id, task.text, task.tags || {});
+        setTodoLists((prev) => prev.map((l) => (l.id === targetList.id ? { ...l, items: [...l.items, created] } : l)));
         if (targetIndex == null) return created;
-        const ordered = [...todos];
+        const ordered = [...targetList.items];
         ordered.splice(targetIndex, 0, created);
-        await reorderTodos(ordered.map((t) => t.id));
+        await reorderTodosInList(targetList.id, ordered.map((t) => t.id));
         return created;
-    }, [tripId, setTasks, todos, reorderTodos]);
+    }, [tripId, setTasks, todoLists, reorderTodosInList]);
 
     // Saves changes to a day item. If that puts the day's timed items out of time order, the
     // order is fixed the same way as reorderTasks.
@@ -348,9 +368,10 @@ function useTripData(tripId, join = false) {
     }, [tasks]);
 
     return {
-        trip, todos, tasks, tasksByDay, packlists, loading, error, isNotFound, refresh: load,
-        updateTrip, setDayTitle, setTodoTitle,
-        addTodo, updateTodo, deleteTodo, reorderTodos, uncheckAllTodos, convertTodoToTask, convertTaskToTodo,
+        trip, todoLists, tasks, tasksByDay, packlists, loading, error, isNotFound, refresh: load,
+        updateTrip, setDayTitle,
+        createTodoList, renameTodoList, deleteTodoList, addTodoToList, updateTodo, deleteTodo,
+        reorderTodosInList, uncheckAllInList, convertTodoToTask, convertTaskToTodo,
         addTask, addTasks, updateTask, deleteTask, reorderTasks, moveTaskDay,
         linkPacklist, duplicateAndLinkPacklist, unlinkPacklist, renamePacklist,
         addPacklistItem, updatePacklistItem, movePacklistItem, deletePacklistItem, reorderPacklistItems, uncheckAllPacklistItems,

@@ -6,6 +6,7 @@ const { runMigrations } = require('./utils/migrations');
 const cors = require('cors');
 const tripRoutes = require('./routes/tripRoutes');
 const todoRoutes = require('./routes/todoRoutes');
+const todoListRoutes = require('./routes/todoListRoutes');
 const taskRoutes = require('./routes/taskRoutes');
 const packlistRoutes = require('./routes/packlistRoutes');
 const packlistItemRoutes = require('./routes/packlistItemRoutes');
@@ -50,7 +51,8 @@ app.use(notifyOnChange);
 // Routes
 app.use('/auth', authRoutes);                            // Sign up, sign in, guests, account settings, password reset
 app.use('/trips', tripRoutes);                          // Trips
-app.use('/trips/:publicId/todos', todoRoutes);           // A trip's to-do list
+app.use('/trips/:publicId/todos', todoRoutes);           // A trip's to-do list (legacy, pre-multi-list)
+app.use('/trips/:publicId/todo-lists', todoListRoutes);  // A trip's named to-do lists
 app.use('/trips/:publicId/tasks', taskRoutes);           // A trip's day-by-day items
 app.use('/trips/:publicId/packlists', tripPacklistRoutes); // Packing lists linked to a trip
 app.use('/packlists', packlistRoutes);                   // Packing lists

@@ -8,6 +8,7 @@ DROP TABLE IF EXISTS invites;
 DROP TABLE IF EXISTS trip_packlists;
 DROP TABLE IF EXISTS tasks;
 DROP TABLE IF EXISTS todos;
+DROP TABLE IF EXISTS todo_lists;
 DROP TABLE IF EXISTS trips;
 DROP TABLE IF EXISTS packlist_items;
 DROP TABLE IF EXISTS packlist_bags;
@@ -78,10 +79,23 @@ CREATE TABLE trips (
 -- Old column (see packlists), added here because it references trips, which is created after packlists.
 ALTER TABLE packlists ADD COLUMN forked_for_trip_id INTEGER REFERENCES trips(id) ON DELETE SET NULL;
 
--- A trip's to-do list items. tags holds the old food/cafe/shopping tags.
+-- A trip's named to-do lists (e.g. "To Do", "To Buy", "To Eat") — every trip always has at least
+-- one; deleting a trip's last remaining list is blocked at the route level, not here.
+CREATE TABLE todo_lists (
+    id SERIAL PRIMARY KEY,
+    trip_id INTEGER NOT NULL REFERENCES trips(id) ON DELETE CASCADE,
+    title VARCHAR(100) NOT NULL DEFAULT 'To-Do',
+    position INTEGER NOT NULL DEFAULT 0,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+-- A to-do list's items. tags holds the old food/cafe/shopping tags. trip_id is kept (redundant
+-- with list_id's own trip_id) so a trip's full to-do list can be read without joining through
+-- todo_lists — see utils/migrations.js's addTodoLists for why that redundancy exists.
 CREATE TABLE todos (
     id SERIAL PRIMARY KEY,
     trip_id INTEGER NOT NULL REFERENCES trips(id) ON DELETE CASCADE,
+    list_id INTEGER NOT NULL REFERENCES todo_lists(id) ON DELETE CASCADE,
     text TEXT NOT NULL,
     done BOOLEAN NOT NULL DEFAULT FALSE,
     tags JSONB NOT NULL DEFAULT '{}'::jsonb,

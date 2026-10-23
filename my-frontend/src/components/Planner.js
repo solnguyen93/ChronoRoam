@@ -52,9 +52,10 @@ function Planner({ tripId }) {
     // the user to the trip.
     const joinFromLink = new URLSearchParams(location.search).get('join') === '1';
     const {
-        trip, todos, tasks, tasksByDay, packlists, loading, error, isNotFound, refresh,
-        updateTrip, setDayTitle, setTodoTitle,
-        addTodo, updateTodo, deleteTodo, reorderTodos, convertTodoToTask, convertTaskToTodo,
+        trip, todoLists, tasks, tasksByDay, packlists, loading, error, isNotFound, refresh,
+        updateTrip, setDayTitle,
+        createTodoList, renameTodoList, deleteTodoList, addTodoToList, updateTodo, deleteTodo,
+        reorderTodosInList, convertTodoToTask, convertTaskToTodo,
         addTask, updateTask, deleteTask, reorderTasks, moveTaskDay,
         linkPacklist, duplicateAndLinkPacklist, unlinkPacklist, renamePacklist,
         addPacklistItem, updatePacklistItem, movePacklistItem, deletePacklistItem, uncheckAllPacklistItems,
@@ -194,7 +195,7 @@ function Planner({ tripId }) {
         onEditCat: (id) => openEditModal(id),
         onReorder: (dayDate, orderedIds) => reorderTasks(dayDate, orderedIds),
         onMoveDay: (taskId, dayDate) => moveTaskDay(taskId, dayDate),
-        onMoveToTodo: (taskId, targetIndex) => convertTaskToTodo(taskId, targetIndex),
+        onMoveToTodo: (taskId, targetIndex, listId) => convertTaskToTodo(taskId, targetIndex, listId),
         onAdd: (dayDate, text) => addTask({ dayDate, text, fixed: false, flight: false }),
         onSetDayTitle: (dayDate, title) => setDayTitle(dayDate, title),
     };
@@ -228,17 +229,22 @@ function Planner({ tripId }) {
                         onDeleteBag={deletePacklistBag}
                         onMoveBag={movePacklistBag}
                     />
-                    <TodoPanel
-                        tripId={tripId}
-                        title={trip.todoTitle}
-                        onRename={setTodoTitle}
-                        todos={todos}
-                        addTodo={addTodo}
-                        updateTodo={updateTodo}
-                        deleteTodo={deleteTodo}
-                        reorderTodos={reorderTodos}
-                        convertTodoToTask={convertTodoToTask}
-                    />
+                    {todoLists.map((list) => (
+                        <TodoPanel
+                            key={list.id}
+                            tripId={tripId}
+                            list={list}
+                            canDelete={todoLists.length > 1}
+                            onRename={(title) => renameTodoList(list.id, title)}
+                            onDelete={() => deleteTodoList(list.id)}
+                            onCreateList={(title) => createTodoList(title)}
+                            addTodo={(text) => addTodoToList(list.id, text)}
+                            updateTodo={updateTodo}
+                            deleteTodo={deleteTodo}
+                            reorderTodos={(orderedIds) => reorderTodosInList(list.id, orderedIds)}
+                            convertTodoToTask={convertTodoToTask}
+                        />
+                    ))}
                 </div>
 
                 <div className="day-section-head">

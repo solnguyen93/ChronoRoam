@@ -4,6 +4,7 @@ const router = express.Router();
 const pool = require('../db');
 const Trip = require('../models/Trip');
 const Todo = require('../models/Todo');
+const TodoList = require('../models/TodoList');
 const Task = require('../models/Task');
 const { requireUser } = require('../middleware/auth');
 const { TripMembership } = require('../models/Membership');
@@ -14,13 +15,17 @@ const { assertResourceQuota } = require('../utils/resourceQuota');
 
 // A trip with its to-dos, day items and this user's linked packing lists. userId is used to make the
 // user a member of the linked packing lists too (see buildLinkedPacklists).
+// todos is kept (not just todoLists) for the already-shipped iOS app, which reads it directly and
+// knows nothing about lists — see Todo.js's class comment.
 async function tripPayload(trip, userId) {
-    const [todos, tasks, packlists] = await Promise.all([
+    const [todos, todoListRows, tasks, packlists] = await Promise.all([
         Todo.getAll(trip.id),
+        TodoList.getAll(trip.id),
         Task.getAll(trip.id),
         buildLinkedPacklists(trip, userId),
     ]);
-    return { trip, todos, tasks, packlists };
+    const todoLists = await Promise.all(todoListRows.map(async (list) => ({ ...list, items: await Todo.getAllForList(list.id) })));
+    return { trip, todos, todoLists, tasks, packlists };
 }
 
 // Creates a trip (default title "Tokyo Trip", default dates today) with the user as its only

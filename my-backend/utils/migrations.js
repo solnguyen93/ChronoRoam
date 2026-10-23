@@ -55,6 +55,39 @@ async function addPerUserPacklistLinks(client) {
     return true;
 }
 
+// Named to-do lists per trip (several per trip, e.g. "To Do" / "To Buy" / "To Eat") — a todo used
+// to belong directly to a trip; now it belongs to one of the trip's lists. todos.trip_id is kept
+// (not dropped) alongside the new list_id specifically so the already-shipped iOS app's existing
+// GET/POST /trips/:id/todos calls (which know nothing about lists) keep working unchanged — they
+// just see every list's items merged into one flat array, same shape as before. Every trip
+// — even one with zero todos today — gets exactly one default list ('To-Do'), since every trip
+// must always have at least one (deleting a trip's last remaining list is blocked at the route
+// level, same invariant this migration establishes here).
+async function addTodoLists(client) {
+    const { rows } = await client.query(
+        `SELECT 1 FROM information_schema.tables WHERE table_schema = current_schema() AND table_name = 'todo_lists'`,
+    );
+    if (rows[0]) return false;
+    await client.query(`CREATE TABLE todo_lists (
+    id SERIAL PRIMARY KEY,
+    trip_id INTEGER NOT NULL REFERENCES trips(id) ON DELETE CASCADE,
+    title VARCHAR(100) NOT NULL DEFAULT 'To-Do',
+    position INTEGER NOT NULL DEFAULT 0,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW()
+)`);
+    await client.query(`CREATE INDEX idx_todo_lists_trip_id ON todo_lists(trip_id)`);
+    await client.query(`ALTER TABLE todos ADD COLUMN list_id INTEGER REFERENCES todo_lists(id) ON DELETE CASCADE`);
+    // Carries over the trip's existing custom to-do title (trips.todo_title, set via the old
+    // single-list Trip.setTodoTitle) rather than always defaulting to 'To-Do', so a trip someone
+    // already renamed doesn't lose that name in this migration.
+    await client.query(`INSERT INTO todo_lists (trip_id, title, position) SELECT id, COALESCE(todo_title, 'To-Do'), 0 FROM trips`);
+    await client.query(`
+        UPDATE todos SET list_id = todo_lists.id
+        FROM todo_lists WHERE todo_lists.trip_id = todos.trip_id`);
+    await client.query(`CREATE INDEX idx_todos_list_id ON todos(list_id)`);
+    return true;
+}
+
 // Applies every change above in one transaction.
 async function runMigrations() {
     const client = await pool.connect();
@@ -81,6 +114,7 @@ async function runMigrations() {
         await client.query(`CREATE UNIQUE INDEX IF NOT EXISTS idx_invites_trip ON invites(trip_id, to_user_id) WHERE trip_id IS NOT NULL`);
         await client.query(`CREATE UNIQUE INDEX IF NOT EXISTS idx_invites_packlist ON invites(packlist_id, to_user_id) WHERE packlist_id IS NOT NULL`);
         await client.query(`CREATE INDEX IF NOT EXISTS idx_invites_to_user ON invites(to_user_id)`);
+        if (await addTodoLists(client)) console.log('migrations: todos now belong to named per-trip lists');
         await client.query('COMMIT');
     } catch (err) {
         await client.query('ROLLBACK');

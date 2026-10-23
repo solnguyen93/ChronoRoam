@@ -84,6 +84,9 @@ function TaskRow({ task, onToggle, onDelete, onEdit, onMove, onMoveDay, onMoveTo
         let crossDayTargetDate = null;
         // Where in that other list it would be dropped.
         let crossTargetIndex = 0;
+        // Which to-do list panel is under the finger (data-todo-target holds that list's id) —
+        // several can exist now, so this isn't implied by crossDayTargetDate === TODO_TARGET alone.
+        let crossTodoListId = null;
         const ownDayDate = task.dayDate?.slice(0, 10);
         // Scrolls the page while the dragged row is held near the top or bottom edge
         // (dragAutoScroll.js). getScrollDelta keeps the row under the finger as the page scrolls.
@@ -166,6 +169,7 @@ function TaskRow({ task, onToggle, onDelete, onEdit, onMove, onMoveDay, onMoveTo
                     : null;
                 if (hoveredTodoEl) {
                     crossDayTargetDate = TODO_TARGET;
+                    crossTodoListId = hoveredTodoEl.dataset.todoTarget;
                     updateCrossDropLine(hoveredTodoEl, ev.clientY);
                     return;
                 }
@@ -257,7 +261,7 @@ function TaskRow({ task, onToggle, onDelete, onEdit, onMove, onMoveDay, onMoveTo
                 wrap.style.willChange = '';
                 wrap.style.pointerEvents = '';
                 if (crossDayTargetDate === TODO_TARGET) {
-                    onMoveToTodo?.(task.id, crossTargetIndex);
+                    onMoveToTodo?.(task.id, crossTargetIndex, crossTodoListId);
                 } else if (crossDayTargetDate) {
                     onMoveDay?.(task.id, crossDayTargetDate, crossTargetIndex);
                 } else if (currentTargetIndex !== dragStartIndex && onMove) {

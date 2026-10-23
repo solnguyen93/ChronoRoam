@@ -69,13 +69,20 @@ class Trip {
         return result.rows[0];
     }
 
-    // Sets the to-do list's title, or clears it (back to "To-Do") when title is empty.
+    // Sets the to-do list's title, or clears it (back to "To-Do") when title is empty. Legacy —
+    // the already-shipped iOS app's only way to rename a to-do list, back when a trip had just
+    // one. Also renames the trip's default (first) todo_lists row, which is the SAME list this
+    // affected before lists existed — keeps that old rename path in sync with TodoList.rename.
     static async setTodoTitle(publicId, title) {
         const result = await pool.query(
             `UPDATE trips SET todo_title = $1 WHERE public_id = $2 RETURNING ${TRIP_FIELDS}`,
             [title || null, publicId],
         );
         if (!result.rows[0]) throw new NotFoundError('Trip not found');
+        await pool.query(
+            `UPDATE todo_lists SET title = $1 WHERE id = (SELECT id FROM todo_lists WHERE trip_id = $2 ORDER BY position ASC LIMIT 1)`,
+            [title || 'To-Do', result.rows[0].id],
+        );
         return result.rows[0];
     }
 
