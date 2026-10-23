@@ -72,6 +72,22 @@ class Todo {
         if (!result.rows[0]) throw new NotFoundError('Todo not found');
     }
 
+    // Moves a to-do into a different list (within the same trip), appended at the end — a
+    // follow-up reorderInList call places it at a specific drop position, same two-step pattern
+    // as addToList + reorderInList elsewhere.
+    static async moveToList(id, tripId, newListId) {
+        const { rows: [{ next }] } = await pool.query(
+            `SELECT COALESCE(MAX(position) + 1, 0) AS next FROM todos WHERE list_id = $1`,
+            [newListId],
+        );
+        const result = await pool.query(
+            `UPDATE todos SET list_id = $1, position = $2 WHERE id = $3 AND trip_id = $4 RETURNING ${TODO_FIELDS}`,
+            [newListId, next, id, tripId],
+        );
+        if (!result.rows[0]) throw new NotFoundError('Todo not found');
+        return result.rows[0];
+    }
+
     // Saves a new order: each id's position becomes its index in orderedIds.
     static async reorder(tripId, orderedIds) {
         for (let i = 0; i < orderedIds.length; i++) {

@@ -55,7 +55,7 @@ function Planner({ tripId }) {
         trip, todoLists, tasks, tasksByDay, packlists, loading, error, isNotFound, refresh,
         updateTrip, setDayTitle,
         createTodoList, renameTodoList, deleteTodoList, addTodoToList, updateTodo, deleteTodo,
-        reorderTodosInList, convertTodoToTask, convertTaskToTodo,
+        reorderTodosInList, convertTodoToTask, convertTaskToTodo, moveTodoToList,
         addTask, updateTask, deleteTask, reorderTasks, moveTaskDay,
         linkPacklist, duplicateAndLinkPacklist, unlinkPacklist, renamePacklist,
         addPacklistItem, updatePacklistItem, movePacklistItem, deletePacklistItem, uncheckAllPacklistItems,
@@ -243,6 +243,7 @@ function Planner({ tripId }) {
                             deleteTodo={deleteTodo}
                             reorderTodos={(orderedIds) => reorderTodosInList(list.id, orderedIds)}
                             convertTodoToTask={convertTodoToTask}
+                            moveTodoToList={moveTodoToList}
                         />
                     ))}
                 </div>

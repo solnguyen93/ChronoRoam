@@ -63,6 +63,18 @@ router.delete('/:listId', async (req, res) => {
     }
 });
 
+// Moves an existing to-do (from any list in this trip) into this list, appended at the end.
+router.put('/:listId/todos/:todoId/move', async (req, res) => {
+    try {
+        const user = requireUser(res);
+        const trip = await Trip.getByPublicId(req.params.publicId);
+        await TripMembership.requireMember(trip.id, user.id);
+        res.json(await Todo.moveToList(req.params.todoId, trip.id, req.params.listId));
+    } catch (error) {
+        res.status(error.status || 500).json({ message: error.message });
+    }
+});
+
 // Adds a to-do to this list (text is required).
 router.post('/:listId/todos', async (req, res) => {
     const text = (req.body.text || '').trim();

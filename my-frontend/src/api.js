@@ -237,6 +237,10 @@ class ChronoRoamApi {
         return ChronoRoamApi.request(`trips/${tripId}/todo-lists/${listId}/todos/uncheck-all`, {}, 'put');
     }
 
+    static async moveTodoToList(tripId, listId, todoId) {
+        return ChronoRoamApi.request(`trips/${tripId}/todo-lists/${listId}/todos/${todoId}/move`, {}, 'put');
+    }
+
     static async addTask(tripId, task) {
         return ChronoRoamApi.request(`trips/${tripId}/tasks`, task, 'post');
     }

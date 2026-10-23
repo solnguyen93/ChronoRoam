@@ -88,6 +88,9 @@ function TaskRow({ task, onToggle, onDelete, onEdit, onMove, onMoveDay, onMoveTo
         // several can exist now, so this isn't implied by crossDayTargetDate === TODO_TARGET alone.
         let crossTodoListId = null;
         const ownDayDate = task.dayDate?.slice(0, 10);
+        // Set only for a to-do (a day task has no listId) — stops it from "cross-moving" onto the
+        // very panel it's already in, which is just a same-list reorder instead (see below).
+        const ownListId = task.listId != null ? String(task.listId) : null;
         // Scrolls the page while the dragged row is held near the top or bottom edge
         // (dragAutoScroll.js). getScrollDelta keeps the row under the finger as the page scrolls.
         let autoScroll = null;
@@ -163,9 +166,13 @@ function TaskRow({ task, onToggle, onDelete, onEdit, onMove, onMoveDay, onMoveTo
                 // so it isn't found itself).
                 const hoveredEl = (onMoveDay || onMoveToTodo) ? document.elementFromPoint(ev.clientX, ev.clientY) : null;
 
-                // Only a day item without a category can be dropped on the to-do list.
-                const hoveredTodoEl = (onMoveToTodo && !task.cat)
+                // Only a day item without a category can be dropped on the to-do list. A to-do
+                // hovering its OWN panel doesn't count — that's a same-list reorder, below.
+                const rawHoveredTodoEl = (onMoveToTodo && !task.cat)
                     ? hoveredEl?.closest('[data-todo-target]')
+                    : null;
+                const hoveredTodoEl = (rawHoveredTodoEl && rawHoveredTodoEl.dataset.todoTarget !== ownListId)
+                    ? rawHoveredTodoEl
                     : null;
                 if (hoveredTodoEl) {
                     crossDayTargetDate = TODO_TARGET;

@@ -9,7 +9,7 @@ import useCollapsedSection from '../hooks/useCollapsedSection';
 // One of a trip's named to-do lists (several per trip — see TodoList.js on the backend). "New"
 // creates a sibling list; "Delete" only appears when canDelete is true (the server refuses
 // deleting a trip's last remaining list, so the option is hidden rather than shown-then-rejected).
-function TodoPanel({ tripId, list, canDelete, onRename, onDelete, onCreateList, addTodo, updateTodo, deleteTodo, reorderTodos, convertTodoToTask }) {
+function TodoPanel({ tripId, list, canDelete, onRename, onDelete, onCreateList, addTodo, updateTodo, deleteTodo, reorderTodos, convertTodoToTask, moveTodoToList }) {
     const [collapsed, setCollapsed] = useCollapsedSection('chronoroam_collapsed_todos', `${tripId}:${list.id}`);
     const [hideChecked, setHideChecked] = useState(false);
     const [aiImportOpen, setAiImportOpen] = useState(false);
@@ -62,6 +62,7 @@ function TodoPanel({ tripId, list, canDelete, onRename, onDelete, onCreateList, 
                         onUpdateTags={(id, tags) => updateTodo(id, { tags })}
                         onReorder={(orderedIds) => reorderTodos(orderedIds)}
                         onMoveDay={(todoId, dayDate, targetIndex) => convertTodoToTask(todoId, dayDate, targetIndex)}
+                        onMoveToTodo={(todoId, targetIndex, listId) => moveTodoToList(todoId, targetIndex, listId)}
                         onAdd={(text) => addTodo(text)}
                     />
                 </div>

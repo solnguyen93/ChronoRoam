@@ -221,6 +221,28 @@ function useTripData(tripId, join = false) {
         return created;
     }, [tripId, setTasks, todoLists, reorderTodosInList]);
 
+    // A to-do dragged onto a DIFFERENT to-do list panel: moves it there (appended), then to
+    // targetIndex, where it was dropped. listId is the destination panel's list id (see
+    // TaskRow.js's ownListId exclusion, which stops a to-do dropped back on its own panel from
+    // reaching here at all — that's a plain same-list reorder instead).
+    const moveTodoToList = useCallback(async (todoId, targetIndex, listId) => {
+        const targetListId = parseInt(listId, 10);
+        const targetList = todoLists.find((l) => l.id === targetListId);
+        const sourceList = todoLists.find((l) => l.items.some((t) => t.id === todoId));
+        if (!targetList || !sourceList) return;
+        const moved = await ChronoRoamApi.moveTodoToList(tripId, targetList.id, todoId);
+        setTodoLists((prev) => prev.map((l) => {
+            if (l.id === sourceList.id) return { ...l, items: l.items.filter((t) => t.id !== todoId) };
+            if (l.id === targetList.id) return { ...l, items: [...l.items, moved] };
+            return l;
+        }));
+        if (targetIndex == null) return moved;
+        const ordered = [...targetList.items];
+        ordered.splice(targetIndex, 0, moved);
+        await reorderTodosInList(targetList.id, ordered.map((t) => t.id));
+        return moved;
+    }, [tripId, todoLists, reorderTodosInList]);
+
     // Saves changes to a day item. If that puts the day's timed items out of time order, the
     // order is fixed the same way as reorderTasks.
     const updateTask = useCallback(async (taskId, data) => {
@@ -371,7 +393,7 @@ function useTripData(tripId, join = false) {
         trip, todoLists, tasks, tasksByDay, packlists, loading, error, isNotFound, refresh: load,
         updateTrip, setDayTitle,
         createTodoList, renameTodoList, deleteTodoList, addTodoToList, updateTodo, deleteTodo,
-        reorderTodosInList, uncheckAllInList, convertTodoToTask, convertTaskToTodo,
+        reorderTodosInList, uncheckAllInList, convertTodoToTask, convertTaskToTodo, moveTodoToList,
         addTask, addTasks, updateTask, deleteTask, reorderTasks, moveTaskDay,
         linkPacklist, duplicateAndLinkPacklist, unlinkPacklist, renamePacklist,
         addPacklistItem, updatePacklistItem, movePacklistItem, deletePacklistItem, reorderPacklistItems, uncheckAllPacklistItems,
