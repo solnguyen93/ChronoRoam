@@ -1,4 +1,4 @@
-import { to24Hour } from './dateHelpers';
+import { to24Hour, daysBetween } from './dateHelpers';
 
 // Keeping a day's items in time order.
 
@@ -31,14 +31,49 @@ function timeFieldFor(cat, fields) {
     }
 }
 
-// An item's time as minutes after midnight, or null when it has no time.
+// The paired categories' own date field — the actual calendar date that field's time belongs to,
+// which can differ from the task's own dayDate (the day card it's filed under/displayed on): an
+// overnight flight's arrival is still shown on the departure's day card, but its arrTime belongs
+// to the NEXT calendar day. Categories not listed here (restaurant, tour, activity, direction)
+// have no date of their own — dayDate is already the only date that applies.
+function relevantDateFieldFor(cat) {
+    switch (cat) {
+        case 'flight-depart':
+        case 'transportation-depart':
+            return 'depDate';
+        case 'flight-arrive':
+        case 'transportation-arrive':
+            return 'arrDate';
+        case 'lodging-checkin':
+            return 'checkInDate';
+        case 'lodging-checkout':
+            return 'checkOutDate';
+        case 'car-pickup':
+            return 'pickupDate';
+        case 'car-return':
+            return 'returnDate';
+        default:
+            return null;
+    }
+}
+
+// An item's time as minutes after midnight, or null when it has no time. For a paired category
+// whose own date is a different calendar day than the day card it's on, the minutes are offset by
+// that many days — without this, a next-day arrival's small clock time (e.g. 6:10 AM, actually
+// tomorrow) would sort as if it happened FIRST, ahead of same-day items with a later clock time.
 export function getSortMinutes(task) {
     const t12 = timeFieldFor(task?.cat, task?.fields);
     if (!t12) return null;
     const t24 = to24Hour(t12);
     if (!t24) return null;
     const [h, m] = t24.split(':').map(Number);
-    return h * 60 + m;
+    let minutes = h * 60 + m;
+    const dateField = relevantDateFieldFor(task.cat);
+    const relevantDate = dateField && task.fields?.[dateField];
+    if (relevantDate && task.dayDate) {
+        minutes += daysBetween(task.dayDate.slice(0, 10), relevantDate.slice(0, 10)) * 1440;
+    }
+    return minutes;
 }
 
 // Puts the items that have a time back in time order, leaving items without a time where they
