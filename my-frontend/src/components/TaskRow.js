@@ -74,7 +74,7 @@ function TaskRow({ task, onToggle, onDelete, onEdit, onMove, onMoveDay, onMoveTo
         const onTouchMoveNative = (ev) => { if (g.mode === 'reorder') ev.preventDefault(); };
         wrap.addEventListener('touchmove', onTouchMoveNative, { passive: false });
 
-        let list = null, siblings = [], dragStartIndex = -1, currentTargetIndex = -1, rowHeight = 0;
+        let list = null, siblings = [], dragStartIndex = -1, currentTargetIndex = -1;
         // While dragging, only the dragged row moves and a line shows where it will land. Moves
         // are applied at most once per screen frame (rafId, latestEvent).
         let rafId = null;
@@ -109,6 +109,21 @@ function TaskRow({ task, onToggle, onDelete, onEdit, onMove, onMoveDay, onMoveTo
             if (targetEl) dropLine.showAt(targetEl, 'top', isOriginal);
             else if (withoutWrap.length) dropLine.showAt(withoutWrap[withoutWrap.length - 1], 'bottom', isOriginal);
             else dropLine.hide();
+        };
+
+        // For a same-list drag: finds the target index among the OTHER rows (siblings minus the
+        // dragged one) by their actual current position, not a row-height assumption — rows can
+        // differ in height (e.g. a flight's two-line entry vs. a plain one-line item), so a
+        // uniform-height delta (dy / rowHeight) under- or overcounts how many rows the drag has
+        // actually passed once a taller or shorter row is involved.
+        const updateSameListTargetIndex = (y) => {
+            const withoutWrap = siblings.filter((s) => s !== wrap);
+            if (!withoutWrap.length) { currentTargetIndex = 0; return; }
+            for (let i = 0; i < withoutWrap.length; i++) {
+                const r = withoutWrap[i].getBoundingClientRect();
+                if (y < r.top + r.height / 2) { currentTargetIndex = i; return; }
+            }
+            currentTargetIndex = withoutWrap.length;
         };
 
         // For a drop onto another day or the to-do list: finds the first row whose middle is
@@ -191,8 +206,7 @@ function TaskRow({ task, onToggle, onDelete, onEdit, onMove, onMoveDay, onMoveTo
                 }
                 crossDayTargetDate = null;
 
-                const shift = Math.round(dy / rowHeight);
-                currentTargetIndex = Math.max(0, Math.min(siblings.length - 1, dragStartIndex + shift));
+                updateSameListTargetIndex(ev.clientY);
                 updateDropLine();
             }
         };
@@ -206,7 +220,6 @@ function TaskRow({ task, onToggle, onDelete, onEdit, onMove, onMoveDay, onMoveTo
             siblings = Array.from(list.children).filter((el) => el.classList.contains('task-wrap'));
             dragStartIndex = siblings.indexOf(wrap);
             currentTargetIndex = dragStartIndex;
-            rowHeight = wrap.offsetHeight;
             wrap.style.position = 'relative';
             // Drawn above everything else while dragged.
             wrap.style.zIndex = 9999;
