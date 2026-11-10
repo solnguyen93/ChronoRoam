@@ -257,6 +257,12 @@ class ChronoRoamApi {
         return ChronoRoamApi.request(`trips/${tripId}/tasks/reorder`, { dayDate, orderedIds }, 'put');
     }
 
+    // Swaps two days' names and plain/solo-dated items — linked pairs (flight, transportation,
+    // lodging, car rental) stay put (Task.swapDays).
+    static async swapDays(tripId, dateA, dateB) {
+        return ChronoRoamApi.request(`trips/${tripId}/tasks/swap-days`, { dateA, dateB }, 'put');
+    }
+
     // Moves a day item to another day. For a linked pair (flight or transportation depart and
     // arrive, lodging check-in and check-out), the server moves the other half by the same number
     // of days (Task.moveToDay).

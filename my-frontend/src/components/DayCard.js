@@ -3,6 +3,7 @@ import DayNameEditor from './DayNameEditor';
 import TaskList from './TaskList';
 import useWeather from '../hooks/useWeather';
 import useScrollArrows from '../hooks/useScrollArrows';
+import useDayHeaderDrag from '../hooks/useDayHeaderDrag';
 import WeatherIcon from './WeatherIcon';
 import CollapseChevron from './CollapseChevron';
 import { DOW_SHORT, MON_SHORT, parseISO } from '../utils/dateHelpers';
@@ -19,11 +20,12 @@ function CheckIcon() {
 // (a row of cards side by side, each growing with its items) and, with `square`, by the calendar
 // view (a fixed-size square whose items scroll inside it; smaller squares show less, see
 // Planner.css, and a ✓ when items are hidden).
-function DayCard({ dateISO, tasks, dayTitle, location, showLocationLabel, isToday, square, weatherLocked, onToggle, onDelete, onRename, onUpdateTags, onEditCat, onReorder, onMoveDay, onMoveToTodo, onAdd, onSetDayTitle }) {
+function DayCard({ dateISO, tasks, dayTitle, location, showLocationLabel, isToday, square, weatherLocked, onToggle, onDelete, onRename, onUpdateTags, onEditCat, onReorder, onMoveDay, onMoveToTodo, onAdd, onSetDayTitle, onSwapDay }) {
     const weather = useWeather(dateISO, location, weatherLocked);
     const d = parseISO(dateISO);
     const hasItems = tasks.length > 0;
     const { canBack, canForward, idle, scrollBack, scrollForward, ref: tasksScrollRef } = useScrollArrows('y', [tasks.length]);
+    const headerDrag = useDayHeaderDrag(dateISO, onSwapDay);
 
     // Weather: a real forecast shows an icon and "72°/58°"; further out (beyond about 16 days) it's
     // the typical weather, shown as "~72°/58°" with no icon.
@@ -41,7 +43,7 @@ function DayCard({ dateISO, tasks, dayTitle, location, showLocationLabel, isToda
 
     return (
         <div className={className} id={'day-' + dateISO} data-day-date={dateISO}>
-            <div className="day-row-cell-top">
+            <div className="day-row-cell-top" ref={headerDrag.ref} onPointerDown={headerDrag.onPointerDown}>
                 <div className="day-row-cell-heading">
                     <div className="day-row-cell-date-wrap">
                         <div className="day-row-cell-date">

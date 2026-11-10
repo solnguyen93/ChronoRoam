@@ -2,7 +2,7 @@ import React from 'react';
 import DayColumn from './DayColumn';
 import { dateRange, todayISO } from '../utils/dateHelpers';
 
-function DayRail({ trip, tasksByDay, locationsByDay, fallbackLocation, weatherLocked, onToggle, onDelete, onRename, onUpdateTags, onEditCat, onReorder, onMoveDay, onMoveToTodo, onAdd, onSetDayTitle }) {
+function DayRail({ trip, tasksByDay, locationsByDay, fallbackLocation, weatherLocked, onToggle, onDelete, onRename, onUpdateTags, onEditCat, onReorder, onMoveDay, onMoveToTodo, onAdd, onSetDayTitle, onSwapDay }) {
     const dates = dateRange(trip.startDate.slice(0, 10), trip.endDate.slice(0, 10));
     const todayKey = todayISO();
 
@@ -29,6 +29,7 @@ function DayRail({ trip, tasksByDay, locationsByDay, fallbackLocation, weatherLo
                         onMoveToTodo={onMoveToTodo}
                         onAdd={(text) => onAdd(dateISO, text)}
                         onSetDayTitle={(title) => onSetDayTitle(dateISO, title)}
+                        onSwapDay={onSwapDay}
                     />
                 ))}
             </div>

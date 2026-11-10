@@ -213,6 +213,43 @@ class Task {
         }
         return Task.getAll(tripId);
     }
+
+    // Swaps two days wholesale — their custom names, and their plain/solo-dated items (to-dos
+    // converted to tasks, restaurant/tour/activity/direction) — so dragging one day's header onto
+    // another swaps what's planned for each without re-dragging every item by hand. Deliberately
+    // excludes anything that's half of a linked pair (flight, transportation, lodging, car rental):
+    // those represent a real booked date, and a swap could otherwise separate a pair across days it
+    // was never on, or even put an arrival before its own departure if the pair happened to span
+    // exactly these two days.
+    static async swapDays(tripId, dateA, dateB) {
+        const client = await pool.connect();
+        try {
+            await client.query('BEGIN');
+            const { rows: [trip] } = await client.query(
+                `SELECT day_titles AS "dayTitles" FROM trips WHERE id = $1 FOR UPDATE`, [tripId],
+            );
+            if (!trip) throw new NotFoundError('Trip not found');
+            const dayTitles = { ...trip.dayTitles };
+            const titleA = dayTitles[dateA];
+            const titleB = dayTitles[dateB];
+            if (titleB) dayTitles[dateA] = titleB; else delete dayTitles[dateA];
+            if (titleA) dayTitles[dateB] = titleA; else delete dayTitles[dateB];
+            await client.query(`UPDATE trips SET day_titles = $1::jsonb WHERE id = $2`, [JSON.stringify(dayTitles), tripId]);
+
+            await client.query(
+                `UPDATE tasks SET day_date = CASE WHEN day_date = $2 THEN $3 ELSE $2 END
+                 WHERE trip_id = $1 AND day_date IN ($2, $3) AND link_id IS NULL`,
+                [tripId, dateA, dateB],
+            );
+            await client.query('COMMIT');
+        } catch (error) {
+            await client.query('ROLLBACK');
+            throw error;
+        } finally {
+            client.release();
+        }
+        return Task.getAll(tripId);
+    }
 }
 
 module.exports = Task;

@@ -24,7 +24,7 @@ function useIsMobile() {
 // when long. Trip days are square day cards (DayCard); other days in those weeks are grayed-out
 // numbers. On wider screens a month's name appears above its 1st, and that month's days in that
 // week move down to make room for it.
-function DayCalendarView({ trip, tasksByDay, locationsByDay, weatherLocked, onToggle, onDelete, onRename, onUpdateTags, onEditCat, onReorder, onMoveDay, onMoveToTodo, onAdd, onSetDayTitle }) {
+function DayCalendarView({ trip, tasksByDay, locationsByDay, weatherLocked, onToggle, onDelete, onRename, onUpdateTags, onEditCat, onReorder, onMoveDay, onMoveToTodo, onAdd, onSetDayTitle, onSwapDay }) {
     const startISO = trip.startDate.slice(0, 10);
     const endISO = trip.endDate.slice(0, 10);
     const weeks = weeksForTrip(startISO, endISO);
@@ -102,6 +102,7 @@ function DayCalendarView({ trip, tasksByDay, locationsByDay, weatherLocked, onTo
                                         onMoveToTodo={onMoveToTodo}
                                         onAdd={(text) => onAdd(dateISO, text)}
                                         onSetDayTitle={(title) => onSetDayTitle(dateISO, title)}
+                                        onSwapDay={onSwapDay}
                                     />
                                 </div>
                             );

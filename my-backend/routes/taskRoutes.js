@@ -64,6 +64,24 @@ router.put('/reorder', async (req, res) => {
     }
 });
 
+// Swaps two days' custom names and plain/solo-dated items (see Task.swapDays) — dragging one
+// day's header onto another, instead of moving every item by hand. Returns the trip too, since
+// day_titles changed alongside the tasks.
+router.put('/swap-days', async (req, res) => {
+    const { dateA, dateB } = req.body;
+    if (!dateA || !dateB) return res.status(400).json({ message: 'dateA and dateB are required.' });
+    try {
+        const user = requireUser(res);
+        const trip = await Trip.getByPublicId(req.params.publicId);
+        await TripMembership.requireMember(trip.id, user.id);
+        const tasks = await Task.swapDays(trip.id, dateA, dateB);
+        const updatedTrip = await Trip.getByPublicId(req.params.publicId);
+        res.json({ trip: updatedTrip, tasks });
+    } catch (error) {
+        res.status(error.status || 500).json({ message: error.message });
+    }
+});
+
 // Moves an item to another day, moving its paired item if needed (see Task.moveToDay).
 router.put('/:id/move-day', async (req, res) => {
     const dayDate = req.body.dayDate;

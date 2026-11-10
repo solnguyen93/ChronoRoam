@@ -56,7 +56,7 @@ function Planner({ tripId }) {
         updateTrip, setDayTitle,
         createTodoList, renameTodoList, deleteTodoList, addTodoToList, updateTodo, deleteTodo,
         reorderTodosInList, convertTodoToTask, convertTaskToTodo, moveTodoToList,
-        addTask, updateTask, deleteTask, reorderTasks, moveTaskDay,
+        addTask, updateTask, deleteTask, reorderTasks, moveTaskDay, swapDays,
         linkPacklist, duplicateAndLinkPacklist, unlinkPacklist, renamePacklist,
         addPacklistItem, updatePacklistItem, movePacklistItem, deletePacklistItem, uncheckAllPacklistItems,
         addPacklistBag, updatePacklistBag, deletePacklistBag, movePacklistBag,
@@ -198,6 +198,7 @@ function Planner({ tripId }) {
         onMoveToTodo: (taskId, targetIndex, listId) => convertTaskToTodo(taskId, targetIndex, listId),
         onAdd: (dayDate, text) => addTask({ dayDate, text, fixed: false, flight: false }),
         onSetDayTitle: (dayDate, title) => setDayTitle(dayDate, title),
+        onSwapDay: (dateA, dateB) => swapDays(dateA, dateB),
     };
 
     return (

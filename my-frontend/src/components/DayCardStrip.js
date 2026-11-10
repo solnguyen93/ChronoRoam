@@ -4,7 +4,7 @@ import useScrollArrows from '../hooks/useScrollArrows';
 import CollapseChevron from './CollapseChevron';
 
 // A row of day cards that scrolls left and right, with arrows when there's more to see that way.
-function DayCardStrip({ dates, todayKey, tasksByDay, dayTitles, locationsByDay, weatherLocked, onToggle, onDelete, onRename, onUpdateTags, onEditCat, onReorder, onMoveDay, onMoveToTodo, onAdd, onSetDayTitle }) {
+function DayCardStrip({ dates, todayKey, tasksByDay, dayTitles, locationsByDay, weatherLocked, onToggle, onDelete, onRename, onUpdateTags, onEditCat, onReorder, onMoveDay, onMoveToTodo, onAdd, onSetDayTitle, onSwapDay }) {
     const { canBack, canForward, idle, scrollBack, scrollForward, ref: setStripRef } = useScrollArrows('x', [dates.length]);
 
     return (
@@ -33,6 +33,7 @@ function DayCardStrip({ dates, todayKey, tasksByDay, dayTitles, locationsByDay, 
                         onMoveToTodo={onMoveToTodo}
                         onAdd={(text) => onAdd(dateISO, text)}
                         onSetDayTitle={(title) => onSetDayTitle(dateISO, title)}
+                        onSwapDay={onSwapDay}
                     />
                 ))}
             </div>

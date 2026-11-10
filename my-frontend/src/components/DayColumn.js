@@ -5,12 +5,14 @@ import CollapseChevron from './CollapseChevron';
 import WeatherIcon from './WeatherIcon';
 import useWeather from '../hooks/useWeather';
 import useCollapsedDay from '../hooks/useCollapsedDay';
+import useDayHeaderDrag from '../hooks/useDayHeaderDrag';
 import { DOW_SHORT, MON_SHORT, parseISO } from '../utils/dateHelpers';
 
-function DayColumn({ dateISO, tasks, isToday, dayTitle, location, showLocationLabel, weatherLocked, onToggle, onDelete, onRename, onUpdateTags, onEditCat, onReorder, onMoveDay, onMoveToTodo, onAdd, onSetDayTitle }) {
+function DayColumn({ dateISO, tasks, isToday, dayTitle, location, showLocationLabel, weatherLocked, onToggle, onDelete, onRename, onUpdateTags, onEditCat, onReorder, onMoveDay, onMoveToTodo, onAdd, onSetDayTitle, onSwapDay }) {
     const [collapsed, setCollapsed] = useCollapsedDay(dateISO);
     const weather = useWeather(dateISO, location, weatherLocked);
     const d = parseISO(dateISO);
+    const headerDrag = useDayHeaderDrag(dateISO, onSwapDay);
     const hasFlight = tasks.some((t) => t.flight);
     const hasTrip = tasks.length > 0;
 
@@ -22,7 +24,7 @@ function DayColumn({ dateISO, tasks, isToday, dayTitle, location, showLocationLa
     return (
         <div className={className} id={'day-' + dateISO} data-day-date={dateISO}>
             <div className="day-head">
-                <div className="day-head-top">
+                <div className="day-head-top" ref={headerDrag.ref} onPointerDown={headerDrag.onPointerDown}>
                     <div className="day-date-dow-stack">
                         <span className="day-date">{MON_SHORT[d.getMonth()]} {d.getDate()}</span>
                         <span className="day-dow">{DOW_SHORT[d.getDay()]}</span>

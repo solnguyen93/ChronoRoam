@@ -289,6 +289,16 @@ function useTripData(tripId, join = false) {
         return result;
     }, [tripId, getFreshTasks, setTasks]);
 
+    // Swaps two days wholesale (their names and plain/solo-dated items) — dragging one day's
+    // header onto another, instead of moving every item by hand. Linked pairs (flight,
+    // transportation, lodging, car rental) stay on their real dates; see Task.swapDays.
+    const swapDays = useCallback(async (dateA, dateB) => {
+        const { trip: updatedTrip, tasks: updatedTasks } = await ChronoRoamApi.swapDays(tripId, dateA, dateB);
+        setTrip(updatedTrip);
+        setTasks(updatedTasks);
+        return updatedTasks;
+    }, [tripId, setTasks]);
+
     // Every packing list change on a trip returns { trip, packlists } with all its linked
     // lists, which replaces what's shown.
     const applyPacklistResponse = (data) => {
@@ -394,7 +404,7 @@ function useTripData(tripId, join = false) {
         updateTrip, setDayTitle,
         createTodoList, renameTodoList, deleteTodoList, addTodoToList, updateTodo, deleteTodo,
         reorderTodosInList, uncheckAllInList, convertTodoToTask, convertTaskToTodo, moveTodoToList,
-        addTask, addTasks, updateTask, deleteTask, reorderTasks, moveTaskDay,
+        addTask, addTasks, updateTask, deleteTask, reorderTasks, moveTaskDay, swapDays,
         linkPacklist, duplicateAndLinkPacklist, unlinkPacklist, renamePacklist,
         addPacklistItem, updatePacklistItem, movePacklistItem, deletePacklistItem, reorderPacklistItems, uncheckAllPacklistItems,
         addPacklistBag, updatePacklistBag, deletePacklistBag, movePacklistBag,
