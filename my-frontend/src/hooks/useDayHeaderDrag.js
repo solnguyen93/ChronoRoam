@@ -4,10 +4,9 @@ import { beginRowTouchGuard, endRowTouchGuard, markReorderActive, endReorderDrag
 const LONG_PRESS_MS = 480;
 const MOVE_CANCEL = 8;
 const DROP_TARGET_CLASS = 'day-swap-target';
-// Same fade TaskRow.js's dragged row gets (.task.reorder-active > * { opacity: 0.4 }) — see
-// Planner.css's day-name-reorder-active rule, applied to the same element this hook returns a ref
-// for.
-const DRAGGED_CLASS = 'day-name-reorder-active';
+// Fades the day name AND its items (everything that's actually about to move to the new date —
+// the date/weekday/weather stay put and stay clear) — see Planner.css's day-swap-source rule.
+const DRAGGED_CLASS = 'day-swap-source';
 
 // Long-press a day's NAME (not the rest of the header — only the name itself is the handle, and
 // only it visually moves), drag it onto a DIFFERENT day's name, release to swap the two days
@@ -91,7 +90,7 @@ function useDayHeaderDrag(dateISO, onSwapDay) {
             el.style.transition = 'none';
             el.style.zIndex = 9999;
             el.style.position = 'relative';
-            el.classList.add(DRAGGED_CLASS);
+            el.closest('[data-day-date]')?.classList.add(DRAGGED_CLASS);
             markReorderActive();
             // Armed only once an actual drag starts — a quick tap (released before this timer
             // fires) never reaches here, so DayNameEditor's own click still opens it normally.
@@ -106,7 +105,7 @@ function useDayHeaderDrag(dateISO, onSwapDay) {
             el.style.transform = '';
             el.style.zIndex = '';
             el.style.position = '';
-            el.classList.remove(DRAGGED_CLASS);
+            el.closest('[data-day-date]')?.classList.remove(DRAGGED_CLASS);
             endRowTouchGuard();
             endReorderDrag();
             el.removeEventListener('touchmove', onTouchMoveNative);

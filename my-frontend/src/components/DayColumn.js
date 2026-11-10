@@ -31,7 +31,7 @@ function DayColumn({ dateISO, tasks, isToday, dayTitle, location, showLocationLa
                     </div>
                     {/* The name itself is the drag handle for swapping days (useDayHeaderDrag) —
                         only it moves, not the date. */}
-                    <div className={'day-name-center' + (dayTitle ? '' : ' day-name-center-empty')} ref={headerDrag.ref} onPointerDown={headerDrag.onPointerDown}>
+                    <div className={'day-name-center day-name-drag-handle' + (dayTitle ? '' : ' day-name-center-empty')} ref={headerDrag.ref} onPointerDown={headerDrag.onPointerDown}>
                         <DayNameEditor dayTitle={dayTitle} onSetDayTitle={onSetDayTitle} />
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>

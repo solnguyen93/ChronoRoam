@@ -55,7 +55,7 @@ function DayCard({ dateISO, tasks, dayTitle, location, showLocationLabel, isToda
                     {/* Column view: the day's name, next to the date. The name itself is the drag
                         handle for swapping days (useDayHeaderDrag) — only it moves, not the date. */}
                     {!square && (
-                        <div className={'day-name-center' + (dayTitle ? '' : ' day-name-center-empty')} ref={headerDrag.ref} onPointerDown={headerDrag.onPointerDown}>
+                        <div className={'day-name-center day-name-drag-handle' + (dayTitle ? '' : ' day-name-center-empty')} ref={headerDrag.ref} onPointerDown={headerDrag.onPointerDown}>
                             <DayNameEditor dayTitle={dayTitle} onSetDayTitle={onSetDayTitle} />
                         </div>
                     )}
@@ -75,7 +75,7 @@ function DayCard({ dateISO, tasks, dayTitle, location, showLocationLabel, isToda
                 </div>
                 {/* Calendar view: the day's name on its own line below the date and weather. */}
                 {square && (
-                    <div ref={headerDrag.ref} onPointerDown={headerDrag.onPointerDown}>
+                    <div className="day-name-drag-handle" ref={headerDrag.ref} onPointerDown={headerDrag.onPointerDown}>
                         <DayNameEditor dayTitle={dayTitle} onSetDayTitle={onSetDayTitle} />
                     </div>
                 )}
