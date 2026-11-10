@@ -24,12 +24,14 @@ function DayColumn({ dateISO, tasks, isToday, dayTitle, location, showLocationLa
     return (
         <div className={className} id={'day-' + dateISO} data-day-date={dateISO}>
             <div className="day-head">
-                <div className="day-head-top" ref={headerDrag.ref} onPointerDown={headerDrag.onPointerDown}>
+                <div className="day-head-top">
                     <div className="day-date-dow-stack">
                         <span className="day-date">{MON_SHORT[d.getMonth()]} {d.getDate()}</span>
                         <span className="day-dow">{DOW_SHORT[d.getDay()]}</span>
                     </div>
-                    <div className={'day-name-center' + (dayTitle ? '' : ' day-name-center-empty')}>
+                    {/* The name itself is the drag handle for swapping days (useDayHeaderDrag) —
+                        only it moves, not the date. */}
+                    <div className={'day-name-center' + (dayTitle ? '' : ' day-name-center-empty')} ref={headerDrag.ref} onPointerDown={headerDrag.onPointerDown}>
                         <DayNameEditor dayTitle={dayTitle} onSetDayTitle={onSetDayTitle} />
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>

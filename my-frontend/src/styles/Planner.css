@@ -576,6 +576,8 @@ body.reorder-drag-active .day-section-head{pointer-events:none;}
 /* Drag a day's header onto another day's header to swap the two days wholesale (names + plain
    items) — see useDayHeaderDrag.js. This highlights whichever day is currently under the drag. */
 .day-swap-target{outline:2px dashed var(--shu);outline-offset:1px;background:color-mix(in srgb, var(--shu) 10%, transparent);}
+/* The day name being dragged: same fade an item being dragged gets (.task.reorder-active > *). */
+.day-name-reorder-active > *{opacity:0.4;}
 /* Day card header (date, weekday, weather, day name): text can't be selected and the iOS long-press menu is off. The
    day name's text box can still be edited. */
 .day-row-cell-top{

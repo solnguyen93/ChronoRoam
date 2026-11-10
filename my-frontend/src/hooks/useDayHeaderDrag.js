@@ -4,23 +4,25 @@ import { beginRowTouchGuard, endRowTouchGuard, markReorderActive, endReorderDrag
 const LONG_PRESS_MS = 480;
 const MOVE_CANCEL = 8;
 const DROP_TARGET_CLASS = 'day-swap-target';
+// Same fade TaskRow.js's dragged row gets (.task.reorder-active > * { opacity: 0.4 }) — see
+// Planner.css's day-name-reorder-active rule, applied to the same element this hook returns a ref
+// for.
+const DRAGGED_CLASS = 'day-name-reorder-active';
 
-// Long-press a day's header, drag it onto a DIFFERENT day's header, release to swap the two days
+// Long-press a day's NAME (not the rest of the header — only the name itself is the handle, and
+// only it visually moves), drag it onto a DIFFERENT day's name, release to swap the two days
 // wholesale (Task.swapDays, via Planner.js's swapDays) — the day names and plain/solo-dated items
 // trade places; linked pairs (flight, transportation, lodging, car rental) stay put. Returns
-// pointer handlers to spread onto the header element. Mostly imperative (direct style/class
-// changes, no React state) — same approach TaskRow.js's drag already uses for the dragged row and
-// its drop-line indicator, so this doesn't need to coordinate state across every day header on
-// the page just to show where a drag is going.
+// pointer handlers to spread onto the day-name wrapper element. Mostly imperative (direct
+// style/class changes, no React state) — same approach TaskRow.js's drag already uses for the
+// dragged row and its drop-line indicator, so this doesn't need to coordinate state across every
+// day header on the page just to show where a drag is going.
 function useDayHeaderDrag(dateISO, onSwapDay) {
     const elRef = useRef(null);
 
     const handlePointerDown = (e) => {
-        // Not while actually editing the name (the open text box), or a button. Over the day-name
-        // text itself IS allowed to start a drag — it's the most natural thing to grab — a quick
-        // tap there still opens the editor as before; only a drag that actually fires suppresses
-        // that click (see the capture-phase listener below).
-        if (e.target.closest('.day-name-edit-wrap, button')) return;
+        // Not while actually editing the name (the open text box).
+        if (e.target.closest('.day-name-edit-wrap')) return;
         const el = elRef.current;
         if (!el) return;
         beginRowTouchGuard();
@@ -89,6 +91,7 @@ function useDayHeaderDrag(dateISO, onSwapDay) {
             el.style.transition = 'none';
             el.style.zIndex = 9999;
             el.style.position = 'relative';
+            el.classList.add(DRAGGED_CLASS);
             markReorderActive();
             // Armed only once an actual drag starts — a quick tap (released before this timer
             // fires) never reaches here, so DayNameEditor's own click still opens it normally.
@@ -103,6 +106,7 @@ function useDayHeaderDrag(dateISO, onSwapDay) {
             el.style.transform = '';
             el.style.zIndex = '';
             el.style.position = '';
+            el.classList.remove(DRAGGED_CLASS);
             endRowTouchGuard();
             endReorderDrag();
             el.removeEventListener('touchmove', onTouchMoveNative);

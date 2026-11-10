@@ -43,7 +43,7 @@ function DayCard({ dateISO, tasks, dayTitle, location, showLocationLabel, isToda
 
     return (
         <div className={className} id={'day-' + dateISO} data-day-date={dateISO}>
-            <div className="day-row-cell-top" ref={headerDrag.ref} onPointerDown={headerDrag.onPointerDown}>
+            <div className="day-row-cell-top">
                 <div className="day-row-cell-heading">
                     <div className="day-row-cell-date-wrap">
                         <div className="day-row-cell-date">
@@ -52,9 +52,10 @@ function DayCard({ dateISO, tasks, dayTitle, location, showLocationLabel, isToda
                         </div>
                         {!square && <div className="day-row-cell-dow">{DOW_SHORT[d.getDay()]}</div>}
                     </div>
-                    {/* Column view: the day's name, next to the date. */}
+                    {/* Column view: the day's name, next to the date. The name itself is the drag
+                        handle for swapping days (useDayHeaderDrag) — only it moves, not the date. */}
                     {!square && (
-                        <div className={'day-name-center' + (dayTitle ? '' : ' day-name-center-empty')}>
+                        <div className={'day-name-center' + (dayTitle ? '' : ' day-name-center-empty')} ref={headerDrag.ref} onPointerDown={headerDrag.onPointerDown}>
                             <DayNameEditor dayTitle={dayTitle} onSetDayTitle={onSetDayTitle} />
                         </div>
                     )}
@@ -73,7 +74,11 @@ function DayCard({ dateISO, tasks, dayTitle, location, showLocationLabel, isToda
                     </div>
                 </div>
                 {/* Calendar view: the day's name on its own line below the date and weather. */}
-                {square && <DayNameEditor dayTitle={dayTitle} onSetDayTitle={onSetDayTitle} />}
+                {square && (
+                    <div ref={headerDrag.ref} onPointerDown={headerDrag.onPointerDown}>
+                        <DayNameEditor dayTitle={dayTitle} onSetDayTitle={onSetDayTitle} />
+                    </div>
+                )}
             </div>
             {square ? (
                 <div className="v-scroll-wrap day-tasks-scroll-wrap">
