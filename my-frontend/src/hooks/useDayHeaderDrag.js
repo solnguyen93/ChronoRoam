@@ -16,8 +16,11 @@ function useDayHeaderDrag(dateISO, onSwapDay) {
     const elRef = useRef(null);
 
     const handlePointerDown = (e) => {
-        // Not over the day-name text itself (that's its own click-to-edit target) or a button.
-        if (e.target.closest('.day-name-hit, .day-name-edit-wrap, button')) return;
+        // Not while actually editing the name (the open text box), or a button. Over the day-name
+        // text itself IS allowed to start a drag — it's the most natural thing to grab — a quick
+        // tap there still opens the editor as before; only a drag that actually fires suppresses
+        // that click (see the capture-phase listener below).
+        if (e.target.closest('.day-name-edit-wrap, button')) return;
         const el = elRef.current;
         if (!el) return;
         beginRowTouchGuard();
@@ -25,6 +28,12 @@ function useDayHeaderDrag(dateISO, onSwapDay) {
         let mode = null; // null | 'dragging'
         let hoveredTargetEl = null;
         let rafId = null, latestEvent = null;
+
+        // If a real drag fires, the click that follows pointerup (e.g. DayNameEditor's own
+        // tap-to-edit handler) needs to be swallowed — otherwise dragging the day name onto
+        // another day ALSO opens this one's rename box right after. Capture phase so it runs
+        // before React's own (bubble-phase) click handlers ever see it.
+        const suppressNextClick = (ev) => { ev.stopPropagation(); ev.preventDefault(); el.removeEventListener('click', suppressNextClick, true); };
 
         // Stops the page from scrolling once actually dragging, but not before, so a quick swipe
         // still scrolls the page (same approach as TaskRow.js's reorder drag). Has to be a
@@ -81,6 +90,9 @@ function useDayHeaderDrag(dateISO, onSwapDay) {
             el.style.zIndex = 9999;
             el.style.position = 'relative';
             markReorderActive();
+            // Armed only once an actual drag starts — a quick tap (released before this timer
+            // fires) never reaches here, so DayNameEditor's own click still opens it normally.
+            el.addEventListener('click', suppressNextClick, true);
         }, LONG_PRESS_MS);
 
         function cleanup() {
@@ -97,6 +109,11 @@ function useDayHeaderDrag(dateISO, onSwapDay) {
             window.removeEventListener('pointermove', onMoveHandler);
             window.removeEventListener('pointerup', onUpHandler);
             window.removeEventListener('pointercancel', cleanup);
+            // Safety net: the click this is meant to swallow fires asynchronously right after
+            // pointerup, so this can't remove the listener immediately — but some platforms don't
+            // fire one at all after a dragged pointer sequence, which would otherwise leave this
+            // armed to wrongly swallow a later, unrelated tap.
+            setTimeout(() => el.removeEventListener('click', suppressNextClick, true), 0);
         }
 
         window.addEventListener('pointermove', onMoveHandler);
