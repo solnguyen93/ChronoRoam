@@ -76,13 +76,19 @@ export function getSortMinutes(task) {
     return minutes;
 }
 
-// Puts the items that have a time back in time order, leaving items without a time where they
-// are. Used after a drag or a time edit on a day.
+// Puts the items that have a time back in time order, leaving items without a time — and any
+// item that's half of a linked pair (linkId) — where they are. A pair's two halves can be in
+// different time zones with no offset recorded anywhere (a flight landing at a local time
+// numerically EARLIER than it departed, having crossed several zones westward) — comparing their
+// raw clock-time-of-day isn't reliable, so instead of resorting them here, this leans on
+// Task.reorder's own separate, time-independent guarantee (the backend already keeps a pair's
+// later half after its earlier half by list position, not by time) and just leaves linked items
+// wherever they were dropped, same as an untimed item.
 export function enforceTimedOrder(tasksInOrder) {
     const timedIndices = [];
     const timedTasks = [];
     tasksInOrder.forEach((t, i) => {
-        if (getSortMinutes(t) != null) { timedIndices.push(i); timedTasks.push(t); }
+        if (!t.linkId && getSortMinutes(t) != null) { timedIndices.push(i); timedTasks.push(t); }
     });
     const sorted = [...timedTasks].sort((a, b) => getSortMinutes(a) - getSortMinutes(b));
     const result = tasksInOrder.slice();
